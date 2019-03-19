@@ -7,6 +7,9 @@ const outputDir = 'dist';
 module.exports = {
   mode: 'development',
   entry: './demo/src/index.tsx',
+  devServer: {
+    open: true,
+  },
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, outputDir),

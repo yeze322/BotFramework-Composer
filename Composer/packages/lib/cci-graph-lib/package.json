@@ -27,6 +27,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "typescript": "3.3.3333",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"
   },
@@ -35,7 +36,7 @@
     "react-dom": "16.x"
   },
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --config webpack/dev.config.js",
     "build": "gulp build:app",
     "clean": "nwb clean-module && nwb clean-demo",
     "prepublishOnly": "npm run build",
