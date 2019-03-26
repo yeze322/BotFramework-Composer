@@ -51,6 +51,7 @@ export class ResponsiveObiEditor extends Component {
       // Trigger a view change.
       this.setState({ displayedJson: data });
     } else {
+      // TODO: determine when should form editor be triggered.
       switch (data.$type) {
         case ActionTypes.Navigation:
           this.setState({
