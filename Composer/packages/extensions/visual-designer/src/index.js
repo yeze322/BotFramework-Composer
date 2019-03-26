@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { ObiEditor } from './components/obi-editor/ObiEditor';
+import { ResponsiveObiEditor } from './container/ResponsiveObiEditor';
 
 export default class extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class extends Component {
 
     return (
       <div className="visualdesigner-container" data-testid="visualdesigner-container">
-        <ObiEditor data={data} onClickDialog={item => this.onClick(item)} />
+        <ResponsiveObiEditor data={data} onClickDialog={item => this.onClick(item)} />
       </div>
     );
   }

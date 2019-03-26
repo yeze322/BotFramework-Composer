@@ -3,10 +3,9 @@ import { render } from 'react-dom';
 
 import './style.css';
 import { JsonBlock } from './components/json-block';
-import { ObiEditor } from '../../src/components/obi-editor/ObiEditor';
+import { ResponsiveObiEditor } from '../../src/container/ResponsiveObiEditor';
 
 import * as obiExample from './sample.dialog';
-import { RuleDialogTransformer } from '../../src/transformers/instances/RuleDialogTransformer';
 import { autoTransform } from '../../src/transformers/autoTransform';
 
 class Demo extends Component {
@@ -44,7 +43,7 @@ class Demo extends Component {
             <code>{JSON.stringify(directedGraphSchema, null, '\t')}</code>
           </div>
           <div className="block block--right">
-            <ObiEditor
+            <ResponsiveObiEditor
               data={obiJson}
               width={400}
               height={500}

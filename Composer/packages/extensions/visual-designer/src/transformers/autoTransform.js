@@ -8,6 +8,10 @@ function chooseTransformer(input) {
   return activeTransformers.find(transformer => transformer.when(input));
 }
 
+export function checkTransformability(input) {
+  return !!chooseTransformer(input);
+}
+
 export function autoTransform(input) {
   const chosenTransformer = chooseTransformer(input);
   if (chosenTransformer) {
