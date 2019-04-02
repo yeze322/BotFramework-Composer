@@ -9,9 +9,10 @@ import { buildObiStep } from '../helpers/elementBuilder';
  * A strategy contains two tasks:
  *  1. How to select nodes out of raw json.
  *  2. How to connect your nodes to a graph by following some implicit rules.
- * Useually, how we connect nodes together is determined by how we select nodes.
- * Therefore, instead of implemnting node selector and edge connector as standalone modules,
- * putting them together is a more straight forward approach.
+ * How we connect nodes together is determined by how we select nodes, so these two tasks
+ * depend on each other and should work closely. Therefore, instead of implementing node
+ * selector and edge connector as standalone modules, putting them together is a more
+ * straight forward approach.
  */
 
 /**
