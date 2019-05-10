@@ -129,7 +129,7 @@ export function ifElseLayouter(choiceNode, ifNode, elseNode) {
         length: ifNode.offset.x + ifNode.boundary.axisX - containerBoundary.axisX,
       }
     );
-  } else {
+  } else if (elseNode) {
     edgeList.push(
       {
         id: `edge/${choiceNode.id}/if/choice->border.right`,
