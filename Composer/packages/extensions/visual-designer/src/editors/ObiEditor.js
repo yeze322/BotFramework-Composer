@@ -10,14 +10,12 @@ import { RuleEditor } from './RuleEditor';
 export class ObiEditor extends Component {
   state = {
     prevPath: '',
-    focusedId: '',
   };
 
   static getDerivedStateFromProps(props, state) {
     if (props.path !== state.prevPath) {
       return {
         prevPath: props.path,
-        focusedId: '',
       };
     }
     return null;
@@ -40,9 +38,6 @@ export class ObiEditor extends Component {
       default:
         handler = onSelect;
         break;
-    }
-    if (this.state.focusedId !== eventData) {
-      this.setState({ focusedId: eventData });
     }
     return handler(eventData);
   }
@@ -73,8 +68,8 @@ export class ObiEditor extends Component {
           key={path}
           id={path}
           data={this.props.data}
+          focusedId={this.props.focusedId}
           expanded={true}
-          focusedId={this.state.focusedId}
           onEvent={(...args) => this.dispatchEvent(...args)}
         />
       </div>
@@ -92,6 +87,7 @@ ObiEditor.defaultProps = {
 
 ObiEditor.propTypes = {
   path: PropTypes.string,
+  focusedId: PropTypes.string,
   // Obi raw json
   data: PropTypes.object,
   onSelect: PropTypes.func,

@@ -14,6 +14,7 @@ class Demo extends Component {
   state = {
     selectedFile: defaultFile,
     obiJson: ObiExamples[defaultFile],
+    focusedId: '',
   };
 
   constructor(props) {
@@ -67,7 +68,12 @@ class Demo extends Component {
           <div className="block block--right">
             <ObiEditor
               data={obiJson}
-              onSelect={logEventThunk('select')}
+              focusedId={this.state.focusedId}
+              onSelect={e => {
+                this.setState({
+                  focusedId: e,
+                });
+              }}
               onExpand={logEventThunk('expand')}
               onOpen={logEventThunk('open')}
             />
