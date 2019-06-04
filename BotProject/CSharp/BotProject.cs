@@ -39,6 +39,8 @@ namespace Microsoft.Bot.Builder.TestBot.Json
             return bot;
         }
 
+
+
         public static BotProject Load(string file)
         {
             return BotProject.LoadAsync(file).GetAwaiter().GetResult();
