@@ -20,8 +20,8 @@ jobs:
         script:  '$editedFiles = git diff HEAD HEAD~ --name-only
                   $editedFiles | ForEach-Object {
                       Switch -Wildcard ($_ ) {
-                          ''''Composer/*'''' { Write-Output "##vso[task.setvariable variable=ComposerUpdate]True" }
-                          ''''BotProject/*'''' { Write-Output "##vso[task.setvariable variable=BotProjectUpdate]True" }
+                          ''Composer/*'' { Write-Output "##vso[task.setvariable variable=ComposerUpdate]True" }
+                          ''BotProject/*'' { Write-Output "##vso[task.setvariable variable=BotProjectUpdate]True" }
                       }
                   }'
                   
