@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { Icon } from '../icons/icon';
+import { EventNodeSize } from '../../../shared/elementSizes';
 
-const boxWidth = 180;
-const boxHeight = 32;
+const boxWidth = EventNodeSize.width;
+const boxHeight = EventNodeSize.height;
 
 export const IconCard = ({ corner, label, icon, themeColor, onClick }) => {
   const containerStyle = {
