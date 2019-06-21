@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { OverflowSet, IconButton, Link } from 'office-ui-fabric-react';
 
-export const IconMenu = ({ iconName, iconSize, iconStyles, label, menuItems, menuWidth }) => {
+export const IconMenu = ({ iconName, iconSize, iconStyles, menuItems, menuWidth }) => {
   const _onRenderItem = item => {
     return (
       <Link styles={{ root: { marginRight: 10 } }} onClick={item.onClick}>
@@ -27,7 +27,6 @@ export const IconMenu = ({ iconName, iconSize, iconStyles, label, menuItems, men
         styles={buttonStyles}
         menuIconProps={{ iconName, style: { fontSize: iconSize } }}
         menuProps={{ items: overflowItems, calloutProps: { calloutMaxWidth: menuWidth } }}
-        ariaLabel={label}
       />
     );
   };
@@ -53,7 +52,6 @@ IconMenu.defaultProps = {
 
 IconMenu.propTypes = {
   iconName: PropTypes.string.isRequired,
-  label: PropTypes.string,
   menuItems: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,

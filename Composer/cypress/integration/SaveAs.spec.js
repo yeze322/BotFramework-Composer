@@ -10,10 +10,11 @@ context('Saving As', () => {
     cy.getByText('Save as').click();
 
     cy.get('input[data-testid="NewBotProjectInput"]').type('__TestSaveAs');
-    cy.get('input[data-testid="NewBotProjectInput"]').type('{enter}');
+    cy.getByText('Save').click();
+    // cy.get('input[data-testid="NewBotProjectInput"]').type('{enter}');
 
     cy.get('[data-testid="ProjectTree"]').within(() => {
-      cy.getByText('__TestSaveAs.main').should('exist');
+      cy.getByText('BeginDialog.main').should('exist');
       cy.getByText('BeginDialog.FortuneTellerDialog').should('exist');
       cy.getByText('BeginDialog.TellJokeDialog').should('exist');
     });

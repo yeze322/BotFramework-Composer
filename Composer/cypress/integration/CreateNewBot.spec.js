@@ -9,7 +9,8 @@ context('Creating a new bot', () => {
     cy.getByText('New').click();
     cy.getByText('ToDoBot').click();
     cy.get('input[data-testid="NewBotProjectInput"]').type('__TestNewProject');
-    cy.get('input[data-testid="NewBotProjectInput"]').type('{enter}');
+    cy.getByText('Save').click();
+    // cy.get('input[data-testid="NewBotProjectInput"]').type('{enter}');
     cy.get('[data-testid="ProjectTree"]').within(() => {
       cy.getByText('__TestNewProject.main').should('exist');
       cy.getByText('AddToDo').should('exist');
