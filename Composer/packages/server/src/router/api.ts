@@ -4,6 +4,7 @@ import { ProjectController } from '../controllers/project';
 import { StorageController } from '../controllers/storage';
 import { BotConnectorController } from '../controllers/connector';
 import { AssetController } from '../controllers/asset';
+import { DrawsomeController } from '../controllers/drawsome';
 
 const router: Router = express.Router({});
 
@@ -33,6 +34,9 @@ router.get('/storages/:storageId/blobs/:path(*)', StorageController.getBlob);
 router.get('/launcher/connect', BotConnectorController.connect);
 router.post('/launcher/sync', BotConnectorController.sync);
 router.get('/launcher/status', BotConnectorController.status);
+
+// hackathon
+router.post('/hack/drawsome', DrawsomeController.updateDrawsomeBot);
 
 //assets
 router.get('/assets/projectTemplates', AssetController.getProjTemplates);
