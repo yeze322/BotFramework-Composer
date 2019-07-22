@@ -67,7 +67,7 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({
         path={navPath}
         focusedId={normalizeFocusedId(focusPath, navPath)}
         data={data}
-        isRoot={currentDialog && currentDialog.isRoot && navPath.endsWith('#')}
+        isRoot={false}
         onSelect={x => focusTo(x ? '.' + x : '')}
         onExpand={x => navDown('.' + x)}
         onOpen={x => navTo(x + '#')}
