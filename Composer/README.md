@@ -1,6 +1,12 @@
 # Composer
 The web app that can edit bots in OBI format, and can use Bot Launcher to run bot.
 
+
+# API for hackathon:
+
+POST http://{server-address}/api/hack/drawsome
+BODY {your dialog json}
+
 ### Instructions
 
 Prerequisite:
