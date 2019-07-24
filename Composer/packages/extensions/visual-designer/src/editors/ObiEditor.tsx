@@ -60,6 +60,13 @@ export const ObiEditor: React.FC<ObiEditorProps> = ({
                 case `${ObiTypes.TextInput}->${ObiTypes.SendActivity}`:
                   node.activity = node.prompt;
                   break;
+                case `${ObiTypes.IfCondition}->${ObiTypes.SwitchCondition}`:
+                  node.cases = [{ value: 'True', steps: node.steps }, { value: 'False', steps: node.elseSteps }];
+                  break;
+                case `${ObiTypes.SwitchCondition}->${ObiTypes.IfCondition}`:
+                  node.steps = (node.cases[0] || {}).steps || [];
+                  node.elseSteps = (node.cases[1] || {}).steps || [];
+                  break;
                 default:
                   break;
               }
