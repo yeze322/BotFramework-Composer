@@ -1,4 +1,5 @@
 import React from 'react';
+import { EdgeMenu } from 'shared-menus';
 
 import { NodeEventTypes } from '../../shared/NodeEventTypes';
 // eslint-disable-next-line no-unused-vars
@@ -40,7 +41,12 @@ export class BeginDialog extends React.Component<NodeProps, object> {
       <FormCard
         nodeColors={nodeColors}
         header={getFriendlyName(data) || 'BeginDialog'}
-        corner={<NodeMenu id={id} onEvent={onEvent} />}
+        corner={
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <EdgeMenu iconName={'Edit'} onClick={$type => onEvent(NodeEventTypes.EditType, { id, $type })} />
+            <NodeMenu id={id} onEvent={onEvent} />
+          </div>
+        }
         label={this.renderCallDialogLink()}
         onClick={() => {
           onEvent(NodeEventTypes.Focus, id);

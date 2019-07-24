@@ -85,3 +85,10 @@ export function insert(inputDialog, path, position, $type) {
 
   return dialog;
 }
+
+export function edit(inputDialog, path, editFn) {
+  const dialog = cloneDeep(inputDialog);
+  const current = get(dialog, path, {});
+  editFn(current);
+  return dialog;
+}

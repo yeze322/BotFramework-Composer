@@ -1,4 +1,5 @@
 import React from 'react';
+import { EdgeMenu } from 'shared-menus';
 
 import { NodeEventTypes } from '../../shared/NodeEventTypes';
 import { ObiTypes } from '../../shared/ObiTypes';
@@ -181,7 +182,12 @@ export class DefaultRenderer extends React.Component<NodeProps, {}> {
       <FormCard
         nodeColors={nodeColors}
         header={header}
-        corner={<NodeMenu id={id} onEvent={onEvent} />}
+        corner={
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <EdgeMenu iconName={'Edit'} onClick={$type => onEvent(NodeEventTypes.EditType, { id, $type })} />
+            <NodeMenu id={id} onEvent={onEvent} />
+          </div>
+        }
         icon={icon}
         label={label}
         onClick={() => {

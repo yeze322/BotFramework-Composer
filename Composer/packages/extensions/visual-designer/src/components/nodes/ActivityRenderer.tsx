@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { EdgeMenu } from 'shared-menus';
 
 // eslint-disable-next-line
 import { NodeProps, defaultNodeProps } from '../shared/sharedProps';
@@ -49,7 +50,12 @@ export const ActivityRenderer: React.FC<NodeProps> = props => {
     <FormCard
       nodeColors={NodeColors[DialogGroup.RESPONSE]}
       header={getFriendlyName(data) || 'Activity'}
-      corner={<NodeMenu id={id} onEvent={onEvent} />}
+      corner={
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <EdgeMenu iconName={'Edit'} onClick={$type => onEvent(NodeEventTypes.EditType, { id, $type })} />
+          <NodeMenu id={id} onEvent={onEvent} />
+        </div>
+      }
       icon="MessageBot"
       label={templateText}
       onClick={() => {

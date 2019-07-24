@@ -5,7 +5,7 @@ import { IconMenu } from './templates/IconMenu';
 import { EdgeAddButtonSize } from './elementSizes';
 import { createStepMenu, DialogGroup } from './appschema';
 
-export const EdgeMenu = ({ onClick }) => {
+export const EdgeMenu = ({ onClick, iconName = 'Add' }) => {
   return (
     <div
       style={{
@@ -19,7 +19,7 @@ export const EdgeMenu = ({ onClick }) => {
       }}
     >
       <IconMenu
-        iconName="Add"
+        iconName={iconName || 'Add'}
         iconStyles={{ background: 'white', color: '#005CE6' }}
         iconSize={10}
         menuItems={createStepMenu(

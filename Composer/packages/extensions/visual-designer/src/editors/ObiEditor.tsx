@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NodeEventTypes } from '../shared/NodeEventTypes';
 import { ObiTypes } from '../shared/ObiTypes';
-import { deleteNode, insert } from '../shared/jsonTracker';
+import { deleteNode, insert, edit } from '../shared/jsonTracker';
 import DragScroll from '../components/DragScroll';
 import { LgTemplate } from '../components/shared/sharedProps';
 
@@ -47,6 +47,15 @@ export const ObiEditor: React.FC<ObiEditorProps> = ({
           const dialog = insert(data, e.id, e.position, e.$type);
           onChange(dialog);
           onSelect(`${e.id}[${e.position || 0}]`);
+        };
+        break;
+      case NodeEventTypes.EditType:
+        handler = e => {
+          onChange(
+            edit(data, e.id, node => {
+              node.$type = e.$type;
+            })
+          );
         };
         break;
       default:

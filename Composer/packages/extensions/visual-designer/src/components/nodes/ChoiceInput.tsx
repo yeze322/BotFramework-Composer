@@ -1,4 +1,5 @@
 import React from 'react';
+import { EdgeMenu } from 'shared-menus';
 
 import { InitNodeSize, ChoiceInputSize, ChoiceInputMarginTop } from '../../shared/elementSizes';
 import { NodeEventTypes } from '../../shared/NodeEventTypes';
@@ -90,7 +91,12 @@ export class ChoiceInput extends React.Component<NodeProps, {}> {
       <FormCard
         nodeColors={nodeColors}
         header={header}
-        corner={<NodeMenu id={id} onEvent={onEvent} />}
+        corner={
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <EdgeMenu iconName={'Edit'} onClick={$type => onEvent(NodeEventTypes.EditType, { id, $type })} />
+            <NodeMenu id={id} onEvent={onEvent} />
+          </div>
+        }
         icon={icon}
         label={label}
         onClick={() => {
