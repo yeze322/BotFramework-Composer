@@ -53,6 +53,16 @@ export const ObiEditor: React.FC<ObiEditorProps> = ({
         handler = e => {
           onChange(
             edit(data, e.id, node => {
+              switch (`${node.$type}->${e.$type}`) {
+                case `${ObiTypes.SendActivity}->${ObiTypes.TextInput}`:
+                  node.prompt = node.activity;
+                  break;
+                case `${ObiTypes.TextInput}->${ObiTypes.SendActivity}`:
+                  node.activity = node.prompt;
+                  break;
+                default:
+                  break;
+              }
               node.$type = e.$type;
             })
           );
