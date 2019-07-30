@@ -58,7 +58,10 @@ namespace Microsoft.Bot.Builder.TestBot.Json
 
         public override Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.dialogManager.OnTurnAsync(turnContext, cancellationToken: cancellationToken);
+            if (turnContext.Activity.Type != ActivityTypes.ConversationUpdate || turnContext.Activity.MembersAdded.FirstOrDefault().Name != "Bot") {
+                return this.dialogManager.OnTurnAsync(turnContext, cancellationToken: cancellationToken);
+            }
+            return Task.CompletedTask;
         }
     }
 }
