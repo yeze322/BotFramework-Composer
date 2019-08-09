@@ -32,6 +32,7 @@
     "lodash": "^4.17.11",
     "office-ui-fabric-react": "^6.180.0",
     "prop-types": "^15.7.2",
+    "react-selectable-fast": "^2.3.1",
     "source-map-loader": "^0.2.4"
   },
   "peerDependencies": {
@@ -47,8 +48,8 @@
     "@types/jest": "^24.0.11",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
-    "babel-plugin-emotion": "^10.0.7",
     "babel-jest": "24.0.0",
+    "babel-plugin-emotion": "^10.0.7",
     "eslint": "^6.0.1",
     "jest": "^24.5.0",
     "json-loader": "^0.5.7",
