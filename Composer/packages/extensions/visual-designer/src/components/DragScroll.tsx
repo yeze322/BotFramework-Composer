@@ -19,7 +19,11 @@ export default function DragScroll(props) {
   const isDragging = useRef(false);
   const dragStartPoint = useRef({ x: 0, y: 0 });
 
+  const isWheelEvent = e => e.button === 1;
+
   const handleMouseDown = e => {
+    if (!isWheelEvent(e)) return;
+
     e.preventDefault();
     e.stopPropagation();
     isDragging.current = true;
@@ -28,6 +32,8 @@ export default function DragScroll(props) {
   };
 
   const handleMouseUp = e => {
+    if (!isWheelEvent(e)) return;
+
     e.preventDefault();
     e.stopPropagation();
     isDragging.current = false;
