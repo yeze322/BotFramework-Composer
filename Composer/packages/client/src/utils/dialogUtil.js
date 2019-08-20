@@ -1,7 +1,6 @@
 import { get, set, cloneDeep } from 'lodash';
 import { ConceptLabels } from 'shared-menus';
 import { ExpressionEngine } from 'botbuilder-expression-parser';
-import formatMessage from 'format-message';
 
 import { upperCaseName } from './fileUtil';
 import { getFocusPath } from './navigation';
@@ -25,7 +24,8 @@ export function getbreadcrumbLabel(dialogs, dialogId, focusedEvent, focusedSteps
   let label = '';
   const dataPath = getFocusPath(focusedEvent, focusedSteps[0]);
   if (!dataPath) {
-    label = dialogs.find(d => d.id === dialogId).displayName;
+    const dialog = dialogs.find(d => d.id === dialogId);
+    label = (dialog && dialog.displayName) || '';
   } else {
     const current = `${dataPath}.$type`;
     const dialogsMap = getDialogsMap(dialogs);
@@ -34,7 +34,7 @@ export function getbreadcrumbLabel(dialogs, dialogId, focusedEvent, focusedSteps
     label = getTitle(schemas.editor, type);
   }
 
-  label = formatMessage(upperCaseName(label || ''));
+  label = upperCaseName(label || '');
   return label;
 }
 
