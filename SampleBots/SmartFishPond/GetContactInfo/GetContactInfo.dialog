@@ -23,9 +23,9 @@
         {
           "$type": "Microsoft.SendActivity",
           "$designer": {
-            "name": "Send an Activity",
+            "name": "Intro",
             "id": "046958",
-            "updatedAt": "2019-08-22T16:19:53.810Z"
+            "updatedAt": "2019-08-23T18:53:43.028Z"
           },
           "activity": "[bfdactivity-046958]"
         },
@@ -49,35 +49,32 @@
         {
           "$type": "Microsoft.TextInput",
           "$designer": {
-            "name": "Prompt: Country",
-            "id": "506262",
-            "updatedAt": "2019-08-23T00:49:41.214Z"
+            "name": "Prompt: Email",
+            "id": "683875",
+            "updatedAt": "2019-08-23T18:54:31.218Z"
           },
           "outputFormat": "none",
-          "allowInterruptions": "never",
-          "property": "user.country",
-          "prompt": "In which country do you live?",
+          "allowInterruptions": "notRecognized",
+          "property": "user.email",
+          "prompt": "What is your Email?",
           "unrecognizedPrompt": "I didn't get that. Let's try again.",
+          "invalidPrompt": "I don't understand that. Please try again.",
           "maxTurnCount": 2147483647,
           "alwaysPrompt": true
         },
         {
           "$type": "Microsoft.TextInput",
           "$designer": {
-            "name": "Prompt: Email",
-            "id": "029130",
-            "updatedAt": "2019-08-23T01:38:21.423Z"
+            "name": "Prompt: Country",
+            "id": "506262",
+            "updatedAt": "2019-08-23T18:52:59.855Z"
           },
           "outputFormat": "none",
-          "allowInterruptions": "never",
-          "property": "user.email",
-          "prompt": "What is your Email?",
+          "allowInterruptions": "notRecognized",
+          "property": "user.country",
+          "prompt": "In which country do you live?",
           "unrecognizedPrompt": "I didn't get that. Let's try again.",
-          "invalidPrompt": "I don't understand that. Please try again.",
           "maxTurnCount": 2147483647,
-          "validations": [
-            "0<indexOf('turn.value', '@')"
-          ],
           "alwaysPrompt": true
         },
         {

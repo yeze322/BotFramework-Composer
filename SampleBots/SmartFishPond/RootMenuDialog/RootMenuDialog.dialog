@@ -129,7 +129,7 @@
           "$designer": {
             "name": "Branch: Switch Top Menu",
             "id": "585836",
-            "updatedAt": "2019-08-23T01:47:15.285Z"
+            "updatedAt": "2019-08-23T21:00:47.777Z"
           },
           "condition": "user.topmenuchoice",
           "cases": [
@@ -242,6 +242,20 @@
                     "updatedAt": "2019-08-23T01:47:39.188Z"
                   },
                   "activity": "[bfdactivity-672913]"
+                }
+              ]
+            },
+            {
+              "value": "Help",
+              "steps": [
+                {
+                  "$type": "Microsoft.BeginDialog",
+                  "$designer": {
+                    "name": "Begin a Dialog",
+                    "id": "127464",
+                    "updatedAt": "2019-08-23T21:01:02.864Z"
+                  },
+                  "dialog": "ShowHelp"
                 }
               ]
             }

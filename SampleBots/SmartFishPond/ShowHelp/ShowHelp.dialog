@@ -1,0 +1,35 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "createdAt": "2019-08-23T19:09:37.862Z",
+    "updatedAt": "2019-08-23T19:09:37.875Z",
+    "id": "162144",
+    "name": "ShowHelp"
+  },
+  "autoEndDialog": true,
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema",
+  "rules": [
+    {
+      "$type": "Microsoft.EventRule",
+      "$designer": {
+        "name": "Intent: help",
+        "id": "418137",
+        "updatedAt": "2019-08-23T19:12:21.001Z"
+      },
+      "events": [
+        "beginDialog"
+      ],
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Show help",
+            "id": "015086",
+            "updatedAt": "2019-08-23T20:12:29.968Z"
+          },
+          "activity": "[bfdactivity-015086]"
+        }
+      ]
+    }
+  ]
+}

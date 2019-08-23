@@ -114,7 +114,8 @@
 
 
 # bfdactivity-119458
-- ... default ...
+- Unhandled command. That's a bug. Please accept my appologies. I'll fix it later.
+- Sorry, this is a bug, a tiny fly that's lurking in my brain. I'll fix it later.
 
 
 # bfdactivity-908552
@@ -139,3 +140,37 @@
 
 # bfdactivity-377239
 - Here's some more info: {dialog.result.answer}
+
+
+# bfdactivity-321991
+- Welcome back {user.name}. Good to see you again
+- Hi {user.name}. Let's chat :)
+
+
+# bfdactivity-460834
+-Welcome! I'm delighted to make your acquaintance.
+
+
+# bfdactivity-897559
+- ```
+  - Welcome! I'm delighted to make your acquaintance.
+  - Here are some commands to get started:
+    - Menu: shows navigation menu
+    - Help (or ?) shows the help menu
+    - Contact (or 'get in touch') to share your contact information
+  ```
+
+
+# bfdactivity-015086
+-```
+This is a new infant bot that will help with education about our oceans environment protection.
+Here are some commands to get started:
+- **Menu**: shows navigation menu
+- **Help (or ?, h)** shows the help menu
+- **Contact (or 'stay in touch')** to share your contact information
+```
+
+
+# bfdactivity-278704
+- Hi, I'm the Smart Fish Robot.
+- Welcome, I'm the Smart Fish Bot

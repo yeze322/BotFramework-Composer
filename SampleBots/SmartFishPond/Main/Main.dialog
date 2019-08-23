@@ -59,10 +59,41 @@
           "$type": "Microsoft.SendActivity",
           "$designer": {
             "name": "Welcome",
-            "id": "753962",
-            "updatedAt": "2019-08-21T21:52:11.515Z"
+            "id": "278704",
+            "updatedAt": "2019-08-23T19:58:45.007Z"
           },
-          "activity": "[bfdactivity-753962]"
+          "activity": "[bfdactivity-278704]"
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "$designer": {
+            "name": "Branch: If/Else",
+            "id": "344149",
+            "updatedAt": "2019-08-23T18:50:59.016Z"
+          },
+          "condition": "user.name != null",
+          "steps": [
+            {
+              "$type": "Microsoft.SendActivity",
+              "$designer": {
+                "name": "Personal greetings",
+                "id": "321991",
+                "updatedAt": "2019-08-23T18:49:33.236Z"
+              },
+              "activity": "[bfdactivity-321991]"
+            }
+          ],
+          "elseSteps": [
+            {
+              "$type": "Microsoft.BeginDialog",
+              "$designer": {
+                "name": "Begin a Dialog",
+                "id": "744118",
+                "updatedAt": "2019-08-23T19:13:36.007Z"
+              },
+              "dialog": "ShowHelp"
+            }
+          ]
         }
       ]
     },
@@ -226,20 +257,20 @@
       "$designer": {
         "name": "Handle an Intent",
         "id": "584689",
-        "updatedAt": "2019-08-21T23:23:11.416Z"
+        "updatedAt": "2019-08-23T19:18:42.906Z"
       },
+      "intent": "Help",
       "steps": [
         {
-          "$type": "Microsoft.SendActivity",
+          "$type": "Microsoft.BeginDialog",
           "$designer": {
-            "name": "Send an Activity",
-            "id": "816980",
-            "updatedAt": "2019-08-21T23:21:58.314Z"
+            "name": "Begin a Dialog",
+            "id": "983571",
+            "updatedAt": "2019-08-23T19:18:54.961Z"
           },
-          "activity": "[bfdactivity-816980]"
+          "dialog": "ShowHelp"
         }
-      ],
-      "intent": "Help"
+      ]
     },
     {
       "$type": "Microsoft.IntentRule",
