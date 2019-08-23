@@ -1,0 +1,266 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "createdAt": "2019-07-11T23:45:43.726Z",
+    "updatedAt": "2019-08-23T00:56:20.660Z",
+    "id": "433224",
+    "description": "A bot demo about a smart fish in a small pond",
+    "name": "SmartFishPond"
+  },
+  "autoEndDialog": true,
+  "recognizer": {
+    "$type": "Microsoft.RegexRecognizer",
+    "intents": {
+      "what": "^(?i)(what is it)[?]?$",
+      "Greetings": "^(?i)(hi|hello|greetings|hola|howdee|hey|yo)$",
+      "Menu": "^(?i)(menu|root|top|restart)$",
+      "Who": "^(?i)(who are you)[?]?$",
+      "Done": "^(?i)(done|exit|cancel|bye|quit|goodbye)$",
+      "BotName": "^(?i)(Al|Smart Fish|Fish|Smarty|SmartFish|Paul Simon|Paul|Smart Pond|SmartPond|pond)$",
+      "Help": "^(?i)(help|h|[?])$",
+      "Contact": "(?i)(contact|connect|stay in touch)"
+    }
+  },
+  "generator": "common.lg",
+  "rules": [
+    {
+      "$type": "Microsoft.UnknownIntentRule",
+      "$designer": {
+        "id": "821845"
+      },
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "003038",
+            "updatedAt": "2019-07-11T23:45:59.499Z"
+          },
+          "activity": "[bfdactivity-003038]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Purpose Intro",
+            "id": "009350",
+            "updatedAt": "2019-08-19T23:51:57.374Z"
+          },
+          "activity": "[bfdactivity-009350]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.ConversationUpdateActivityRule",
+      "$designer": {
+        "id": "376720"
+      },
+      "constraint": "toLower(turn.Activity.membersAdded[0].name) != 'bot'",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Welcome",
+            "id": "753962",
+            "updatedAt": "2019-08-21T21:52:11.515Z"
+          },
+          "activity": "[bfdactivity-753962]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Intent: What is it",
+        "id": "296453",
+        "updatedAt": "2019-08-19T23:02:55.800Z"
+      },
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "About",
+            "id": "990998",
+            "updatedAt": "2019-08-19T23:52:38.197Z",
+            "description": "just respond to what it is\n"
+          },
+          "activity": "[bfdactivity-990998]"
+        },
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "103341",
+            "updatedAt": "2019-08-20T00:02:01.479Z"
+          },
+          "dialog": "RootMenuDialog"
+        }
+      ],
+      "intent": "what"
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Greetings",
+        "id": "690246",
+        "updatedAt": "2019-08-19T23:30:30.273Z"
+      },
+      "intent": "Greetings",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "235193",
+            "updatedAt": "2019-08-19T23:38:37.294Z"
+          },
+          "activity": "[bfdactivity-235193]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Menu",
+            "id": "636178",
+            "updatedAt": "2019-08-21T23:17:00.586Z"
+          },
+          "activity": "[bfdactivity-636178]"
+        },
+        {
+          "$type": "Microsoft.EndTurn",
+          "$designer": {
+            "name": "End Turn",
+            "id": "276704"
+          }
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Handle an Intent",
+        "id": "167514",
+        "updatedAt": "2019-08-19T23:36:55.893Z"
+      },
+      "intent": "Menu",
+      "steps": [
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "735405",
+            "updatedAt": "2019-08-19T23:37:05.583Z"
+          },
+          "dialog": "RootMenuDialog"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Intent: who are you",
+        "id": "061965",
+        "updatedAt": "2019-08-21T20:39:41.129Z"
+      },
+      "intent": "Who",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "244705",
+            "updatedAt": "2019-08-21T20:40:00.783Z"
+          },
+          "activity": "[bfdactivity-244705]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Handle an Intent",
+        "id": "382376",
+        "updatedAt": "2019-08-21T21:04:58.508Z"
+      },
+      "intent": "Done",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "874559",
+            "updatedAt": "2019-08-22T00:52:16.976Z"
+          },
+          "activity": "[bfdactivity-874559]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Intent: Botname",
+        "id": "569941",
+        "updatedAt": "2019-08-21T23:39:36.003Z"
+      },
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Hi My Name",
+            "id": "427821",
+            "updatedAt": "2019-08-21T21:58:15.042Z"
+          },
+          "activity": "[bfdactivity-427821]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "547313",
+            "updatedAt": "2019-08-21T22:00:22.480Z"
+          },
+          "activity": "[bfdactivity-547313]"
+        }
+      ],
+      "intent": "BotName"
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Handle an Intent",
+        "id": "584689",
+        "updatedAt": "2019-08-21T23:23:11.416Z"
+      },
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "816980",
+            "updatedAt": "2019-08-21T23:21:58.314Z"
+          },
+          "activity": "[bfdactivity-816980]"
+        }
+      ],
+      "intent": "Help"
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Handle an Intent",
+        "id": "336413",
+        "updatedAt": "2019-08-23T00:56:37.012Z"
+      },
+      "intent": "Contact",
+      "steps": [
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "653471",
+            "updatedAt": "2019-08-23T00:57:04.313Z"
+          },
+          "dialog": "GetContactInfo"
+        }
+      ]
+    }
+  ],
+  "$schema": "../../app.schema"
+}

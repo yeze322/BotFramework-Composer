@@ -1,0 +1,275 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "createdAt": "2019-08-19T23:08:23.108Z",
+    "updatedAt": "2019-08-19T23:09:31.351Z",
+    "id": "496219",
+    "name": "RootMenuDialog"
+  },
+  "autoEndDialog": true,
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema",
+  "rules": [
+    {
+      "$type": "Microsoft.EventRule",
+      "$designer": {
+        "name": "Handle an Event",
+        "id": "901991",
+        "updatedAt": "2019-08-19T23:49:48.144Z"
+      },
+      "events": [
+        "beginDialog"
+      ],
+      "steps": [
+        {
+          "$type": "Microsoft.ChoiceInput",
+          "$designer": {
+            "name": "Top Menu",
+            "id": "841097",
+            "updatedAt": "2019-08-21T23:27:37.364Z"
+          },
+          "property": "user.topmenuchoice",
+          "prompt": "Please choose from the following options (or ask a question, I may be able to figure it, not promising)",
+          "unrecognizedPrompt": "Didn't quite get this. Let's try again",
+          "invalidPrompt": "No, no. This is wrong.",
+          "maxTurnCount": 2147483647,
+          "alwaysPrompt": false,
+          "allowInterruptions": "notRecognized",
+          "outputFormat": "value",
+          "choices": [
+            {
+              "value": "Pollution",
+              "synonyms": [
+                "polution",
+                "Polution",
+                "pollution",
+                "pollusion",
+                "Pollusion",
+                "polusion",
+                "Polution"
+              ]
+            },
+            {
+              "value": "Impact",
+              "synonyms": [
+                "impact"
+              ]
+            },
+            {
+              "value": "Recovery",
+              "synonyms": [
+                "recovery",
+                "restoration"
+              ]
+            },
+            {
+              "value": "Activism",
+              "synonyms": [
+                "activism",
+                "action",
+                "Action",
+                "action"
+              ]
+            },
+            {
+              "value": "Education",
+              "synonyms": [
+                "education"
+              ]
+            },
+            {
+              "value": "Resources",
+              "synonyms": [
+                "resources"
+              ]
+            },
+            {
+              "value": "Environment",
+              "synonyms": [
+                "environment"
+              ]
+            },
+            {
+              "value": "News",
+              "synonyms": [
+                "news"
+              ]
+            },
+            {
+              "value": "Help",
+              "synonyms": [
+                "help",
+                "?"
+              ]
+            }
+          ],
+          "appendChoices": false,
+          "defaultLocale": "en-us",
+          "style": "HeroCard",
+          "choiceOptions": {
+            "inlineSeparator": ", ",
+            "inlineOr": " or ",
+            "inlineOrMore": ", or ",
+            "includeNumbers": true
+          },
+          "recognizerOptions": {
+            "noValue": false
+          }
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Ok",
+            "id": "742846",
+            "updatedAt": "2019-08-21T22:08:14.564Z"
+          },
+          "activity": "[bfdactivity-742846]"
+        },
+        {
+          "$type": "Microsoft.SwitchCondition",
+          "$designer": {
+            "name": "Branch: Switch Top Menu",
+            "id": "585836",
+            "updatedAt": "2019-08-23T01:47:15.285Z"
+          },
+          "condition": "user.topmenuchoice",
+          "cases": [
+            {
+              "value": "Pollution",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "589479",
+                    "updatedAt": "2019-08-21T23:00:20.665Z"
+                  },
+                  "activity": "[bfdactivity-589479]"
+                }
+              ]
+            },
+            {
+              "value": "Activism",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "792292",
+                    "updatedAt": "2019-08-21T23:00:42.794Z"
+                  },
+                  "activity": "[bfdactivity-792292]"
+                }
+              ]
+            },
+            {
+              "value": "Recovery",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "418272",
+                    "updatedAt": "2019-08-21T23:01:49.767Z"
+                  },
+                  "activity": "[bfdactivity-418272]"
+                }
+              ]
+            },
+            {
+              "value": "Education",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "900994",
+                    "updatedAt": "2019-08-21T23:03:10.491Z"
+                  },
+                  "activity": "[bfdactivity-900994]"
+                }
+              ]
+            },
+            {
+              "value": "Resources",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "116215",
+                    "updatedAt": "2019-08-21T23:04:24.806Z"
+                  },
+                  "activity": "[bfdactivity-116215]"
+                }
+              ]
+            },
+            {
+              "value": "Environment",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "896160",
+                    "updatedAt": "2019-08-21T23:05:45.110Z"
+                  },
+                  "activity": "[bfdactivity-896160]"
+                }
+              ]
+            },
+            {
+              "value": "News",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "908552",
+                    "updatedAt": "2019-08-22T00:55:26.207Z"
+                  },
+                  "activity": "[bfdactivity-908552]"
+                }
+              ]
+            },
+            {
+              "value": "Impact",
+              "steps": [
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "672913",
+                    "updatedAt": "2019-08-23T01:47:39.188Z"
+                  },
+                  "activity": "[bfdactivity-672913]"
+                }
+              ]
+            }
+          ],
+          "default": [
+            {
+              "$type": "Microsoft.SendActivity",
+              "$designer": {
+                "name": "Send an Activity",
+                "id": "119458",
+                "updatedAt": "2019-08-22T00:54:28.288Z"
+              },
+              "activity": "[bfdactivity-119458]"
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.TraceActivity",
+          "$designer": {
+            "name": "Trace: MenuChoiceEnd",
+            "id": "943179",
+            "updatedAt": "2019-08-21T23:11:25.474Z"
+          },
+          "name": "After Choice Selection",
+          "valueType": "String",
+          "value": "TopMenuChoiceEnd"
+        }
+      ]
+    }
+  ]
+}

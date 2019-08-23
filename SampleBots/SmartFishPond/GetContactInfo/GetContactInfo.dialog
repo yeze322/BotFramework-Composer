@@ -1,0 +1,95 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "createdAt": "2019-08-22T16:18:51.530Z",
+    "updatedAt": "2019-08-22T16:18:51.551Z",
+    "id": "646335",
+    "name": "GetContactInfo"
+  },
+  "autoEndDialog": true,
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema",
+  "rules": [
+    {
+      "$type": "Microsoft.EventRule",
+      "$designer": {
+        "name": "Event: BeginDialog",
+        "id": "522312",
+        "updatedAt": "2019-08-22T16:19:21.179Z"
+      },
+      "events": [
+        "beginDialog"
+      ],
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "046958",
+            "updatedAt": "2019-08-22T16:19:53.810Z"
+          },
+          "activity": "[bfdactivity-046958]"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "name": "Prompt: Name",
+            "id": "880853",
+            "updatedAt": "2019-08-22T16:23:00.875Z"
+          },
+          "outputFormat": "none",
+          "allowInterruptions": "notRecognized",
+          "property": "user.name",
+          "prompt": "What is your name?",
+          "unrecognizedPrompt": "I didn't get that. Let's try again.",
+          "invalidPrompt": "I don't understand this.",
+          "maxTurnCount": 2147483647,
+          "defaultValue": "0",
+          "alwaysPrompt": true
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "name": "Prompt: Country",
+            "id": "506262",
+            "updatedAt": "2019-08-23T00:49:41.214Z"
+          },
+          "outputFormat": "none",
+          "allowInterruptions": "never",
+          "property": "user.country",
+          "prompt": "In which country do you live?",
+          "unrecognizedPrompt": "I didn't get that. Let's try again.",
+          "maxTurnCount": 2147483647,
+          "alwaysPrompt": true
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "name": "Prompt: Email",
+            "id": "029130",
+            "updatedAt": "2019-08-23T01:38:21.423Z"
+          },
+          "outputFormat": "none",
+          "allowInterruptions": "never",
+          "property": "user.email",
+          "prompt": "What is your Email?",
+          "unrecognizedPrompt": "I didn't get that. Let's try again.",
+          "invalidPrompt": "I don't understand that. Please try again.",
+          "maxTurnCount": 2147483647,
+          "validations": [
+            "0<indexOf('turn.value', '@')"
+          ],
+          "alwaysPrompt": true
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Confirm Contact",
+            "id": "436655",
+            "updatedAt": "2019-08-23T00:51:03.844Z"
+          },
+          "activity": "[bfdactivity-436655]"
+        }
+      ]
+    }
+  ]
+}

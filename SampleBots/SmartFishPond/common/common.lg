@@ -1,0 +1,141 @@
+
+# bfdactivity-003038
+- I don't know how to respond to this ('{turn.activity.text}'). 
+- I don't undertand '{turn.activity.text}'.
+
+
+# bfdactivity-990998
+- This is a bot about fish in the biggest pond in the world - the ocean
+- This is a smart fish bot
+- We are here to help you save the planet
+
+
+# bfdactivity-009350
+- We are here to educate and enlist the world to save our oceans
+- This bot is about providing guidance and resources to  save our oceans
+- This is an automated service to help educate people on our oceans environment
+
+
+# bfdactivity-235193
+- Hi
+- Greeting
+- Hello
+- Hi, thanks for coming here
+- Howdee
+
+
+# bfdactivity-244705
+- Hi, I am the Smart Fish In a big pond (ro)bot
+- Howdee, I am a chatbot that's concerned with the health of our oceans
+- I am the Smart Fish Ocean Protector. You can call me Al (Paul Simon) :)
+
+
+# bfdactivity-753962
+- Hi, I'm the Smart Fish Robot.
+- Welcome, I'm the Smart Fish Bot
+
+
+# bfdactivity-427821
+- Hi. Indeed, I can relate to {turn.activity.text} :)
+
+
+# bfdactivity-547313
+- How can I help you?
+- What next?
+- What's up?
+- Yes, and?
+
+
+# bfdactivity-742846
+- Ok... ({user.topmenuchoice})
+- Got it... (({user.topmenuchoice}))
+
+
+# bfdactivity-351564
+- I will tell you more about pollution once I know something about it. Now I don't.
+- Well, I'm not smart yet. I don't know about pollution yet. But I promise I will soon.
+- Pollution is bad, but I'll tell you more about it once I'm told more
+
+
+# bfdactivity-589479
+- I will tell you more about pollution once I know something about it. Now I don't.
+- Well, I'm not smart yet. I don't know about pollution yet. But I promise I will soon.
+- Pollution is bad, but I'll tell you more about it once I'm told more
+
+
+# bfdactivity-792292
+- I will tell you more about what we can do once I know something about it. Now I don't.
+- Well, I'm not smart yet. I don't know what we can do about it. Scary, ah?.
+- Act now! Call the president, tell him we need help.
+
+
+# bfdactivity-418272
+- I will tell you more about really cool restoration work once I know something about it. Now I don't.
+- Well, we have a few success stories, not too many yet. It's tough.
+- There are some immediate critical recovery efforts in progress.
+
+
+# bfdactivity-900994
+- This is me. But I don't know enough  about it. 
+- I'm not smart yet. I can't teach you what I don't know (yet).
+- Check the web for now. I'm still an infant (not yet).
+
+
+# bfdactivity-116215
+- I will tell you more about what we can do once I get some resources. Now I don't.
+- Tons of resources available, but what we need is action. I'll tell you more later.
+- We will add links and resources a bit later.
+
+
+# bfdactivity-896160
+- This is where we tell you about the ocean environment and its interaction with the rest of our planet
+- The environment of land, sea, and air - our planet is all connected. More on this later
+- Where are we now, what's gonna happen nedxt, how it is all connected. Coming...
+
+
+# bfdactivity-636178
+- Type 'Menu' to see some choices
+- Type 'Help' to see some choices
+- Type '?' to see some choices
+
+
+# bfdactivity-816980
+- This would be the help menu. For now just type 'Menu' for some choices.
+- This is a new infant bot that will help with education about our oceans environment protection.
+
+
+# bfdactivity-874559
+- ok, done for now
+- Bye
+- Goodbye
+- Adios
+- Cheers
+- Ok, done.
+
+
+# bfdactivity-119458
+- ... default ...
+
+
+# bfdactivity-908552
+- We will show you latest news here
+- Global warming is real. More on this once I get intelligence
+- Latest news: We are not doing enough. We need to do more. But I'm empty now.
+
+
+# bfdactivity-046958
+- Let's stay in touch. I'll send you updates and share opportunities to help
+
+
+# bfdactivity-436655
+- Thank you {user.name} (email: {user.email}) from {user.country}. I will stay in touch.
+- Thanks {user.name} (email: {user.email}) from {user.country}. Let's save the oceans. I will stay in touch.
+
+
+# bfdactivity-672913
+- this is iimpact on our oceans
+- Imacts on our options
+
+
+# bfdactivity-377239
+- Here's some more info: {dialog.result.answer}
