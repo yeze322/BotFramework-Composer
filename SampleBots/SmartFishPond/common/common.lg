@@ -6,7 +6,7 @@
 
 # bfdactivity-990998
 - This is a bot about fish in the biggest pond in the world - the ocean
-- This is a smart fish bot
+- This is a smart fish in a big pond bot
 - We are here to help you save the planet
 
 
@@ -174,3 +174,14 @@ Here are some commands to get started:
 # bfdactivity-278704
 - Hi, I'm the Smart Fish Robot.
 - Welcome, I'm the Smart Fish Bot
+
+
+# bfdactivity-183781
+-Search for more information on the web
+
+
+# bfdactivity-667795
+-```
+**Results**
+    @{dialog.bingresults.webPages.value}
+```

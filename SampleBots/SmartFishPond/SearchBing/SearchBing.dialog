@@ -1,0 +1,86 @@
+{
+  "$type": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "createdAt": "2019-08-23T23:29:05.230Z",
+    "updatedAt": "2019-08-23T23:29:05.242Z",
+    "id": "835843",
+    "name": "SearchBing"
+  },
+  "autoEndDialog": true,
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema",
+  "rules": [
+    {
+      "$type": "Microsoft.EventRule",
+      "$designer": {
+        "name": "Handle an Event",
+        "id": "705144",
+        "updatedAt": "2019-08-23T23:29:46.996Z"
+      },
+      "events": [
+        "beginDialog"
+      ],
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "183781",
+            "updatedAt": "2019-08-23T23:30:13.328Z"
+          },
+          "activity": "[bfdactivity-183781]"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "name": "Prompt for text",
+            "id": "671184",
+            "updatedAt": "2019-08-23T23:32:43.804Z"
+          },
+          "outputFormat": "none",
+          "allowInterruptions": "notRecognized",
+          "property": "dialog.search",
+          "prompt": "What topic on our oceans environment are you curious about?",
+          "unrecognizedPrompt": "I didn't get that. Please try again.",
+          "invalidPrompt": "I really don't understand this. Sorry.",
+          "maxTurnCount": 2147483647,
+          "alwaysPrompt": true
+        },
+        {
+          "$type": "Microsoft.HttpRequest",
+          "$designer": {
+            "name": "HTTP Bing Search",
+            "id": "538685",
+            "updatedAt": "2019-08-24T01:31:57.592Z"
+          },
+          "method": "GET",
+          "url": "https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/search?customconfig=42890273-06d2-46a8-aeb9-a5482ef52067&mkt=en-US&q=Marine%20Ocean%20Environment%3A%20{dialog.search}",
+          "property": "dialog.bingresults",
+          "headers": {
+            "Ocp-Apim-Subscription-Key": "96080f323f2c46c3ac7069476d30a785"
+          },
+          "responseType": "Json"
+        },
+        {
+          "$type": "Microsoft.TraceActivity",
+          "$designer": {
+            "name": "Bing Results",
+            "id": "131812",
+            "updatedAt": "2019-08-24T01:36:25.301Z"
+          },
+          "name": "Bing Results",
+          "valueType": "String",
+          "value": "dialog.bingresults"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Show results",
+            "id": "667795",
+            "updatedAt": "2019-08-23T23:36:46.475Z"
+          },
+          "activity": "[bfdactivity-667795]"
+        }
+      ]
+    }
+  ]
+}

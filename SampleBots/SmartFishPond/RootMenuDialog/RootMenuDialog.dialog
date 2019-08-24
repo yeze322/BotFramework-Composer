@@ -25,7 +25,7 @@
           "$designer": {
             "name": "Top Menu",
             "id": "841097",
-            "updatedAt": "2019-08-21T23:27:37.364Z"
+            "updatedAt": "2019-08-23T23:43:57.194Z"
           },
           "property": "user.topmenuchoice",
           "prompt": "Please choose from the following options (or ask a question, I may be able to figure it, not promising)",
@@ -100,6 +100,9 @@
                 "help",
                 "?"
               ]
+            },
+            {
+              "value": "Search"
             }
           ],
           "appendChoices": false,
@@ -129,7 +132,7 @@
           "$designer": {
             "name": "Branch: Switch Top Menu",
             "id": "585836",
-            "updatedAt": "2019-08-23T21:00:47.777Z"
+            "updatedAt": "2019-08-23T23:44:26.431Z"
           },
           "condition": "user.topmenuchoice",
           "cases": [
@@ -256,6 +259,20 @@
                     "updatedAt": "2019-08-23T21:01:02.864Z"
                   },
                   "dialog": "ShowHelp"
+                }
+              ]
+            },
+            {
+              "value": "Search",
+              "steps": [
+                {
+                  "$type": "Microsoft.BeginDialog",
+                  "$designer": {
+                    "name": "Begin a Dialog",
+                    "id": "560709",
+                    "updatedAt": "2019-08-23T23:44:45.799Z"
+                  },
+                  "dialog": "SearchBing"
                 }
               ]
             }

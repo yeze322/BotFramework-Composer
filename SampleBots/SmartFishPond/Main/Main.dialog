@@ -2,7 +2,7 @@
   "$type": "Microsoft.AdaptiveDialog",
   "$designer": {
     "createdAt": "2019-07-11T23:45:43.726Z",
-    "updatedAt": "2019-08-23T00:56:20.660Z",
+    "updatedAt": "2019-08-24T00:53:49.643Z",
     "id": "433224",
     "description": "A bot demo about a smart fish in a small pond",
     "name": "SmartFishPond"
@@ -18,7 +18,8 @@
       "Done": "^(?i)(done|exit|cancel|bye|quit|goodbye)$",
       "BotName": "^(?i)(Al|Smart Fish|Fish|Smarty|SmartFish|Paul Simon|Paul|Smart Pond|SmartPond|pond)$",
       "Help": "^(?i)(help|h|[?])$",
-      "Contact": "(?i)(contact|connect|stay in touch)"
+      "Contact": "(?i)(contact|connect|stay in touch)",
+      "Search": "(?i)(search|query|find|info|web|google|bing)"
     }
   },
   "generator": "common.lg",
@@ -289,6 +290,26 @@
             "updatedAt": "2019-08-23T00:57:04.313Z"
           },
           "dialog": "GetContactInfo"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Intent: search",
+        "id": "362146",
+        "updatedAt": "2019-08-23T23:41:38.863Z"
+      },
+      "intent": "Search",
+      "steps": [
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "558677",
+            "updatedAt": "2019-08-23T23:41:47.287Z"
+          },
+          "dialog": "SearchBing"
         }
       ]
     }
