@@ -185,13 +185,12 @@ Here are some commands to get started:
 
 # readout
 - ```
-[AttachmentLayout=carousel]
-@{join(foreach(dialog.bingresults.webPages.value, item, ItemReadout(item)), '\n')} 
+[AttachmentLayout=list]
+@{join(foreach(dialog.bingresults.webPages.value, item, CardItemReadout(item)), '\n')} 
 ```
 
 # ItemReadout(item)
-- ```
-    
+- ```   
 #### [@{item.name}](@{item.url})
  @{item.snippet}  
 ```
@@ -200,7 +199,6 @@ Here are some commands to get started:
 - ```
 [HeroCard
   Title = [@{item.name}](@{item.url})
-  Text = @{item.snippet}
-]
+  Text = @{item.snippet}]
 
 ```
