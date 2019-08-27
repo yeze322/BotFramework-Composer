@@ -1,0 +1,84 @@
+>To learn more about the LU file format, read the documentation at
+> https://github.com/Microsoft/botbuilder-tools/blob/master/packages/Ludown/docs/lu-file-format.md#lu-file-format
+
+# What
+- What is it?
+- What is this?
+- What's this bot?
+- What is it about?
+
+# Greetings
+- hi
+- hello
+- greetings
+- hola
+- howdee
+- hey
+- yo
+
+# Menu
+- menu
+- root
+- top
+- restart
+- Tell me more
+- what can i learn
+- what can you do
+- what's here
+- topics
+- show me more
+- what do you know
+
+# Who
+- who are you?
+- who is this?
+- are you a bot?
+- what bot are you?
+- are you a human?
+
+# Done
+- done
+- exit
+- cancel
+- bye
+- quit
+- goodbye
+
+# BotName
+- Al
+- Smart Fish
+- Fish
+- Smarty
+- SmartFish
+- Paul Simon
+- Paul
+- Smart Pond
+- SmartPond
+- pond
+
+# Help
+- help
+- h
+- ?
+
+# Contact
+- contact
+- connect
+- stay in touch
+
+# Search
+- search
+- search {term}
+- query {term}
+- find {term}
+- info {term}
+- web {term}
+- google {term}
+- bing {term}
+- search for {term}
+- query for {term}
+- find 
+- info on {term}
+- web
+- google for {term}
+- bing for {term}

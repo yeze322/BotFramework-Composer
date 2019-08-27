@@ -177,11 +177,22 @@ Here are some commands to get started:
 
 
 # bfdactivity-183781
--Search for more information on the web
+-Search for more information on the web...
 
 
 # bfdactivity-667795
--```
-**Results**
-    @{dialog.bingresults.webPages.value}
+- [readout]
+
+# readout
+- ```
+@{join(foreach(dialog.bingresults.webPages.value, item, itemReadout(item)), '\n')}
 ```
+
+# itemReadout(item)
+- ```
+    
+#### [@{item.name}](@{item.url})
+##### @{item.displayUrl}
+ @{item.snippet}  
+```
+

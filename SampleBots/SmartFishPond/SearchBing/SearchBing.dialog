@@ -34,7 +34,7 @@
           "$designer": {
             "name": "Prompt for text",
             "id": "671184",
-            "updatedAt": "2019-08-23T23:32:43.804Z"
+            "updatedAt": "2019-08-27T00:15:56.798Z"
           },
           "outputFormat": "none",
           "allowInterruptions": "notRecognized",
@@ -43,7 +43,8 @@
           "unrecognizedPrompt": "I didn't get that. Please try again.",
           "invalidPrompt": "I really don't understand this. Sorry.",
           "maxTurnCount": 2147483647,
-          "alwaysPrompt": true
+          "value": "@term",
+          "alwaysPrompt": false
         },
         {
           "$type": "Microsoft.HttpRequest",

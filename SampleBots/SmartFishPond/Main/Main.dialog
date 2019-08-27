@@ -2,26 +2,13 @@
   "$type": "Microsoft.AdaptiveDialog",
   "$designer": {
     "createdAt": "2019-07-11T23:45:43.726Z",
-    "updatedAt": "2019-08-24T00:53:49.643Z",
+    "updatedAt": "2019-08-26T23:31:39.954Z",
     "id": "433224",
     "description": "A bot demo about a smart fish in a small pond",
     "name": "SmartFishPond"
   },
   "autoEndDialog": true,
-  "recognizer": {
-    "$type": "Microsoft.RegexRecognizer",
-    "intents": {
-      "what": "^(?i)(what is it)[?]?$",
-      "Greetings": "^(?i)(hi|hello|greetings|hola|howdee|hey|yo)$",
-      "Menu": "^(?i)(menu|root|top|restart)$",
-      "Who": "^(?i)(who are you)[?]?$",
-      "Done": "^(?i)(done|exit|cancel|bye|quit|goodbye)$",
-      "BotName": "^(?i)(Al|Smart Fish|Fish|Smarty|SmartFish|Paul Simon|Paul|Smart Pond|SmartPond|pond)$",
-      "Help": "^(?i)(help|h|[?])$",
-      "Contact": "(?i)(contact|connect|stay in touch)",
-      "Search": "(?i)(search|query|find|info|web|google|bing)"
-    }
-  },
+  "recognizer": "Main.lu",
   "generator": "common.lg",
   "rules": [
     {
