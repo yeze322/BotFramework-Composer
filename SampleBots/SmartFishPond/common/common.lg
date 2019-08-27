@@ -185,14 +185,22 @@ Here are some commands to get started:
 
 # readout
 - ```
-@{join(foreach(dialog.bingresults.webPages.value, item, itemReadout(item)), '\n')}
+[AttachmentLayout=carousel]
+@{join(foreach(dialog.bingresults.webPages.value, item, ItemReadout(item)), '\n')} 
 ```
 
-# itemReadout(item)
+# ItemReadout(item)
 - ```
     
 #### [@{item.name}](@{item.url})
-##### @{item.displayUrl}
  @{item.snippet}  
 ```
 
+# CardItemReadout(item)
+- ```
+[HeroCard
+  Title = [@{item.name}](@{item.url})
+  Text = @{item.snippet}
+]
+
+```

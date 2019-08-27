@@ -21,6 +21,16 @@
       ],
       "steps": [
         {
+          "$type": "Microsoft.SetProperty",
+          "$designer": {
+            "name": "Set a Property",
+            "id": "420993",
+            "updatedAt": "2019-08-27T01:56:16.569Z"
+          },
+          "property": "dialog.search",
+          "value": "dialog.options.term"
+        },
+        {
           "$type": "Microsoft.SendActivity",
           "$designer": {
             "name": "Send an Activity",

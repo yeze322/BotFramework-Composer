@@ -299,6 +299,29 @@
           "dialog": "SearchBing"
         }
       ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "$designer": {
+        "name": "Handle an Intent",
+        "id": "489617",
+        "updatedAt": "2019-08-27T01:49:40.331Z"
+      },
+      "steps": [
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "009816",
+            "updatedAt": "2019-08-27T01:59:01.672Z"
+          },
+          "dialog": "SearchBing",
+          "options": {
+            "term": "'fish'"
+          }
+        }
+      ],
+      "intent": "test"
     }
   ],
   "$schema": "../../app.schema"
