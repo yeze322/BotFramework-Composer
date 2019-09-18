@@ -37,7 +37,7 @@ export function getFriendlyName(data) {
   }
 
   if (get(data, 'intent')) {
-    return `#${get(data, 'intent')}`;
+    return `${get(data, 'intent')}`;
   }
 
   if (ConceptLabels[data.$type] && ConceptLabels[data.$type].title) {
@@ -50,7 +50,13 @@ export function getFriendlyName(data) {
 export function getNewDesigner(name: string, description: string) {
   const timestamp = new Date().toISOString();
   return {
-    $designer: { name, description, createdAt: timestamp, updatedAt: timestamp, id: nanoid('1234567890', 6) },
+    $designer: {
+      name,
+      description,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      id: nanoid('1234567890', 6),
+    },
   };
 }
 
@@ -58,7 +64,10 @@ export function insert(content, path: string, position: number | undefined, data
   const current = get(content, path, []);
   const newStep = {
     $type: data.$type,
-    ...seedNewDialog(data.$type, { name: data.name, description: data.description }),
+    ...seedNewDialog(data.$type, {
+      name: data.name,
+      description: data.description,
+    }),
   };
 
   const insertAt = typeof position === 'undefined' ? current.length : position;

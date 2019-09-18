@@ -58,6 +58,32 @@ function onRenderBreadcrumbItem(item, render) {
   );
 }
 
+function onRenderBlankVisual(isTriggerEmpty, onClickAddTrigger) {
+  return (
+    <div css={middleTriggerContainer}>
+      <div css={middleTriggerElements}>
+        {isTriggerEmpty ? (
+          <Fragment>
+            {formatMessage(`This dialog has no trigger yet.`)}
+            <ActionButton
+              data-testid="MiddleAddNewTriggerButton"
+              iconProps={addIconProps}
+              css={triggerButton}
+              onClick={onClickAddTrigger}
+            >
+              {formatMessage('New Trigger ..')}
+            </ActionButton>
+          </Fragment>
+        ) : (
+          <div>
+            {formatMessage('Select a trigger on the left')} <br /> {formatMessage('navigation to see actions')}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function getAllRef(targetId, dialogs) {
   let refs = [];
   dialogs.forEach(dialog => {
@@ -290,24 +316,10 @@ function DesignPage(props) {
                     key="VisualEditor"
                     name="VisualEditor"
                     css={visualEditor}
-                    hidden={triggerButtonVisible}
+                    hidden={triggerButtonVisible || !selected}
                     src={`${rootPath}/extensionContainer.html`}
                   />
-                  {triggerButtonVisible && (
-                    <div css={middleTriggerContainer}>
-                      <div css={middleTriggerElements}>
-                        {formatMessage(`This dialog has no trigger yet.`)}
-                        <ActionButton
-                          data-testid="MiddleAddNewTriggerButton"
-                          iconProps={addIconProps}
-                          css={triggerButton}
-                          onClick={openNewTriggerModal}
-                        >
-                          {formatMessage('New Trigger ..')}
-                        </ActionButton>
-                      </div>
-                    </div>
-                  )}
+                  {!selected && onRenderBlankVisual(triggerButtonVisible, openNewTriggerModal)}
                 </div>
                 <iframe
                   key="FormEditor"

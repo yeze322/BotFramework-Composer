@@ -102,15 +102,14 @@ export const ProjectTree: React.FC<IProjectTreeProps> = props => {
     const toggleCollapse = (): void => {
       groupRef.current!.toggleCollapseAll(true);
       props.onToggleCollapse!(props.group!);
-      if (dialogId !== props.group!.key) {
-        onSelect(props.group!.key);
-      }
+      onSelect(props.group!.key);
     };
     return (
       <TreeItem
         link={props.group!.data}
         depth={0}
         isActive={!props.group!.isCollapsed}
+        isSubItemActive={!!selected}
         onSelect={toggleCollapse}
         onDelete={onDeleteDialog}
       />

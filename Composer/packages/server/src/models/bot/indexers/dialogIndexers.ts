@@ -114,9 +114,6 @@ export class DialogIndexer {
             trigger.displayName = rule.intent;
           }
 
-          if (trigger.isIntent && trigger.displayName) {
-            trigger.displayName = '#' + trigger.displayName;
-          }
           trigers.push(trigger);
         });
       }
