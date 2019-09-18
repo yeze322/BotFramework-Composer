@@ -68,7 +68,7 @@ export const RuleEditor = ({ id, data, onEvent }): JSX.Element => {
         trigger={
           <Trigger
             data={data}
-            focused={focusedId === id}
+            focused={false}
             onClick={() => {
               onEvent(NodeEventTypes.Focus, id);
             }}
