@@ -113,9 +113,9 @@
           "$designer": {
             "name": "Prompt with multi-choice",
             "id": "729884",
-            "updatedAt": "2019-09-13T19:42:34.143Z"
+            "updatedAt": "2019-09-19T05:51:35.858Z"
           },
-          "prompt": "I can show you in Composer. Ready?",
+          "prompt": "Which tour would you like to see?",
           "maxTurnCount": 2147483647,
           "property": "user.productTour",
           "alwaysPrompt": false,
@@ -123,13 +123,24 @@
           "outputFormat": "value",
           "choices": [
             {
-              "value": "Yes",
+              "value": "Composer",
               "synonyms": [
-                "OK"
+                "OK",
+                "yes"
               ]
             },
             {
-              "value": "Maybe later"
+              "value": "Dialog Editor",
+              "synonyms": [
+                "dialog",
+                "editor"
+              ]
+            },
+            {
+              "value": "Maybe later",
+              "synonyms": [
+                "No, thanks"
+              ]
             }
           ],
           "appendChoices": "true",
@@ -220,7 +231,7 @@
           "$designer": {
             "name": "ActionType",
             "id": "028312",
-            "updatedAt": "2019-09-10T05:50:04.459Z"
+            "updatedAt": "2019-09-19T06:31:54.351Z"
           },
           "prompt": "Action type?",
           "maxTurnCount": 2147483647,
@@ -233,7 +244,10 @@
               "value": "Send a message"
             },
             {
-              "value": "Ask a question"
+              "value": "Collect user input"
+            },
+            {
+              "value": "HTTP request"
             }
           ],
           "appendChoices": "true",
@@ -250,109 +264,220 @@
           }
         },
         {
-          "$type": "Microsoft.IfCondition",
+          "$type": "Microsoft.SwitchCondition",
           "$designer": {
-            "name": "Branch: If/Else",
-            "id": "221296",
-            "updatedAt": "2019-09-10T05:50:21.073Z"
+            "id": "277164",
+            "name": "Branch: Switch",
+            "updatedAt": "2019-09-19T06:30:12.389Z"
           },
-          "condition": "dialog.actionType ==0",
-          "actions": [
+          "condition": "dialog.actionType",
+          "cases": [
             {
-              "$type": "Microsoft.TextInput",
-              "$designer": {
-                "name": "Prompt for text",
-                "id": "823012",
-                "updatedAt": "2019-09-10T05:50:40.769Z"
-              },
-              "prompt": "What message? ",
-              "maxTurnCount": 2147483647,
-              "alwaysPrompt": false,
-              "allowInterruptions": "notRecognized",
-              "outputFormat": "none",
-              "property": "dialog.messageContent"
-            },
-            {
-              "$type": "Microsoft.SendActivity",
-              "$designer": {
-                "name": "Send an Activity",
-                "id": "213447",
-                "updatedAt": "2019-09-10T05:51:00.961Z"
-              },
-              "activity": "[bfdactivity-213447]"
-            }
-          ],
-          "elseActions": [
-            {
-              "$type": "Microsoft.ChoiceInput",
-              "$designer": {
-                "name": "Prompt with multi-choice",
-                "id": "215982",
-                "updatedAt": "2019-09-10T05:56:17.590Z"
-              },
-              "prompt": "Do you expect the answer to be text or a number?",
-              "maxTurnCount": 2147483647,
-              "property": "dialog.promptType",
-              "alwaysPrompt": false,
-              "allowInterruptions": "notRecognized",
-              "outputFormat": "value",
-              "choices": [
+              "value": 0,
+              "actions": [
                 {
-                  "value": "Text"
+                  "$type": "Microsoft.TextInput",
+                  "$designer": {
+                    "name": "Prompt for text",
+                    "id": "823012",
+                    "updatedAt": "2019-09-19T06:34:25.584Z"
+                  },
+                  "prompt": "What would your bot say? ",
+                  "maxTurnCount": 2147483647,
+                  "property": "dialog.messageContent",
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "none"
                 },
                 {
-                  "value": "Number"
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "213447",
+                    "updatedAt": "2019-09-10T05:51:00.961Z"
+                  },
+                  "activity": "[bfdactivity-213447]"
+                },
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "786561",
+                    "name": "Send an Activity",
+                    "updatedAt": "2019-09-19T06:34:48.688Z"
+                  },
+                  "activity": "[bfdactivity-786561]"
                 }
-              ],
-              "appendChoices": "true",
-              "defaultLocale": "en-us",
-              "style": "Auto",
-              "choiceOptions": {
-                "inlineSeparator": ", ",
-                "inlineOr": " or ",
-                "inlineOrMore": ", or ",
-                "includeNumbers": true
-              },
-              "recognizerOptions": {
-                "noValue": false
-              }
+              ]
             },
             {
-              "$type": "Microsoft.TextInput",
-              "$designer": {
-                "name": "Prompt for text",
-                "id": "255028",
-                "updatedAt": "2019-09-10T05:58:05.833Z"
-              },
-              "prompt": "Prompt message?",
-              "maxTurnCount": 2147483647,
-              "alwaysPrompt": false,
-              "allowInterruptions": "notRecognized",
-              "outputFormat": "none",
-              "property": "dialog.initialPrompt"
+              "value": 1,
+              "actions": [
+                {
+                  "$type": "Microsoft.ChoiceInput",
+                  "$designer": {
+                    "name": "Prompt with multi-choice",
+                    "id": "215982",
+                    "updatedAt": "2019-09-10T05:56:17.590Z"
+                  },
+                  "prompt": "Do you expect the answer to be text or a number?",
+                  "maxTurnCount": 2147483647,
+                  "property": "dialog.promptType",
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "value",
+                  "choices": [
+                    {
+                      "value": "Text"
+                    },
+                    {
+                      "value": "Number"
+                    }
+                  ],
+                  "appendChoices": "true",
+                  "defaultLocale": "en-us",
+                  "style": "Auto",
+                  "choiceOptions": {
+                    "inlineSeparator": ", ",
+                    "inlineOr": " or ",
+                    "inlineOrMore": ", or ",
+                    "includeNumbers": true
+                  },
+                  "recognizerOptions": {
+                    "noValue": false
+                  }
+                },
+                {
+                  "$type": "Microsoft.TextInput",
+                  "$designer": {
+                    "name": "Prompt for text",
+                    "id": "255028",
+                    "updatedAt": "2019-09-10T05:58:05.833Z"
+                  },
+                  "prompt": "Prompt message?",
+                  "maxTurnCount": 2147483647,
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "none",
+                  "property": "dialog.initialPrompt"
+                },
+                {
+                  "$type": "Microsoft.TextInput",
+                  "$designer": {
+                    "name": "Prompt for text",
+                    "id": "155348",
+                    "updatedAt": "2019-09-10T06:08:39.446Z"
+                  },
+                  "prompt": "Where to save the answer? Tell me a property name.",
+                  "maxTurnCount": 2147483647,
+                  "property": "dialog.Property",
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "none"
+                },
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "name": "Send an Activity",
+                    "id": "637217",
+                    "updatedAt": "2019-09-10T05:59:13.764Z"
+                  },
+                  "activity": "[bfdactivity-637217]"
+                },
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "827270",
+                    "name": "Send an Activity",
+                    "updatedAt": "2019-09-19T06:35:34.819Z"
+                  },
+                  "activity": "[bfdactivity-827270]"
+                }
+              ]
             },
             {
-              "$type": "Microsoft.TextInput",
-              "$designer": {
-                "name": "Prompt for text",
-                "id": "155348",
-                "updatedAt": "2019-09-10T06:08:39.446Z"
-              },
-              "prompt": "Where to save the answer? Tell me a property name.",
-              "maxTurnCount": 2147483647,
-              "property": "dialog.Property",
-              "alwaysPrompt": false,
-              "allowInterruptions": "notRecognized",
-              "outputFormat": "none"
-            },
+              "value": 2,
+              "actions": [
+                {
+                  "$type": "Microsoft.TextInput",
+                  "$designer": {
+                    "id": "585077",
+                    "name": "Prompt for text",
+                    "updatedAt": "2019-09-19T06:38:31.882Z"
+                  },
+                  "prompt": "Which API would you like to invoke? Please input the URL.",
+                  "maxTurnCount": 2147483647,
+                  "property": "dialog.apiURL",
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "none"
+                },
+                {
+                  "$type": "Microsoft.ChoiceInput",
+                  "$designer": {
+                    "id": "562670",
+                    "name": "Prompt with multi-choice",
+                    "updatedAt": "2019-09-19T06:38:14.120Z"
+                  },
+                  "prompt": "What's the API method?",
+                  "maxTurnCount": 2147483647,
+                  "property": "dialog.apiMethod",
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "value",
+                  "choices": [
+                    {
+                      "value": "GET"
+                    },
+                    {
+                      "value": "POST"
+                    }
+                  ],
+                  "appendChoices": "true",
+                  "defaultLocale": "en-us",
+                  "style": "Auto",
+                  "choiceOptions": {
+                    "inlineSeparator": ", ",
+                    "inlineOr": " or ",
+                    "inlineOrMore": ", or ",
+                    "includeNumbers": true
+                  },
+                  "recognizerOptions": {
+                    "noValue": false
+                  }
+                },
+                {
+                  "$type": "Microsoft.TextInput",
+                  "$designer": {
+                    "id": "860942",
+                    "name": "Prompt for text",
+                    "updatedAt": "2019-09-19T06:39:21.078Z"
+                  },
+                  "prompt": "Where should the API result be saved?",
+                  "maxTurnCount": 2147483647,
+                  "alwaysPrompt": false,
+                  "allowInterruptions": "notRecognized",
+                  "outputFormat": "none",
+                  "property": "dialog.apiResultKey"
+                },
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "843224",
+                    "name": "Send an Activity",
+                    "updatedAt": "2019-09-19T06:39:54.024Z"
+                  },
+                  "activity": "[bfdactivity-843224]"
+                }
+              ]
+            }
+          ],
+          "default": [
             {
               "$type": "Microsoft.SendActivity",
               "$designer": {
-                "name": "Send an Activity",
-                "id": "637217",
-                "updatedAt": "2019-09-10T05:59:13.764Z"
-              },
-              "activity": "[bfdactivity-637217]"
+                "id": "942988",
+                "name": "Send an Activity"
+              }
             }
           ]
         }

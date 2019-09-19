@@ -276,8 +276,10 @@
 
 
 # bfdactivity-635104
-- IF: @{user.productTour=="Yes"}
+- IF: @{user.productTour=="Composer"}
     - composer-rpc://startWizard('AboutComposer')
+- ELSEIF: @{user.productTour=="Dialog Editor"}
+    - composer-rpc://startWizard('AboutDialogEditor')
 - ELSEIF: @{user.productTour=="Maybe later"}
     - Ok. What else can I help?
 - ELSE: 
@@ -293,7 +295,7 @@
 
 
 # bfdactivity-272059
-- Hi there! Here are the things you can ask me.
+- Hi there! Welcome to Botframework Composer. Here are the things you can ask me.
 
 
 # bfdactivity-706247
@@ -371,3 +373,15 @@
 
 # bfdactivity-722510
 -hello world
+
+
+# bfdactivity-786561
+-Okay, add a new SendActivity action for you.
+
+
+# bfdactivity-827270
+-Okay, add a new PromptInput for you.
+
+
+# bfdactivity-843224
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.HttpRequest", method: "@{dialog.apiMethod}", property: "@{dialog.apiResultKey}", url: "@{dialog.apiURL}"\}, 0)
