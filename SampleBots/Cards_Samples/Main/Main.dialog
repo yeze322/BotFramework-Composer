@@ -13,6 +13,19 @@
       "$type": "Microsoft.OnUnknownIntent",
       "actions": [
         {
+          "$type": "Microsoft.SendActivity",
+          "activity": "Okay, searching the weather in 西安 ..."
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "806954",
+            "updatedAt": "2019-07-22T15:25:36.088Z"
+          },
+          "activity": "[bfdactivity-806895]"
+        },
+        {
           "$type": "Microsoft.ChoiceInput",
           "$designer": {
             "createdAt": "2019-07-22T08:34:14.657Z",

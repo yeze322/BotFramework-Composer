@@ -2,7 +2,7 @@
   "$type": "Microsoft.AdaptiveDialog",
   "$designer": {
     "createdAt": "2019-09-01T18:02:48.882Z",
-    "updatedAt": "2019-09-13T19:10:59.117Z",
+    "updatedAt": "2019-09-20T05:57:42.196Z",
     "id": "343716",
     "description": "I can help and support you while you build your bot",
     "name": "Composer Assistant"
@@ -231,9 +231,9 @@
           "$designer": {
             "name": "ActionType",
             "id": "028312",
-            "updatedAt": "2019-09-19T06:31:54.351Z"
+            "updatedAt": "2019-09-19T06:50:00.626Z"
           },
-          "prompt": "Action type?",
+          "prompt": "Which type of Action would you like to create?",
           "maxTurnCount": 2147483647,
           "property": "dialog.actionType",
           "alwaysPrompt": false,
@@ -467,6 +467,15 @@
                     "updatedAt": "2019-09-19T06:39:54.024Z"
                   },
                   "activity": "[bfdactivity-843224]"
+                },
+                {
+                  "$type": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "566326",
+                    "name": "Send an Activity",
+                    "updatedAt": "2019-09-19T07:29:54.219Z"
+                  },
+                  "activity": "[bfdactivity-566326]"
                 }
               ]
             }
@@ -663,6 +672,221 @@
             "updatedAt": "2019-09-13T20:27:42.339Z"
           },
           "activity": "[bfdactivity-691787]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.OnIntent",
+      "$designer": {
+        "id": "367977",
+        "name": "LoadTemplate",
+        "updatedAt": "2019-09-19T10:46:36.672Z"
+      },
+      "intent": "loadTemplate",
+      "actions": [
+        {
+          "$type": "Microsoft.ChoiceInput",
+          "$designer": {
+            "id": "475538",
+            "name": "Prompt with multi-choice",
+            "updatedAt": "2019-09-19T10:52:12.085Z"
+          },
+          "prompt": "Okay, which template do you want to load?",
+          "maxTurnCount": 2147483647,
+          "property": "turn.template",
+          "alwaysPrompt": false,
+          "allowInterruptions": "notRecognized",
+          "outputFormat": "value",
+          "choices": [
+            {
+              "value": "ToDo Bot",
+              "synonyms": [
+                "todo"
+              ]
+            },
+            {
+              "value": "API Bot",
+              "synonyms": [
+                "api"
+              ]
+            },
+            {
+              "value": "Multi-intent"
+            }
+          ],
+          "appendChoices": "true",
+          "defaultLocale": "en-us",
+          "style": "Auto",
+          "choiceOptions": {
+            "inlineSeparator": ", ",
+            "inlineOr": " or ",
+            "inlineOrMore": ", or ",
+            "includeNumbers": true
+          },
+          "recognizerOptions": {
+            "noValue": false
+          }
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "622275",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T10:52:32.079Z"
+          },
+          "activity": "[bfdactivity-622275]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "771793",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T11:31:44.618Z"
+          },
+          "activity": "[bfdactivity-771793]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "813718",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T11:31:56.946Z"
+          },
+          "activity": "[bfdactivity-813718]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "701166",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T10:55:54.064Z"
+          },
+          "activity": "[bfdactivity-701166]"
+        },
+        {
+          "$type": "Microsoft.ChoiceInput",
+          "$designer": {
+            "id": "749256",
+            "name": "Prompt with multi-choice",
+            "updatedAt": "2019-09-19T11:27:30.531Z"
+          },
+          "prompt": "Would you like to fullfill the template now?",
+          "maxTurnCount": 2147483647,
+          "property": "dialog.doitnow",
+          "alwaysPrompt": false,
+          "allowInterruptions": "notRecognized",
+          "outputFormat": "value",
+          "choices": [
+            {
+              "value": "Yes, fill it."
+            },
+            {
+              "value": "No, do it later."
+            }
+          ],
+          "appendChoices": "true",
+          "defaultLocale": "en-us",
+          "style": "Auto",
+          "choiceOptions": {
+            "inlineSeparator": ", ",
+            "inlineOr": " or ",
+            "inlineOrMore": ", or ",
+            "includeNumbers": true
+          },
+          "recognizerOptions": {
+            "noValue": false
+          }
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "id": "882192",
+            "name": "Prompt for text",
+            "updatedAt": "2019-09-19T11:04:05.414Z"
+          },
+          "prompt": "What's your bot's name?",
+          "maxTurnCount": 2147483647,
+          "property": "dialog.welcome",
+          "alwaysPrompt": false,
+          "allowInterruptions": "notRecognized",
+          "outputFormat": "none"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "$designer": {
+            "id": "784650",
+            "name": "Prompt for text",
+            "updatedAt": "2019-09-19T10:57:12.621Z"
+          },
+          "prompt": "What's the prompt question?",
+          "maxTurnCount": 2147483647,
+          "alwaysPrompt": false,
+          "allowInterruptions": "notRecognized",
+          "outputFormat": "none",
+          "property": "dialog.prompt"
+        },
+        {
+          "$type": "Microsoft.ChoiceInput",
+          "$designer": {
+            "id": "506785",
+            "name": "Prompt with multi-choice",
+            "updatedAt": "2019-09-19T11:28:42.721Z"
+          },
+          "prompt": "Good job! Let' define the HTTP call. Do you want to do it now?",
+          "maxTurnCount": 2147483647,
+          "alwaysPrompt": false,
+          "allowInterruptions": "notRecognized",
+          "outputFormat": "value",
+          "choices": [
+            {
+              "value": "Yes, do it now",
+              "synonyms": [
+                "yes"
+              ]
+            },
+            {
+              "value": "No, not now"
+            }
+          ],
+          "appendChoices": "true",
+          "defaultLocale": "en-us",
+          "style": "Auto",
+          "choiceOptions": {
+            "inlineSeparator": ", ",
+            "inlineOr": " or ",
+            "inlineOrMore": ", or ",
+            "includeNumbers": true
+          },
+          "recognizerOptions": {
+            "noValue": false
+          }
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "441789",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T10:58:01.691Z"
+          },
+          "activity": "[bfdactivity-441789]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "981883",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T11:18:08.739Z"
+          },
+          "activity": "[bfdactivity-981883]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "842709",
+            "name": "Send an Activity",
+            "updatedAt": "2019-09-19T11:25:15.081Z"
+          },
+          "activity": "[bfdactivity-842709]"
         }
       ]
     }

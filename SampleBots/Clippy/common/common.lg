@@ -295,7 +295,7 @@
 
 
 # bfdactivity-272059
-- Hi there! Welcome to Botframework Composer. Here are the things you can ask me.
+- Hi there! Welcome to Composer Assistant. What can I do for you?
 
 
 # bfdactivity-706247
@@ -385,3 +385,55 @@
 
 # bfdactivity-843224
 -composer-rpc://insertStepAt(\{ $type: "Microsoft.HttpRequest", method: "@{dialog.apiMethod}", property: "@{dialog.apiResultKey}", url: "@{dialog.apiURL}"\}, 0)
+
+
+# bfdactivity-566326
+-Okay, add a new HTTP action for you!
+
+
+# bfdactivity-987918
+-Hi, load template
+
+
+# bfdactivity-622275
+-Nice choice. Loading the API Bot template for you.
+
+
+# bfdactivity-004434
+-
+
+
+# bfdactivity-659642
+-
+
+
+# bfdactivity-282418
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.HttpRequest"\}, undefined)
+
+
+# bfdactivity-701166
+-Template loaded :)
+
+
+# bfdactivity-441789
+-composer-rpc://startWizard("AboutDialogEditor")
+
+
+# bfdactivity-669100
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.HttpRequest"\}, undefined)
+
+
+# bfdactivity-981883
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.HttpRequest"\}, undefined)
+
+
+# bfdactivity-842709
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.SendActivity"\}, undefined)
+
+
+# bfdactivity-771793
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.SendActivity"\}, undefined)
+
+
+# bfdactivity-813718
+-composer-rpc://insertStepAt(\{ $type: "Microsoft.TextInput"\}, undefined)
