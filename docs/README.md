@@ -19,7 +19,7 @@ Read about [known issues](known_issues.md)
 * [Language Generation Syntax](https://github.com/microsoft/BotBuilder-Samples/tree/master/experimental/language-generation)- 
  training material
 * [Chatdown](https://github.com/microsoft/botbuilder-tools/tree/master/packages/Chatdown) - syntax for defining cards and advanced templates in lg
-* [Ludown](https://github.com/microsoft/botbuilder-tools/tree/master/packages/Ludown) - syntax for defining LUIS
+* [bf-luis](https://github.com/microsoft/botframework-cli/tree/master/packages/luis) - syntax for defining LUIS
 * [Adaptive Dialogs](https://github.com/microsoft/BotBuilder-Samples/tree/master/experimental/adaptive-dialog)
 
 

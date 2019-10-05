@@ -59,7 +59,7 @@ export class BotProject {
     this.settings = await this.getDialogSetting();
     this.dialogIndexer.index(this.files);
     this.lgIndexer.index(this.files);
-    await this.luIndexer.index(this.files); // ludown parser is async
+    await this.luIndexer.index(this.files); // bf-luis parser is async
     await this._checkProjectStructure();
     if (this.settings) {
       await this.luPublisher.setLuisConfig(this.settings.luis);
@@ -399,7 +399,7 @@ export class BotProject {
         this.lgIndexer.index(this.files);
         break;
       case '.lu':
-        await this.luIndexer.index(this.files); // ludown parser is async
+        await this.luIndexer.index(this.files); // bf-luis parser is async
         break;
       default:
         throw new Error(`${filePath} is not dialog or lg or lu file`);

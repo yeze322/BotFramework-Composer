@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import { RichEditor } from '../../src';
 
-const LU_HELP =
-  'https://github.com/Microsoft/botbuilder-tools/blob/master/packages/Ludown/docs/lu-file-format.md#lu-file-format';
+const LU_HELP = 'https://github.com/microsoft/botframework-cli/blob/master/packages/luis/docs/lu-file-format.md';
 
 export default function App() {
   const [value, setValue] = useState<string>('');

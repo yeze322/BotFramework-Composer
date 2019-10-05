@@ -41,7 +41,7 @@ export interface LGFile {
 }
 
 export interface LUFile {
-  diagnostics: any[]; // ludown parser output
+  diagnostics: any[]; // bf-luis parser output
   id: string;
   relativePath: string;
   content: string;
@@ -87,7 +87,7 @@ export interface ILuisConfig {
 }
 
 export interface IOperationLUFile {
-  diagnostics?: any[]; // ludown parser output
+  diagnostics?: any[]; // bf-luis parser output
   relativePath?: string;
   content?: string;
   parsedContent?: { [key: string]: any };

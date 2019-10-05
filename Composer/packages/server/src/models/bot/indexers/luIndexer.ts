@@ -1,4 +1,4 @@
-import ludown from 'ludown';
+import * as luis from '@microsoft/bf-luis';
 
 import { Path } from '../../../utility/path';
 
@@ -39,6 +39,7 @@ export class LUIndexer {
     const log = false;
     const locale = 'en-us';
 
-    return ludown.parser.parseFile(content, log, locale);
+    //return luis.parser.parseFile(content, log, locale);
+    return Promise.resolve(undefined);
   }
 }
