@@ -84,6 +84,14 @@ export const deepCopyAction = async (data, lgApi) => {
   return await copyAdaptiveAction(data, { lgApi, updateDesigner });
 };
 
+export const destructAction = async (data, lgApi) => {
+  // TODO:
+  // 1. Walk through the json action
+  // 2. find all lg fields
+  // 3. remove lg resources
+  // 4. return.
+};
+
 export const seedNewDialog = (
   $type: string,
   designerAttributes: Partial<DesignerAttributes> = {},
