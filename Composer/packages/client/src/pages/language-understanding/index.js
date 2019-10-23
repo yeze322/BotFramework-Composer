@@ -36,9 +36,9 @@ export const LUPage = props => {
     const subLinks = dialogs.reduce((result, file) => {
       if (result.length === 0) {
         result = [
-          {
-            links: [],
-          },
+          // {
+          //   links: [],
+          // },
         ];
       }
       const item = {
@@ -48,13 +48,15 @@ export const LUPage = props => {
       };
 
       if (file.isRoot) {
-        result[0] = {
-          ...result[0],
-          ...item,
-          isExpanded: true,
-        };
+        // result[0] = {
+        //   ...result[0],
+        //   ...item,
+        //   isExpanded: true,
+        // };
+        result.unshift(item);
       } else {
-        result[0].links.push(item);
+        result.push(item);
+        // result[0].links.push(item);
       }
       return result;
     }, []);
@@ -67,8 +69,8 @@ export const LUPage = props => {
             key: '_all',
             name: 'All',
             isExpanded: true,
-            links: subLinks,
           },
+          ...subLinks,
         ],
       },
     ];

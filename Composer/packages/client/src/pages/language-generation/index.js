@@ -40,25 +40,28 @@ export const LGPage = props => {
     const subLinks = dialogs.reduce((result, file) => {
       if (result.length === 0) {
         result = [
-          {
-            links: [],
-          },
+          // {
+          //   links: [],
+          // },
         ];
       }
       const item = {
         id: file.id,
         key: file.id,
         name: file.displayName,
+        isExpanded: false,
       };
 
       if (file.isRoot) {
-        result[0] = {
-          ...result[0],
-          ...item,
-          isExpanded: true,
-        };
+        // result[0] = {
+        //   ...result[0],
+        //   ...item,
+        //   isExpanded: true,
+        // };
+        result.unshift(item);
       } else {
-        result[0].links.push(item);
+        result.push(item);
+        //result[0].links.push(item);
       }
       return result;
     }, []);
@@ -71,8 +74,8 @@ export const LGPage = props => {
             key: '_all',
             name: 'All',
             isExpanded: true,
-            links: subLinks,
           },
+          ...subLinks,
         ],
       },
     ];
