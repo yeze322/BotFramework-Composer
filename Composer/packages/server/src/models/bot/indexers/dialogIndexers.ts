@@ -1,10 +1,12 @@
-import { has, uniq } from 'lodash';
+import has from 'lodash.has';
+import get from 'lodash.get';
+import uniq from 'lodash.uniq';
 
-import { Path } from '../../../utility/path';
 import { JsonWalk, VisitorFunc } from '../../../utility/jsonWalk';
 import { DialogChecker } from '../dialogChecker';
+import { Path } from '../../../utility/path';
 
-import { FileInfo, Dialog } from './../interface';
+import { Dialog, FileInfo, ITrigger } from './../interface';
 
 export class DialogIndexer {
   public dialogs: Dialog[] = [];
@@ -28,30 +30,36 @@ export class DialogIndexer {
     const visitor: VisitorFunc = (path: string, value: any): boolean => {
       // it's a valid schema dialog node.
       if (has(value, '$type')) {
-        let target;
+        const targetNames = ['prompt', 'unrecognizedPrompt', 'defaultValueResponse', 'invalidPrompt'];
+        const targets: string[] = [];
+
+        targetNames.forEach(name => {
+          if (has(value, name)) {
+            targets.push(get(value, name));
+          }
+        });
+
+        // look for other $type
         switch (value.$type) {
           case 'Microsoft.SendActivity':
-            target = value.activity;
+            targets.push(value.activity);
             break;
-          case 'Microsoft.TextInput':
-            target = value.prompt;
-            break;
-
           // if we want stop at some $type, do here
           case 'location':
             return true;
         }
 
-        if (target && typeof target === 'string') {
+        targets.forEach(target => {
           // match a template name
           // match a temlate func  e.g. `showDate()`
+          // eslint-disable-next-line security/detect-unsafe-regex
           const reg = /\[([A-Za-z_][-\w]+)(\(.*\))?\]/g;
           let matchResult;
           while ((matchResult = reg.exec(target)) !== null) {
             const templateName = matchResult[1];
             templates.push(templateName);
           }
-        }
+        });
       }
       return false;
     };
@@ -74,7 +82,7 @@ export class DialogIndexer {
      */
     const visitor: VisitorFunc = (path: string, value: any): boolean => {
       // it's a valid schema dialog node.
-      if (has(value, '$type') && value.$type === 'Microsoft.IntentRule') {
+      if (has(value, '$type') && value.$type === 'Microsoft.OnIntent') {
         const intentName = value.intent;
         intents.push(intentName);
       }
@@ -84,6 +92,49 @@ export class DialogIndexer {
     JsonWalk('$', dialog, visitor);
 
     return uniq(intents);
+  }
+
+  // find out all triggers given dialog
+  private ExtractTriggers(dialog: Dialog): ITrigger[] {
+    const trigers: ITrigger[] = [];
+
+    /**
+     *
+     * @param path , jsonPath string
+     * @param value , current node value
+     *
+     * @return boolean, true to stop walk
+     */
+    const visitor: VisitorFunc = (path: string, value: any): boolean => {
+      // it's a valid schema dialog node.
+      if (has(value, 'triggers') && Array.isArray(value.triggers)) {
+        value.triggers.forEach((rule: any, index: number) => {
+          // make sure event is actualy an event type, not OnDialogEvent.events array
+          if (rule && typeof rule === 'object' && rule.$type) {
+            const trigger: ITrigger = {
+              id: `triggers[${index}]`,
+              displayName: '',
+              type: rule.$type,
+              isIntent: rule.$type === 'Microsoft.OnIntent',
+            };
+
+            if (has(rule, '$designer.name')) {
+              trigger.displayName = rule.$designer.name;
+            } else if (trigger.isIntent && has(rule, 'intent')) {
+              trigger.displayName = rule.intent;
+            }
+
+            trigers.push(trigger);
+          }
+        });
+        return true;
+      }
+      return false;
+    };
+
+    JsonWalk('$', dialog, visitor);
+
+    return trigers;
   }
 
   // find out all referred dialog
@@ -133,7 +184,7 @@ export class DialogIndexer {
             },
           ]);
           if (checkRes) {
-            errors.push(checkRes);
+            Array.isArray(checkRes) ? errors.push(...checkRes) : errors.push(checkRes);
           }
         });
       }
@@ -171,6 +222,7 @@ export class DialogIndexer {
               luFile: Path.basename(luFile, '.lu'),
               lgFile: Path.basename(lgFile, '.lg'),
               relativePath: file.relativePath,
+              triggers: this.ExtractTriggers(dialogJson),
             };
 
             this.dialogs.push(dialog);

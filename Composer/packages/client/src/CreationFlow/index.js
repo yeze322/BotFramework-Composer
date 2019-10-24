@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { toLower } from 'lodash';
 
-import { CreationFlowStatus } from '../constants';
+import { CreationFlowStatus, DialogCreationCopy, Steps } from '../constants';
 
 import { CreateOptions } from './CreateOptions/index';
 import { DefineConversation } from './DefineConversation/index';
-import { Steps } from './../constants/index';
-import { SelectLocation } from './SelectLocation';
+import { OpenProject } from './OpenProject';
 import { StoreContext } from './../store';
-import { DialogInfo } from './../constants/index';
 import { StepWizard } from './StepWizard/StepWizard';
 import { navigateTo } from './../utils/navigation';
 
 export function CreationFlow(props) {
   const { state, actions } = useContext(StoreContext);
-  const [templates, setTemplates] = useState([]);
   const [bots, setBots] = useState([]);
   const [step, setStep] = useState();
   // eslint-disable-next-line react/prop-types
@@ -25,18 +23,13 @@ export function CreationFlow(props) {
     createProject,
     saveProjectAs,
     saveTemplateId,
-    setLuisConfig,
+    fetchStorages,
   } = actions;
-  const { botName, templateId } = state;
+  const { templateId, templateProjects } = state;
 
   useEffect(() => {
     init();
   }, [creationFlowStatus]);
-
-  const getTemplates = async () => {
-    const data = await fetchTemplates();
-    setTemplates(data);
-  };
 
   const getAllBots = async () => {
     const data = await getAllProjects();
@@ -45,9 +38,12 @@ export function CreationFlow(props) {
 
   const init = async () => {
     if (creationFlowStatus !== CreationFlowStatus.CLOSE) {
-      getTemplates();
+      fetchTemplates();
       await getAllBots();
     }
+
+    // load storage system list
+    fetchStorages();
 
     switch (creationFlowStatus) {
       case CreationFlowStatus.NEW:
@@ -68,8 +64,7 @@ export function CreationFlow(props) {
   };
 
   const openBot = async botFolder => {
-    const { botName } = await openBotProject(botFolder);
-    await setLuisConfig(botName);
+    await openBotProject(botFolder);
     navigateTo('/dialogs/Main');
     handleDismiss();
   };
@@ -79,12 +74,11 @@ export function CreationFlow(props) {
   };
 
   const handleCreateNew = async formData => {
-    await createProject(templateId || '', formData.name, formData.description);
+    await createProject(templateId || '', formData.name, formData.description, formData.location);
   };
 
   const handleSaveAs = async formData => {
-    const { botName } = await saveProjectAs(formData.name, formData.description);
-    setLuisConfig(botName);
+    await saveProjectAs(formData.name, formData.description);
   };
 
   const handleSubmit = formData => {
@@ -114,7 +108,7 @@ export function CreationFlow(props) {
   const getErrorMessage = name => {
     if (
       bots.findIndex(bot => {
-        return bot.name === name;
+        return toLower(bot.name) === toLower(name);
       }) >= 0
     ) {
       return 'duplication of name';
@@ -124,17 +118,22 @@ export function CreationFlow(props) {
 
   const steps = {
     [Steps.CREATE]: {
-      ...DialogInfo.CREATE_NEW_BOT,
-      children: <CreateOptions templates={templates} onDismiss={handleDismiss} onNext={handleCreateNext} />,
+      ...DialogCreationCopy.CREATE_NEW_BOT,
+      children: <CreateOptions templates={templateProjects} onDismiss={handleDismiss} onNext={handleCreateNext} />,
     },
     [Steps.LOCATION]: {
-      ...DialogInfo.SELECT_LOCATION,
-      children: <SelectLocation folders={bots} defaultKey={botName || ''} onOpen={openBot} onDismiss={handleDismiss} />,
+      ...DialogCreationCopy.SELECT_LOCATION,
+      children: <OpenProject onOpen={openBot} onDismiss={handleDismiss} />,
     },
     [Steps.DEFINE]: {
-      ...DialogInfo.DEFINE_CONVERSATION_OBJECTIVE,
+      ...DialogCreationCopy.DEFINE_CONVERSATION_OBJECTIVE,
       children: (
-        <DefineConversation onSubmit={handleSubmit} onGetErrorMessage={getErrorMessage} onDismiss={handleDismiss} />
+        <DefineConversation
+          onSubmit={handleSubmit}
+          onGetErrorMessage={getErrorMessage}
+          onDismiss={handleDismiss}
+          enableLocationBrowse={true}
+        />
       ),
     },
   };

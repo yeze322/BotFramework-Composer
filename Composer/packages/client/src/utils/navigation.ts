@@ -1,15 +1,20 @@
 import { cloneDeep } from 'lodash';
 import { navigate, NavigateOptions } from '@reach/router';
 
-import { BreadcrumbItem } from '../store/types';
+import { BreadcrumbItem, DesignPageLocation } from '../store/types';
 
 import { BASEPATH } from './../constants/index';
 import { resolveToBasePath } from './fileUtil';
 
-export function getFocusPath(focusedEvent: string, focusedStep: string): string {
-  if (focusedEvent && focusedStep) return focusedStep;
+export const BreadcrumbUpdateType = {
+  Selected: 'selected',
+  Focused: 'focused',
+};
 
-  if (!focusedStep) return focusedEvent;
+export function getFocusPath(selected: string, focused: string): string {
+  if (selected && focused) return focused;
+
+  if (!focused) return selected;
 
   return '';
 }
@@ -24,50 +29,29 @@ export function clearBreadcrumb(breadcrumb: BreadcrumbItem[], fromIndex?: number
   return breadcrumbCopy;
 }
 
-export function clearBreadcrumbWhenFocusSteps(breadcrumb: BreadcrumbItem[], focusedSteps: string[]): BreadcrumbItem[] {
+export function updateBreadcrumb(breadcrumb: BreadcrumbItem[], type: string): BreadcrumbItem[] {
   const breadcrumbCopy = cloneDeep(breadcrumb);
   if (breadcrumbCopy.length === 0) {
     return breadcrumbCopy;
   }
 
-  const lastIndex = breadcrumbCopy.length - 1;
-  if (breadcrumbCopy[lastIndex] && breadcrumbCopy[lastIndex].focusedSteps.length > 0) {
+  let lastIndex = breadcrumbCopy.length - 1;
+  while (lastIndex > 0 && breadcrumbCopy[lastIndex][type]) {
     breadcrumbCopy.pop();
-  }
-  //deselect the step
-  if (focusedSteps.length === 0) {
-    breadcrumbCopy.pop();
-  }
-  return breadcrumbCopy;
-}
-
-export function clearBreadcrumbWhenFocusEvent(breadcrumb: BreadcrumbItem[], focusedEvent: string): BreadcrumbItem[] {
-  const breadcrumbCopy = cloneDeep(breadcrumb);
-  if (breadcrumbCopy.length === 0) {
-    return breadcrumbCopy;
-  }
-
-  while (breadcrumbCopy.length > 0 && breadcrumbCopy[breadcrumbCopy.length - 1].focusedEvent) {
-    breadcrumbCopy.pop();
-  }
-  //deselect the event
-  if (!focusedEvent) {
-    breadcrumbCopy.pop();
+    lastIndex--;
   }
 
   return breadcrumbCopy;
 }
 
-export function getUrlSearch(focusedEvent: string, focusedSteps: string[]): string {
+export function getUrlSearch(selected: string, focused: string): string {
   const search = new URLSearchParams();
-  if (focusedEvent) {
-    search.append('focusedEvent', focusedEvent);
+  if (selected) {
+    search.append('selected', selected);
   }
 
-  if (focusedSteps.length > 0) {
-    focusedSteps.forEach(item => {
-      search.append('focusedSteps[]', item);
-    });
+  if (focused) {
+    search.append('focused', focused);
   }
 
   let result = decodeURI(search.toString());
@@ -77,11 +61,11 @@ export function getUrlSearch(focusedEvent: string, focusedSteps: string[]): stri
   return result;
 }
 
-export function checkUrl(
-  currentUri: string,
-  { dialogId, focusedEvent, focusedSteps }: { dialogId: string; focusedEvent: string; focusedSteps: string[] }
-) {
-  const lastUri = `/dialogs/${dialogId}${getUrlSearch(focusedEvent, focusedSteps)}`;
+export function checkUrl(currentUri: string, { dialogId, selected, focused, promptTab }: DesignPageLocation) {
+  let lastUri = `/dialogs/${dialogId}${getUrlSearch(selected, focused)}`;
+  if (promptTab) {
+    lastUri += `#${promptTab}`;
+  }
   return lastUri === currentUri;
 }
 

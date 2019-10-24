@@ -1,8 +1,9 @@
-import { ObiTypes } from '../shared/ObiTypes';
-import { IndexedNode } from '../shared/IndexedNode';
+import { ObiFieldNames } from '../constants/ObiFieldNames';
+import { ObiTypes } from '../constants/ObiTypes';
+import { IndexedNode } from '../models/IndexedNode';
 
-const IfBranchKey = 'steps';
-const ElseBranchKey = 'elseSteps';
+const IfBranchKey = ObiFieldNames.Actions;
+const ElseBranchKey = ObiFieldNames.ElseActions;
 
 export function transformIfCondtion(
   input,

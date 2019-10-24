@@ -1,27 +1,31 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using Microsoft.Bot.Builder.BotFramework;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Adaptive;
 using Microsoft.Bot.Builder.Dialogs.Debugging;
 using Microsoft.Bot.Builder.Dialogs.Declarative;
 using Microsoft.Bot.Builder.Dialogs.Declarative.Resources;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Bot.Builder.LanguageGeneration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Microsoft.Bot.Builder.BotFramework;
-using Microsoft.Bot.Connector.Authentication;
 
-namespace Microsoft.Bot.Builder.TestBot.Json
+namespace Microsoft.Bot.Builder.ComposerBot.json
 {
     public interface IBotManager
     {
         IBotFrameworkHttpAdapter CurrentAdapter { get; }
         IBot CurrentBot { get; }
 
-        void SetCurrent(Stream fileStream, LuConfigFile luConfig = null, string appId = null, string appPwd = null);
+        void SetCurrent(Stream fileStream, string endpointKey = null, string appPwd = null);
     }
 
     public class BotManager : IBotManager
@@ -67,10 +71,11 @@ namespace Microsoft.Bot.Builder.TestBot.Json
             adapter
               .UseStorage(storage)
               .UseState(userState, conversationState)
-              .UseLanguageGeneration(resourceExplorer)
-              .UseDebugger(4712)
-              .Use(new InspectionMiddleware(inspectionState, userState, conversationState, credentials))
-              .UseResourceExplorer(resourceExplorer);
+              .UseAdaptiveDialogs()
+              .UseResourceExplorer(resourceExplorer)
+              .UseLanguageGeneration(resourceExplorer, "common.lg")
+              .Use(new RegisterClassMiddleware<IConfiguration>(Config))
+              .Use(new InspectionMiddleware(inspectionState, userState, conversationState, credentials));
               
             adapter.OnTurnError = async (turnContext, exception) =>
             {
@@ -81,10 +86,10 @@ namespace Microsoft.Bot.Builder.TestBot.Json
             };
             CurrentAdapter = adapter;
 
-            CurrentBot = new TestBot("Main.dialog", conversationState, userState, resourceExplorer, DebugSupport.SourceRegistry);
+            CurrentBot = new ComposerBot("Main.dialog", conversationState, userState, resourceExplorer, DebugSupport.SourceMap);
         }
 
-        public void SetCurrent(Stream fileStream, LuConfigFile luConfig = null, string appId = null, string appPwd = null)
+        public void SetCurrent(Stream fileStream, string endpointKey = null, string appPwd = null)
         {
             lock (locker)
             {
@@ -94,20 +99,53 @@ namespace Microsoft.Bot.Builder.TestBot.Json
                 // extract to bot folder
                 var extractPath = ExtractFile(downloadPath, GenNewBotDir());
 
-                if (luConfig != null)
-                {
-                    AddLuisConfig(extractPath, luConfig);
-                }
-
-                
-                AddOAuthConfig(appId, appPwd);
-                
-
+                RetrieveSettingsFile(extractPath, endpointKey, appPwd);
                 SetCurrent(extractPath);
             }
         }
 
-        public void AddLuisConfig(string extractPath, LuConfigFile luconfigFile)
+        public void RetrieveSettingsFile(string extractPath, string endpointKey, string appPwd)
+        {
+            var settingsPaths = Directory.GetFiles(extractPath, "appsettings.json", SearchOption.AllDirectories);
+            if (settingsPaths.Length == 0)
+            {
+                return;
+            }
+
+            var settingsPath = settingsPaths.FirstOrDefault();
+
+            var settings = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(settingsPath));
+
+            foreach (var pair in settings)
+            {
+                if (pair.Value is JObject)
+                {
+                    foreach (var token in pair.Value as JObject)
+                    {
+                        string subkey = token.Key;
+                        JToken subvalue = token.Value;
+                        this.Config[$"{pair.Key}:{subkey}"] = subvalue.Value<string>();
+                    }
+                }
+                else
+                {
+                    this.Config[pair.Key.ToString()] = pair.Value.ToString();
+                }
+            }
+
+            if (!String.IsNullOrEmpty(endpointKey))
+            {
+                var luconfigFile = JsonConvert.DeserializeObject<LuConfigFile>(settings["luis"].ToString());
+                AddLuisConfig(extractPath, luconfigFile, endpointKey);
+            }
+
+            if (!String.IsNullOrEmpty(appPwd))
+            {
+                AddOAuthConfig(appPwd);
+            }
+        }
+
+        public void AddLuisConfig(string extractPath, LuConfigFile luconfigFile, string endpointKey)
         {
             var settingsName = $"luis.settings.{luconfigFile.Environment}.{ luconfigFile.AuthoringRegion}.json";
             var luisEndpoint = $"https://{luconfigFile.AuthoringRegion}.api.cognitive.microsoft.com";
@@ -124,7 +162,7 @@ namespace Microsoft.Bot.Builder.TestBot.Json
 
             var luisConfig = JsonConvert.DeserializeObject<LuisCustomConfig>(File.ReadAllText(luisPath));
 
-            luisConfig.Luis.Add("endpointKey", luconfigFile.AuthoringKey);
+            luisConfig.Luis.Add("endpointKey", endpointKey);
 
             foreach (var item in luisConfig.Luis)
             {
@@ -132,17 +170,8 @@ namespace Microsoft.Bot.Builder.TestBot.Json
             }
         }
 
-        private void AddOAuthConfig(string appId, string appPwd)
+        private void AddOAuthConfig(string appPwd)
         {
-            if (string.IsNullOrEmpty(appId))
-            {
-                this.Config["MicrosoftAppId"] = string.Empty;
-            }
-            else
-            {
-                this.Config["MicrosoftAppId"] = appId;
-            }
-
             if (string.IsNullOrEmpty(appPwd))
             {
                 this.Config["MicrosoftAppPassword"] = string.Empty;
@@ -151,7 +180,6 @@ namespace Microsoft.Bot.Builder.TestBot.Json
             {
                 this.Config["MicrosoftAppPassword"] = appPwd;
             }
-
         }
 
         private string GenNewBotDir()

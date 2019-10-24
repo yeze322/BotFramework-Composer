@@ -1,11 +1,11 @@
-import { get } from 'lodash';
+import get from 'lodash.get';
 import { ExpressionEngine } from 'botbuilder-expression-parser';
 
 const ExpressionParser = new ExpressionEngine();
 
 interface CheckerFunc {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (node: { path: string; value: any }): string; // error msg, '' for no error
+  (node: { path: string; value: any }): string; // error msg
 }
 
 function IsExpression(name: string): CheckerFunc {
@@ -53,11 +53,12 @@ function EditArrayValueChecker(node: { path: string; value: any }): string {
 /**
  * Dialog Validation Rules
  */
+// TODO: check field by schema.
 export const DialogChecker: { [key: string]: CheckerFunc[] } = {
   'Microsoft.IfCondition': [IsExpression('condition')],
   'Microsoft.SwitchCondition': [IsExpression('condition')],
   'Microsoft.SetProperty': [IsExpression('property'), IsExpression('value')],
-  'Microsoft.ForeachPage': [IsExpression('listProperty')],
-  'Microsoft.Foreach': [IsExpression('listProperty')],
-  'Microsoft.EditArray': [IsExpression('arrayProperty'), EditArrayValueChecker],
+  'Microsoft.ForeachPage': [IsExpression('itemsProperty')],
+  'Microsoft.Foreach': [IsExpression('itemsProperty')],
+  'Microsoft.EditArray': [IsExpression('itemsProperty'), EditArrayValueChecker],
 };

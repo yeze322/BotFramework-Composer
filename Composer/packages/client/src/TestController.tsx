@@ -9,25 +9,26 @@ import {
   Stack,
 } from 'office-ui-fabric-react';
 import formatMessage from 'format-message';
+import { DialogInfo } from 'shared';
 
-import LuisStorage from './utils/luisStorage';
+import settingsStorage from './utils/dialogSettingStorage';
 import { StoreContext } from './store';
 import { bot, botButton, calloutLabel, calloutDescription, calloutContainer } from './styles';
-import { LuisConfig, Text, BotStatus } from './constants';
+import { BotStatus, LuisConfig, Text } from './constants';
 import { PublishLuisDialog } from './publishDialog';
 import { OpenAlertModal, DialogStyle } from './components/Modal';
+import { isAbsHosted } from './utils/envUtil';
 import { getReferredFiles } from './utils/luUtil';
-import { DialogInfo } from './store/types';
 
-const openInEmulator = (url, authSettings) => {
+const openInEmulator = (url, authSettings: { MicrosoftAppId: string; MicrosoftAppPassword: string }) => {
   // this creates a temporary hidden iframe to fire off the bfemulator protocol
   // and start up the emulator
   const i = document.createElement('iframe');
   i.style.display = 'none';
   i.onload = () => i.parentNode && i.parentNode.removeChild(i);
-  i.src = `bfemulator://livechat.open?botUrl=${encodeURIComponent(url)}&MicrosoftAppId=${
+  i.src = `bfemulator://livechat.open?botUrl=${encodeURIComponent(url)}&msaAppId=${
     authSettings.MicrosoftAppId
-  }&MicrosoftAppPassword=${authSettings.MicrosoftAppPassword}`;
+  }&msaAppPassword=${encodeURIComponent(authSettings.MicrosoftAppPassword)}`;
   document.body.appendChild(i);
 };
 
@@ -45,14 +46,25 @@ export const TestController: React.FC = () => {
   const [error, setError] = useState({ title: '', message: '' });
   const [luisPublishSucceed, setLuisPublishSucceed] = useState(true);
   const botActionRef = useRef(null);
-  const { botName, botStatus, dialogs, oAuth, toStartBot, luFiles } = state;
-  const { connectBot, reloadBot, publishLuis, startBot, setLuisConfig } = actions;
+  const { botEndpoint, botName, botStatus, dialogs, toStartBot, luFiles, settings } = state;
+  const { connectBot, reloadBot, publishLuis, startBot } = actions;
   const connected = botStatus === BotStatus.connected;
 
   useEffect(() => {
     toStartBot && handleClick();
     startBot(false);
   }, [toStartBot]);
+
+  function isLuisConfigComplete(config) {
+    let complete = true;
+    for (const key in LuisConfig) {
+      if (config && config[LuisConfig[key]] === '') {
+        complete = false;
+        break;
+      }
+    }
+    return complete;
+  }
 
   async function handleClick() {
     const dialogErrors = dialogs.reduce<DialogInfo[]>((result, dialog) => {
@@ -73,10 +85,10 @@ export const TestController: React.FC = () => {
       });
       return;
     }
-    const config = LuisStorage.get(botName);
+    const config = settings.luis;
 
-    if (getReferredFiles(luFiles, dialogs).length > 0) {
-      if (!luisPublishSucceed || config[LuisConfig.AUTHORING_KEY] === '') {
+    if (!isAbsHosted() && getReferredFiles(luFiles, dialogs).length > 0) {
+      if (!luisPublishSucceed || !isLuisConfigComplete(config)) {
         setModalOpen(true);
       } else {
         await publishAndReload();
@@ -98,9 +110,13 @@ export const TestController: React.FC = () => {
   async function handlePublish() {
     setFetchState(STATE.PUBLISHING);
     try {
-      await setLuisConfig(botName);
-      await publishLuis();
-      return true;
+      const luisConfig = settingsStorage.get(botName) ? settingsStorage.get(botName).luis : null;
+      if (luisConfig) {
+        await publishLuis(luisConfig.authoringKey);
+        return true;
+      } else {
+        throw new Error('Please Set Luis Config');
+      }
     } catch (err) {
       setError({ title: Text.LUISDEPLOYFAILURE, message: err.message });
       setCalloutVisible(true);
@@ -113,7 +129,8 @@ export const TestController: React.FC = () => {
   async function handleLoadBot() {
     setFetchState(STATE.RELOADING);
     try {
-      await (connected ? reloadBot(botName) : connectBot(botName));
+      const sensitiveSettings = settingsStorage.get(botName);
+      await (connected ? reloadBot(sensitiveSettings) : connectBot(sensitiveSettings));
     } catch (err) {
       setError({ title: Text.CONNECTBOTFAILURE, message: err.message });
       setCalloutVisible(true);
@@ -130,7 +147,16 @@ export const TestController: React.FC = () => {
             iconProps={{
               iconName: 'OpenInNewTab',
             }}
-            onClick={() => openInEmulator('http://localhost:3979/api/messages', oAuth)}
+            onClick={async () => {
+              return Promise.resolve(
+                openInEmulator(
+                  botEndpoint || 'http://localhost:3979/api/messages',
+                  settings.MicrosoftAppId && settings.MicrosoftAppPassword
+                    ? { MicrosoftAppId: settings.MicrosoftAppId, MicrosoftAppPassword: settings.MicrosoftAppPassword }
+                    : { MicrosoftAppPassword: '', MicrosoftAppId: '' }
+                )
+              );
+            }}
           >
             {formatMessage('Test in Emulator')}
           </ActionButton>
@@ -184,15 +210,17 @@ export const TestController: React.FC = () => {
           </div>
         </Callout>
       </div>
-      <PublishLuisDialog
-        isOpen={modalOpen}
-        onDismiss={() => setModalOpen(false)}
-        onPublish={() => {
-          publishAndReload();
-          setModalOpen(false);
-        }}
-        botName={botName}
-      />
+      {modalOpen ? (
+        <PublishLuisDialog
+          isOpen={true}
+          onDismiss={() => setModalOpen(false)}
+          onPublish={() => {
+            publishAndReload();
+            setModalOpen(false);
+          }}
+          botName={botName}
+        />
+      ) : null}
     </Fragment>
   );
 };

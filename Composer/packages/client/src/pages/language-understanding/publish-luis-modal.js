@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useContext, Fragment } from 'react';
 import {
   Dialog,
   DialogType,
@@ -17,10 +17,10 @@ import formatMessage from 'format-message';
 import { PropTypes } from 'prop-types';
 import { keys } from 'lodash';
 
-import { Tips, Links } from './../../constants';
+import { StoreContext } from '../../store';
+
+import { Text, Tips, Links } from './../../constants';
 import { textFieldLabel, dialog, dialogModal, dialogSubTitle, dialogContent, consoleStyle } from './styles';
-import { Text } from './../../constants/index';
-import LuisStorage from './../../utils/luisStorage';
 
 const STATE = {
   INPUT: 0,
@@ -40,21 +40,24 @@ const onRenderLabel = info => props => (
 );
 
 const nameRegex = /^[a-zA-Z0-9-_.]+$/;
-
+const validationProperties = ['name', 'authoringKey', 'environment'];
+const defaultFields = { authoringRegion: 'westus', defaultLanguage: 'en-us' };
 const validateForm = data => {
-  const errors = {};
+  const result = { errors: {} };
   const dataKeys = keys(data);
 
   dataKeys.forEach(key => {
     const value = data[key];
-    if (key !== 'errors' && (!value || !nameRegex.test(value))) {
-      errors[key] = formatMessage(
+    if (validationProperties.includes(key) && (!value || !nameRegex.test(value))) {
+      result.errors[key] = formatMessage(
         'Spaces and special characters are not allowed. Use letters, numbers, -, or _., numbers, -, and _'
       );
+    } else if (key in defaultFields && value === '') {
+      result[key] = defaultFields[key];
     }
   });
 
-  return errors;
+  return result;
 };
 
 const DeploySuccess = props => {
@@ -96,25 +99,40 @@ const DeployFailure = props => {
 };
 
 export const PublishLuis = props => {
-  const { onPublish, onDismiss, workState, botName } = props;
-  const [formData, setFormData] = useState({ ...LuisStorage.get(botName), errors: {} });
+  const { state, actions } = useContext(StoreContext);
+  const { setSettings } = actions;
+  const { botName, settings } = state;
+  const { onPublish, onDismiss, workState } = props;
+
+  const initialFormData = {
+    name: settings.luis.name || botName,
+    authoringKey: settings.luis.authoringKey,
+    endpointKey: settings.luis.endpointKey,
+    authoringRegion: settings.luis.authoringRegion,
+    defaultLanguage: settings.luis.defaultLanguage,
+    environment: settings.luis.environment,
+    errors: {},
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const updateForm = field => (e, newValue) => {
     setFormData({ ...formData, errors: {}, [field]: newValue });
-    // storage.set(field, newValue);
-    LuisStorage.set(botName, field, newValue);
   };
 
   const handlePublish = async e => {
     e.preventDefault();
 
-    const errors = validateForm(formData);
-    if (keys(errors).length) {
-      setFormData({ ...formData, errors });
+    const result = validateForm(formData);
+    if (keys(result.errors).length) {
+      setFormData({ ...formData, ...result });
       return;
     }
-
-    await onPublish({ ...formData });
+    // save the settings change to store and persist to server
+    const newValue = { ...formData, ...result };
+    delete newValue.errors;
+    await setSettings(botName, { ...settings, luis: newValue });
+    await onPublish();
   };
 
   return (
@@ -153,13 +171,13 @@ export const PublishLuis = props => {
           />
           <TextField
             label={formatMessage('Authoring Region')}
-            defaultValue="westus"
+            defaultValue={defaultFields.authoringRegion}
             onRenderLabel={onRenderLabel(Tips.AUTHORING_REGION)}
             disabled
           />
           <TextField
             label={formatMessage('Default Language')}
-            defaultValue="en-us"
+            defaultValue={defaultFields.defaultLanguage}
             onRenderLabel={onRenderLabel(Tips.DEFAULT_LANGUAGE)}
             disabled
           />

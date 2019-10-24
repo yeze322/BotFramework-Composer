@@ -26,10 +26,16 @@ export interface Dialog {
   relativePath: string;
 }
 
+export interface CodeRange {
+  startLineNumber: number;
+  endLineNumber: number;
+}
+
 export interface LGTemplate {
   Name: string;
   Body: string;
   Parameters: string[];
+  Range: CodeRange;
 }
 
 export interface LGFile {
@@ -48,6 +54,13 @@ export interface LUFile {
   parsedContent: { [key: string]: any };
   status?: LuisStatus;
   [key: string]: any;
+}
+
+export interface ITrigger {
+  id: string;
+  displayName: string;
+  type: string;
+  isIntent: boolean;
 }
 
 export interface ILuisSettings {
@@ -73,7 +86,29 @@ export enum FileUpdateType {
 export interface ILuisConfig {
   name: string;
   authoringKey: string;
+  endpointKey: string;
   authoringRegion: string | 'westus';
   defaultLanguage: string | 'en-us';
   environment: string | 'composer';
+}
+
+export interface IOperationLUFile {
+  diagnostics?: any[]; // ludown parser output
+  relativePath?: string;
+  content?: string;
+  parsedContent?: { [key: string]: any };
+  lastUpdateTime?: number;
+  lastPublishTime?: number;
+  [key: string]: any;
+}
+
+export interface ILuisStatusOperation {
+  [key: string]: IOperationLUFile;
+}
+
+export interface DialogSetting {
+  MicrosoftAppId: string;
+  MicrosoftAppPassword: string;
+  luis: ILuisConfig;
+  [key: string]: any;
 }

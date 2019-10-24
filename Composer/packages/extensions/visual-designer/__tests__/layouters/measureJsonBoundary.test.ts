@@ -1,16 +1,16 @@
-import { Boundary } from '../../src/shared/Boundary';
+import { Boundary } from '../../src/models/Boundary';
 import { measureJsonBoundary } from '../../src/layouters/measureJsonBoundary';
-import { ObiTypes } from '../../src/shared/ObiTypes';
+import { ObiTypes } from '../../src/constants/ObiTypes';
 import {
   DiamondSize,
   InitNodeSize,
   LoopIconSize,
   ChoiceInputSize,
   ChoiceInputMarginTop,
-} from '../../src/shared/elementSizes';
+} from '../../src/constants/ElementSizes';
 
 describe('measureJsonBoundary', () => {
-  let boundary = new Boundary();
+  const boundary = new Boundary();
 
   it('should return an empty boundary when json is null or json.$type is null', () => {
     expect(measureJsonBoundary(null)).toEqual(boundary);
@@ -26,13 +26,13 @@ describe('measureJsonBoundary', () => {
     expect(measureJsonBoundary({ $type: ObiTypes.LoopIndicator })).toEqual(
       new Boundary(LoopIconSize.width, LoopIconSize.height)
     );
-    expect(measureJsonBoundary({ $type: ObiTypes.LogStep })).toEqual(
+    expect(measureJsonBoundary({ $type: ObiTypes.LogAction })).toEqual(
       new Boundary(InitNodeSize.width, InitNodeSize.height)
     );
   });
   it("should return boundary whose size is determined by the data's choices when json.$type is choiceInput", () => {
-    let data: { [key: string]: any } = {
-      $type: ObiTypes.ChoiceInput,
+    const data: { [key: string]: any } = {
+      $type: ObiTypes.ChoiceInputDetail,
       choices: [{ value: '1' }],
     };
 

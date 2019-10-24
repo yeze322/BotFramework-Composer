@@ -1,20 +1,41 @@
 /** @jsx jsx */
+
+import { ConceptLabels } from 'shared';
 import { jsx } from '@emotion/core';
 
-import { TriggerSize } from '../../shared/elementSizes';
+import { ElementIcon } from '../../utils/obiPropertyResolver';
+import { TriggerSize } from '../../constants/ElementSizes';
 
 import { FormCard } from './templates/FormCard';
 
-export const Trigger = ({ data, focused, onClick }): JSX.Element => (
-  <div css={{ ...TriggerSize, outline: focused ? '2px solid grey' : 'none' }}>
+function getLabel(data: any): string {
+  if (data.intent) {
+    return data.intent;
+  }
+
+  const labelOverrides = ConceptLabels[data.$type];
+
+  if (labelOverrides.title) {
+    return labelOverrides.title;
+  }
+
+  return data.$type;
+}
+
+export const Trigger = ({ data, onClick = () => {} }): JSX.Element => (
+  <div
+    css={{
+      ...TriggerSize,
+    }}
+  >
     <FormCard
       nodeColors={{
         themeColor: '#BFEAE9',
         iconColor: 'black',
       }}
-      icon={'Relationship'}
+      icon={ElementIcon.Flow}
       header={'Trigger'}
-      label={data.intent || data.$type}
+      label={getLabel(data)}
       onClick={onClick}
     />
   </div>

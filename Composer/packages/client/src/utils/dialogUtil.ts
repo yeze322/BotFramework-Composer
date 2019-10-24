@@ -1,17 +1,149 @@
-import { get, set, cloneDeep } from 'lodash';
-import { ConceptLabels } from 'shared-menus';
+import { ConceptLabels, DialogGroup, SDKTypes, dialogGroups, seedNewDialog } from 'shared';
+import { cloneDeep, get, set } from 'lodash';
 import { ExpressionEngine } from 'botbuilder-expression-parser';
-import { DialogInfo } from 'composer-extensions/obiformeditor/lib/types';
+import { IDropdownOption } from 'office-ui-fabric-react';
+import { DialogInfo } from 'shared';
 
-import { BotSchemas } from '../store/types';
-
-import { upperCaseName } from './fileUtil';
 import { getFocusPath } from './navigation';
+import { upperCaseName } from './fileUtil';
 
 const ExpressionParser = new ExpressionEngine();
 
 interface DialogsMap {
   [dialogId: string]: any;
+}
+
+export interface TriggerFormData {
+  errors: TriggerFormDataErrors;
+  $type: string;
+  intent: string;
+  specifiedType: string;
+}
+
+export interface TriggerFormDataErrors {
+  $type?: string;
+  intent?: string;
+  specifiedType?: string;
+}
+
+export function getDialog(dialogs: DialogInfo[], dialogId: string) {
+  const dialog = dialogs.find(item => item.id === dialogId);
+  return cloneDeep(dialog);
+}
+
+export const eventTypeKey: string = SDKTypes.OnDialogEvent;
+export const intentTypeKey: string = SDKTypes.OnIntent;
+export const activityTypeKey: string = SDKTypes.OnActivity;
+
+export function getFriendlyName(data) {
+  if (get(data, '$designer.name')) {
+    return get(data, '$designer.name');
+  }
+
+  if (get(data, 'intent')) {
+    return `${get(data, 'intent')}`;
+  }
+
+  if (ConceptLabels[data.$type] && ConceptLabels[data.$type].title) {
+    return ConceptLabels[data.$type].title;
+  }
+
+  return data.$type;
+}
+
+export function insert(content, path: string, position: number | undefined, data: TriggerFormData) {
+  const current = get(content, path, []);
+  const optionalAttributes: { intent?: string; event?: string } = {};
+  if (data.specifiedType) {
+    data.$type = data.specifiedType;
+  }
+  if (data.intent) {
+    optionalAttributes.intent = data.intent;
+  }
+
+  const newStep = {
+    $type: data.$type,
+    ...seedNewDialog(data.$type, {}, optionalAttributes),
+  };
+
+  const insertAt = typeof position === 'undefined' ? current.length : position;
+
+  current.splice(insertAt, 0, newStep);
+
+  set(content, path, current);
+
+  return content;
+}
+
+export function addNewTrigger(dialogs: DialogInfo[], dialogId: string, data: TriggerFormData): DialogInfo {
+  const dialogCopy = getDialog(dialogs, dialogId);
+  if (!dialogCopy) throw new Error(`dialog ${dialogId} does not exist`);
+  insert(dialogCopy.content, 'triggers', undefined, data);
+  return dialogCopy;
+}
+
+export function createSelectedPath(selected: number) {
+  return `triggers[${selected}]`;
+}
+
+export function createFocusedPath(selected: number, focused: number) {
+  return `triggers[${selected}].actions[${focused}]`;
+}
+
+export function deleteTrigger(dialogs: DialogInfo[], dialogId: string, index: number) {
+  const dialogCopy = getDialog(dialogs, dialogId);
+  if (!dialogCopy) return null;
+  const content = dialogCopy.content;
+  content.triggers.splice(index, 1);
+  return content;
+}
+
+export function getTriggerTypes(): IDropdownOption[] {
+  const triggerTypes: IDropdownOption[] = [
+    ...dialogGroups[DialogGroup.EVENTS].types.map(t => {
+      let name = t as string;
+      const labelOverrides = ConceptLabels[t];
+
+      if (labelOverrides && labelOverrides.title) {
+        name = labelOverrides.title;
+      }
+
+      return { key: t, text: name || t };
+    }),
+  ];
+  return triggerTypes;
+}
+
+export function getEventTypes(): IDropdownOption[] {
+  const eventTypes: IDropdownOption[] = [
+    ...dialogGroups[DialogGroup.DIALOG_EVENT_TYPES].types.map(t => {
+      let name = t as string;
+      const labelOverrides = ConceptLabels[t];
+
+      if (labelOverrides && labelOverrides.title) {
+        name = labelOverrides.title;
+      }
+
+      return { key: t, text: name || t };
+    }),
+  ];
+  return eventTypes;
+}
+
+export function getActivityTypes(): IDropdownOption[] {
+  const activityTypes: IDropdownOption[] = [
+    ...dialogGroups[DialogGroup.ADVANCED_EVENTS].types.map(t => {
+      let name = t as string;
+      const labelOverrides = ConceptLabels[t];
+
+      if (labelOverrides && labelOverrides.title) {
+        name = labelOverrides.title;
+      }
+
+      return { key: t, text: name || t };
+    }),
+  ];
+  return activityTypes;
 }
 
 export function getDialogsMap(dialogs: DialogInfo[]): DialogsMap {
@@ -21,30 +153,22 @@ export function getDialogsMap(dialogs: DialogInfo[]): DialogsMap {
   }, {});
 }
 
-const getTitle = (editorSchema: any, type: string) => {
-  const sdkOverrides = get(editorSchema, ['content', 'SDKOverrides', type]);
-
-  return (sdkOverrides && sdkOverrides.title) || '';
+const getLabel = (dialog: DialogInfo, dataPath: string) => {
+  const data = get(dialog, dataPath);
+  if (!data) return '';
+  return getFriendlyName(data);
 };
 
-export function getbreadcrumbLabel(
-  dialogs: DialogInfo[],
-  dialogId: string,
-  focusedEvent: string,
-  focusedSteps: string[],
-  schemas: BotSchemas
-) {
+export function getbreadcrumbLabel(dialogs: DialogInfo[], dialogId: string, selected: string, focused: string) {
   let label = '';
-  const dataPath = getFocusPath(focusedEvent, focusedSteps[0]);
+  const dataPath = getFocusPath(selected, focused);
   if (!dataPath) {
     const dialog = dialogs.find(d => d.id === dialogId);
     label = (dialog && dialog.displayName) || '';
   } else {
-    const current = `${dataPath}.$type`;
     const dialogsMap = getDialogsMap(dialogs);
     const dialog = dialogsMap[dialogId];
-    const type = get(dialog, current);
-    label = getTitle(schemas.editor, type);
+    label = getLabel(dialog, dataPath);
   }
 
   label = upperCaseName(label || '');
@@ -128,4 +252,9 @@ export function isExpression(str: string): boolean {
   }
 
   return true;
+}
+
+export function getSelected(focused: string): string {
+  if (!focused) return '';
+  return focused.split('.')[0];
 }

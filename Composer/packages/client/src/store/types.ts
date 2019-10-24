@@ -1,24 +1,20 @@
-// TODO: Extract some common types to be shared across packages (e.g. DialogInfo, LgFile, etc)
 // TODO: remove this once we can expand the types
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import { PromptTab, DialogInfo, BotSchemas, LgFile, LuFile } from 'shared';
 
 import { CreationFlowStatus, BotStatus } from '../constants';
 
-export interface ActionType {
-  type: string;
-  payload?: any;
-  error?: any;
-}
+import { ActionType } from './action/types';
 
 export interface Store {
   dispatch: React.Dispatch<ActionType>;
-  state: State;
+  getState: () => State;
 }
 
-export type ActionCreator = (store: Store, ...args: any[]) => Promise<void> | void;
+export type ActionCreator<T extends any[] = any[]> = (store: Store, ...args: T) => Promise<void> | void;
 export type ActionHandlers = { [action: string]: ActionCreator };
-export type BoundAction = (...args: any[]) => void;
+export type BoundAction = (...args: any[]) => void | Promise<void>;
 export type BoundActionHandlers = { [action: string]: BoundAction };
 
 interface StateError {
@@ -28,19 +24,20 @@ interface StateError {
 
 export interface BreadcrumbItem {
   dialogId: string;
-  focusedEvent?: string;
-  focusedSteps: string;
-}
-
-export interface BotSchemas {
-  editor?: any;
+  selected: string;
+  focused: string;
 }
 
 export interface State {
   dialogs: DialogInfo[];
   botName: string;
+  location: string;
+  botEnvironment: string;
+  botEndpoint: string;
+  remoteEndpoints: { [key: string]: string };
   /** the data path for FormEditor */
   focusPath: string;
+  templateProjects: any[];
   recentProjects: any[];
   storages: any[];
   focusedStorageFolder: any;
@@ -52,59 +49,52 @@ export interface State {
   schemas: BotSchemas;
   lgFiles: LgFile[];
   luFiles: LuFile[];
-  designPageLocation: any;
+  designPageLocation: DesignPageLocation;
   error: StateError | null;
-  oAuth: any;
   breadcrumb: BreadcrumbItem[];
   showCreateDialogModal: boolean;
+  isEnvSettingUpdated: boolean;
+  settings: DialogSetting;
   onCreateDialogComplete?: (dialogId: string | null) => void;
   toStartBot: boolean;
-}
-
-export type ReducerFunc = (state: State, payload: any) => State;
-
-export interface DialogInfo {
-  id: string;
-  displayName: string;
-  isRoot: boolean;
-  content: any;
-  diagnostics: string[];
-  luFile: string;
-}
-
-export interface Intent {
-  name: string;
-}
-
-export interface Utterance {
-  intent: string;
-  text: string;
-}
-
-export interface LuDiagnostic {
-  text: string;
-}
-
-export interface LuFile {
-  id: string;
-  relativePath: string;
-  content: string;
-  parsedContent: {
-    LUISJsonStructure: {
-      intents: Intent[];
-      utterances: Utterance[];
-    };
+  currentUser: {
+    token: string | null;
+    email?: string;
+    name?: string;
+    expiration?: number;
+    sessionExpired: boolean;
   };
-  diagnostics: LuDiagnostic[];
+  publishVersions: any;
+  publishStatus: any;
+  lastPublishChange: any;
 }
 
-export interface LgFile {
-  id: string;
-  relativePath: string;
-  content: string;
+export type ReducerFunc<T = any> = (state: State, payload: T) => State;
+export interface MiddlewareApi {
+  getState: () => State;
+  dispatch: React.Dispatch<ActionType>;
 }
 
-export interface LgTemplate {
-  Name: string;
-  Body: string;
+export type MiddlewareFunc = (middlewareApi: MiddlewareApi) => (next: any) => React.Dispatch<ActionType>;
+
+export interface ILuisConfig {
+  name: string;
+  authoringKey: string;
+  endpointKey: string;
+  authoringRegion: string | 'westus';
+  defaultLanguage: string | 'en-us';
+  environment: string | 'composer';
+}
+export interface DialogSetting {
+  MicrosoftAppId?: string;
+  MicrosoftAppPassword?: string;
+  luis?: ILuisConfig;
+  [key: string]: any;
+}
+
+export interface DesignPageLocation {
+  dialogId: string;
+  selected: string;
+  focused: string;
+  promptTab?: PromptTab;
 }

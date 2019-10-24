@@ -14,10 +14,10 @@ import { DirectionalHint } from 'office-ui-fabric-react';
 import get from 'lodash.get';
 import { FieldProps } from '@bfcomposer/react-jsonschema-form';
 import { NeutralColors, FontSizes } from '@uifabric/fluent-theme';
+import { COMPOUND_TYPES, MicrosoftIDialog } from 'shared';
 
 import { buildDialogOptions, swap, remove, insertAt, DialogOptionsOpts } from '../utils';
 import { FormContext } from '../types';
-import { COMPOUND_TYPES } from '../../schema/appschema';
 
 import { BaseField } from './BaseField';
 
@@ -60,12 +60,12 @@ function ItemActions<T extends MicrosoftIDialog>(props: ItemActionsProps<T>) {
       text: formatMessage('Edit'),
       iconProps: { iconName: 'Edit' },
       onClick: () => {
-        formContext.shellApi.onFocusSteps([`${navPrefix}[${index}]`]);
-
         // @ts-ignore - IDialog could potentially be a string, so TS complains about $type
         if (COMPOUND_TYPES.includes(item.$type)) {
           formContext.shellApi.onFocusEvent(`${navPrefix}[${index}]`);
         }
+
+        formContext.shellApi.onFocusSteps([`${navPrefix}[${index}]`]);
       },
     },
     {
@@ -128,7 +128,15 @@ function ItemActions<T extends MicrosoftIDialog>(props: ItemActionsProps<T>) {
 }
 
 export function TableField<T extends MicrosoftIDialog = MicrosoftIDialog>(props: TableFieldProps<T>): JSX.Element {
-  const { additionalColumns = [], columnHeader, dialogOptionsOpts, renderDescription, children } = props;
+  const {
+    additionalColumns = [],
+    columnHeader,
+    dialogOptionsOpts,
+    renderDescription,
+    children,
+    navPrefix,
+    formContext,
+  } = props;
 
   const fieldOverrides = get(props.formContext.editorSchema, `content.SDKOverrides`);
 
@@ -154,6 +162,15 @@ export function TableField<T extends MicrosoftIDialog = MicrosoftIDialog>(props:
 
   const createNewItemAtIndex = (idx: number = items.length) => (_: any, item: IContextualMenuItem) => {
     onChange(insertAt(items, item.data, idx));
+    // wait until change can propogate before navigating
+    setTimeout(() => {
+      // @ts-ignore - IDialog could potentially be a string, so TS complains about $type
+      if (COMPOUND_TYPES.includes(item.$type)) {
+        formContext.shellApi.onFocusEvent(`${navPrefix}[${idx}]`);
+      }
+
+      formContext.shellApi.onFocusSteps([`${navPrefix}[${idx}]`]);
+    }, 500);
     return true;
   };
 
@@ -164,14 +181,20 @@ export function TableField<T extends MicrosoftIDialog = MicrosoftIDialog>(props:
       minWidth: 30,
       maxWidth: 150,
       isResizable: true,
-      onRender: renderTitle,
+      // eslint-disable-next-line react/display-name
+      onRender: item => (
+        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>{renderTitle(item)}</div>
+      ),
     },
     {
       key: 'description',
       name: formatMessage('Description'),
       minWidth: 30,
       isResizable: true,
-      onRender: renderDescription,
+      onRender: renderDescription
+        ? // eslint-disable-next-line react/display-name
+          item => <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>{renderDescription(item)}</div>
+        : undefined,
     },
     ...additionalColumns,
     {
@@ -204,6 +227,10 @@ export function TableField<T extends MicrosoftIDialog = MicrosoftIDialog>(props:
           items={items}
           selectionMode={SelectionMode.none}
           layoutMode={DetailsListLayoutMode.justified}
+          styles={{
+            // offset the header padding
+            root: { marginTop: '-16px' },
+          }}
         />
       )}
       {children && children({ onChange, createNewItemAtIndex })}

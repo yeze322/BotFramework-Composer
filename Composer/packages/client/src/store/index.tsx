@@ -1,18 +1,27 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useRef } from 'react';
+import once from 'lodash.once';
 
-import oauthStorage from '../utils/oauthStorage';
+import { prepareAxios } from '../utils/auth';
+import { isAbsHosted } from '../utils/envUtil';
 
 import { reducer } from './reducer';
 import bindActions from './action/bindActions';
 import * as actions from './action';
 import { CreationFlowStatus, BotStatus } from './../constants';
-import { State, ActionType, ActionHandlers, BoundActionHandlers } from './types';
+import { State, ActionHandlers, BoundActionHandlers, MiddlewareApi, MiddlewareFunc } from './types';
+import { undoActionsMiddleware } from './middlewares/undo';
+import { ActionType } from './action/types';
 
 const initialState: State = {
   dialogs: [],
   botName: '',
+  location: '', // the path to the bot project
+  botEnvironment: 'production',
+  botEndpoint: '',
+  remoteEndpoints: {},
   focusPath: '', // the data path for FormEditor
   recentProjects: [],
+  templateProjects: [],
   storages: [],
   focusedStorageFolder: {},
   botStatus: BotStatus.unConnected,
@@ -21,19 +30,26 @@ const initialState: State = {
   templateId: '',
   storageFileLoadingStatus: 'success',
   lgFiles: [],
-  schemas: {},
+  schemas: { editor: {} },
   luFiles: [],
   designPageLocation: {
     dialogId: '',
-    uri: '',
-    focusedEvent: '',
-    focusedSteps: [],
+    focused: '',
+    selected: '',
   },
   breadcrumb: [],
   error: null, // a object with structure {summary: "", message: ""}
-  oAuth: oauthStorage.get(),
   showCreateDialogModal: false,
+  isEnvSettingUpdated: false,
+  settings: {},
   toStartBot: false,
+  currentUser: {
+    token: null,
+    sessionExpired: false,
+  },
+  publishVersions: {},
+  publishStatus: 'inactive',
+  lastPublishChange: null,
 };
 
 interface StoreContextValue {
@@ -52,15 +68,32 @@ interface StoreProviderProps {
   children: React.ReactNode;
 }
 
+const prepareAxiosWithStore = once(prepareAxios);
+export const applyMiddleware = (middlewareApi: MiddlewareApi, ...middlewares: MiddlewareFunc[]) => {
+  const chain = middlewares.map(middleware => middleware(middlewareApi));
+  const dispatch = chain.reduce((result, fun) => (...args) => result(fun(...args)))(middlewareApi.dispatch);
+  return dispatch;
+};
+
 export const StoreProvider: React.FC<StoreProviderProps> = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  // @ts-ignore some actions are not action creations and cannot be cast as such (e.g. textFromTemplates in lg.ts)
-  const boundActions = bindActions({ dispatch, state }, actions);
-  const value = {
-    state,
-    actions: boundActions,
-    dispatch,
+  const stateRef = useRef<State>(initialState);
+
+  stateRef.current = state;
+  const getState = () => {
+    return stateRef.current;
   };
+
+  const interceptDispatch = applyMiddleware({ dispatch, getState }, undoActionsMiddleware);
+  // @ts-ignore some actions are not action creations and cannot be cast as such (e.g. textFromTemplates in lg.ts)
+  const boundActions = bindActions({ dispatch: interceptDispatch, getState }, actions);
+  const value = {
+    state: getState(),
+    actions: boundActions,
+    dispatch: interceptDispatch,
+  };
+
+  prepareAxiosWithStore({ dispatch, getState });
 
   return <StoreContext.Provider value={value}>{props.children}</StoreContext.Provider>;
 };

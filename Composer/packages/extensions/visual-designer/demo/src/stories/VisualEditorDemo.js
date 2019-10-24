@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import VisualDesigner from '../../../src';
 import { JsonBlock } from '../components/json-block';
 import { ObiExamples } from '../samples';
+import { EditorConfig } from '../../../src/editors/editorConfig';
 import './VisualEditorDemo.css';
 
 const sampleFileNames = Object.keys(ObiExamples);
@@ -11,12 +12,15 @@ const defaultFile = sampleFileNames[1];
 // Simulate the condition that json is always mutated.
 const copyJson = json => JSON.parse(JSON.stringify(json));
 
+EditorConfig.features.showEvents = true;
+
 export class VisualEditorDemo extends Component {
   state = {
     selectedFile: defaultFile,
     obiJson: ObiExamples[defaultFile],
-    focusedEvent: '',
+    focusedEvent: 'events[0]',
     focusedSteps: [],
+    focusedTab: '',
   };
 
   constructor(props) {
@@ -29,6 +33,7 @@ export class VisualEditorDemo extends Component {
       obiJson: copyJson(ObiExamples[file]),
       focusedEvent: '',
       focusedSteps: [],
+      focusedTab: '',
     });
   }
 
@@ -38,7 +43,7 @@ export class VisualEditorDemo extends Component {
   }
 
   render() {
-    const { selectedFile, obiJson, focusedEvent, focusedSteps } = this.state;
+    const { selectedFile, obiJson, focusedEvent, focusedSteps, focusedTab } = this.state;
 
     return (
       <div className="ve-container">
@@ -78,6 +83,7 @@ export class VisualEditorDemo extends Component {
               dialogId={selectedFile}
               focusedEvent={focusedEvent}
               focusedSteps={focusedSteps}
+              focusedTab={focusedTab}
               shellApi={{
                 navTo: e => {
                   console.log('navTo', e);
@@ -89,16 +95,26 @@ export class VisualEditorDemo extends Component {
                     focusedSteps: [],
                   });
                 },
-                onFocusSteps: stepIds => {
-                  console.log('onFocusSteps', stepIds);
+                onFocusSteps: (stepIds, tabName) => {
+                  console.log('onFocusSteps', stepIds, tabName);
                   this.setState({
                     focusedSteps: stepIds,
+                    focusedTab: tabName,
                   });
                 },
                 saveData: json => {
                   this.setState({
                     obiJson: json,
                   });
+                },
+                updateLgTemplate: ({ id, templateName, template }) => {
+                  return Promise.resolve('');
+                },
+                getLgTemplates: () => {
+                  return Promise.resolve([{ Name: 'lg', Body: 'LgTemplate Placeholder.' }]);
+                },
+                removeLgTemplate: () => {
+                  return Promise.resolve(true);
                 },
               }}
             />

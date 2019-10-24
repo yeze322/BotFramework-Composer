@@ -1,15 +1,24 @@
-import { ObiTypes } from '../shared/ObiTypes';
-import { Boundary } from '../shared/Boundary';
-import { DiamondSize, InitNodeSize, LoopIconSize, ChoiceInputSize, ChoiceInputMarginTop } from '../shared/elementSizes';
+import { ObiTypes } from '../constants/ObiTypes';
+import { Boundary } from '../models/Boundary';
+import {
+  DiamondSize,
+  InitNodeSize,
+  LoopIconSize,
+  ChoiceInputSize,
+  ChoiceInputMarginTop,
+  IconBrickSize,
+} from '../constants/ElementSizes';
 import { transformIfCondtion } from '../transformers/transformIfCondition';
 import { transformSwitchCondition } from '../transformers/transformSwitchCondition';
 import { transformForeach } from '../transformers/transformForeach';
+import { transformBaseInput } from '../transformers/transformBaseInput';
 
 import {
   calculateIfElseBoundary,
   calculateSequenceBoundary,
   calculateSwitchCaseBoundary,
   calculateForeachBoundary,
+  calculateBaseInputBoundary,
 } from './calculateNodeBoundary';
 
 function measureStepGroupBoundary(stepGroup): Boundary {
@@ -47,7 +56,7 @@ function measureSwitchConditionBoundary(json): Boundary {
   );
 }
 
-function measureChoiceInputBoundary(data): Boundary {
+function measureChoiceInputDetailBoundary(data): Boundary {
   const width = InitNodeSize.width;
   const height =
     InitNodeSize.height +
@@ -55,6 +64,11 @@ function measureChoiceInputBoundary(data): Boundary {
       ? (data.choices.length <= 4 ? data.choices.length : 4) * (ChoiceInputSize.height + ChoiceInputMarginTop)
       : 0);
   return new Boundary(width, height);
+}
+
+function measureBaseInputBoundary(data): Boundary {
+  const { botAsks, userAnswers } = transformBaseInput(data, '');
+  return calculateBaseInputBoundary(measureJsonBoundary(botAsks.json), measureJsonBoundary(userAnswers.json));
 }
 
 export function measureJsonBoundary(json): Boundary {
@@ -81,10 +95,23 @@ export function measureJsonBoundary(json): Boundary {
       boundary = measureSwitchConditionBoundary(json);
       break;
     case ObiTypes.Foreach:
+    case ObiTypes.ForeachPage:
       boundary = measureForeachBoundary(json);
       break;
+    case ObiTypes.AttachmentInput:
     case ObiTypes.ChoiceInput:
-      boundary = measureChoiceInputBoundary(json);
+    case ObiTypes.ConfirmInput:
+    case ObiTypes.DateTimeInput:
+    case ObiTypes.NumberInput:
+    case ObiTypes.OAuthInput:
+    case ObiTypes.TextInput:
+      boundary = measureBaseInputBoundary(json);
+      break;
+    case ObiTypes.ChoiceInputDetail:
+      boundary = measureChoiceInputDetailBoundary(json);
+      break;
+    case ObiTypes.InvalidPromptBrick:
+      boundary = new Boundary(IconBrickSize.width, IconBrickSize.height);
       break;
     default:
       boundary = new Boundary(InitNodeSize.width, InitNodeSize.height);

@@ -389,10 +389,14 @@ typings/
 # Local sample bots
 SampleBots/Local*
 SampleBots/__Test*
-SampleBots/*/generated/
+SampleBots/*/*/generated
+SampleBots/*/*/settings
 
 #tmp.zip
 *.zip
+
+#DS_Store
+*.DS_Store
 
 # VsCode
 Composer/.vscode/

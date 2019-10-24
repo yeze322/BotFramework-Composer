@@ -2,8 +2,9 @@
 import { jsx } from '@emotion/core';
 import { FunctionComponent } from 'react';
 
-import { Icon } from '../icons/icon';
-import { InitNodeSize } from '../../../shared/elementSizes';
+import { InitNodeSize } from '../../../constants/ElementSizes';
+import { ElementIcon } from '../../../utils/obiPropertyResolver';
+import { Icon } from '../../decorations/icon';
 
 const boxWidth = InitNodeSize.width;
 const boxHeight = InitNodeSize.height;
@@ -17,8 +18,8 @@ const containerStyle = {
   cursor: 'pointer',
   overflow: 'hidden',
   backgroundColor: 'white',
-  borderRadius: '2px',
-  boxShadow: '0px 1.2px 3.6px rgba(0, 0, 0, 0.108), 0px 6.4px 14.4px rgba(0, 0, 0, 0.132)',
+  borderRadius: '2px 2px 0 0',
+  boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
 };
 
 interface NodeProps {
@@ -35,7 +36,7 @@ export const FormCard: FunctionComponent<NodeProps> = ({
   header,
   corner,
   label,
-  icon = 'MessageBot',
+  icon,
   nodeColors,
   onClick,
   children = null,
@@ -62,7 +63,6 @@ export const FormCard: FunctionComponent<NodeProps> = ({
           fontSize: '14px',
           lineHeight: '19px',
           color: 'black',
-          position: 'relative',
         }}
       >
         <div css={{ padding: '10px 10px', fontSize: '14px', fontFamily: 'Segoe UI', lineHeight: '19px' }}>{header}</div>
@@ -78,7 +78,7 @@ export const FormCard: FunctionComponent<NodeProps> = ({
         <div
           css={{
             fontWeight: 400,
-            paddingLeft: '10px',
+            paddingLeft: '5px',
             margin: '5px',
             fontSize: '14px',
             lineHeight: '19px',
@@ -86,8 +86,17 @@ export const FormCard: FunctionComponent<NodeProps> = ({
             alignItems: 'center',
           }}
         >
-          {icon !== 'none' && (
-            <div css={{ width: 30, height: 30, display: 'flex', alignItems: 'center' }}>
+          {icon && icon !== ElementIcon.None && (
+            <div
+              css={{
+                width: 30,
+                height: 30,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: '5px',
+              }}
+            >
               <Icon icon={icon} color={iconColor} size={30} />
             </div>
           )}

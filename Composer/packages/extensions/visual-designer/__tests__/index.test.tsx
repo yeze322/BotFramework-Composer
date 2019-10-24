@@ -23,9 +23,12 @@ describe('<VisualDesigner />', () => {
         data={{ content: '{"json": "some data"}' }}
         currentDialog={{ id: 'Main', displayName: 'Main', isRoot: false }}
         dialogId="SomeDialog"
-        focusedEvent="rules[0]"
-        focusedSteps={['rules[0].steps[0]']}
-        shellApi={{}}
+        focusedEvent="events[0]"
+        focusedSteps={['events[0].steps[0]']}
+        focusedTab=""
+        shellApi={{
+          saveData: () => {},
+        }}
       />
     );
 

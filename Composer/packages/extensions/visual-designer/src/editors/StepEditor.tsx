@@ -1,16 +1,16 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { Terminator } from '../components/decorations/Terminator';
 import { StepGroup } from '../components/groups';
-import { OffsetContainer } from '../components/shared/OffsetContainer';
-import { Edge } from '../components/shared/EdgeComponents';
-import { measureJsonBoundary } from '../layouters/measureJsonBoundary';
-import { NodeEventTypes } from '../shared/NodeEventTypes';
-import { Boundary } from '../shared/Boundary';
-import { ElementInterval, TriggerSize, TerminatorSize } from '../shared/elementSizes';
+import { Edge } from '../components/lib/EdgeComponents';
+import { OffsetContainer } from '../components/lib/OffsetContainer';
 import { EdgeMenu } from '../components/menus/EdgeMenu';
-import { Terminator } from '../components/nodes/Terminator';
+import { ElementInterval, TriggerSize, TerminatorSize } from '../constants/ElementSizes';
+import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { measureJsonBoundary } from '../layouters/measureJsonBoundary';
+import { Boundary } from '../models/Boundary';
 
 const HeadSize = {
   width: TriggerSize.width,
@@ -22,13 +22,14 @@ const TailSize = {
 };
 
 export const StepEditor = ({ id, data, onEvent, trigger }): JSX.Element => {
-  const [stepGroupBoundary, setStepGroupBoundary] = useState(measureJsonBoundary(data));
+  const [stepGroupBoundary, setStepGroupBoundary] = useState<Boundary>(measureJsonBoundary(data));
 
   const hasNoSteps = !data || !Array.isArray(data.children) || data.children.length === 0;
   const content = hasNoSteps ? (
     <EdgeMenu
       onClick={$type => onEvent(NodeEventTypes.Insert, { id, $type, position: 0 })}
       data-testid="StepGroupAdd"
+      id={`${id}[0]`}
     />
   ) : (
     <StepGroup
@@ -36,7 +37,9 @@ export const StepEditor = ({ id, data, onEvent, trigger }): JSX.Element => {
       data={data}
       onEvent={onEvent}
       onResize={boundary => {
-        setStepGroupBoundary(boundary);
+        if (boundary) {
+          setStepGroupBoundary(boundary);
+        }
       }}
     />
   );

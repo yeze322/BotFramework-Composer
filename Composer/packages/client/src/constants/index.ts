@@ -3,6 +3,8 @@ import formatMessage from 'format-message';
 export const BASEPATH = process.env.PUBLIC_URL || '/';
 export const BASEURL = `${process.env.PUBLIC_URL || 'http://localhost:5000'}/api`;
 
+//the count about the undo/redo
+export const UNDO_LIMIT = 10;
 /**
  * Global ActionTypes Defination Instruction.
  * For unification consideration, please follow the naming pattern below
@@ -36,6 +38,8 @@ export enum ActionTypes {
   GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE',
   GET_RECENT_PROJECTS_SUCCESS = 'GET_RECENT_PROJECTS_SUCCESS',
   GET_RECENT_PROJECTS_FAILURE = 'GET_RECENT_PROJECTS_FAILURE',
+  GET_TEMPLATE_PROJECTS_SUCCESS = 'GET_TEMPLATE_PROJECTS_SUCCESS',
+  GET_TEMPLATE_PROJECTS_FAILURE = 'GET_TEMPLATE_PROJECTS_FAILURE',
   UPDATE_DIALOG = 'UPDATE_DIALOG',
   UPDATE_DIALOG_FAILURE = 'UPDATE_DIALOG_FAILURE',
   CREATE_DIALOG_BEGIN = 'CREATE_DIALOG_BEGIN',
@@ -75,10 +79,21 @@ export enum ActionTypes {
   CONNECT_BOT_FAILURE = 'CONNECT_BOT_FAILURE',
   RELOAD_BOT_SUCCESS = 'RELOAD_BOT_SUCCESS',
   RELOAD_BOT_FAILURE = 'RELOAD_BOT_FAILURE',
-  UPDATE_OAUTH = 'UPDATE_OAUTH',
+  SYNC_ENV_SETTING = 'SYNC_ENV_SETTING',
   SET_ERROR = 'SET_ERROR',
   TO_START_BOT = 'TO_START_BOT',
   EDITOR_RESET_VISUAL = 'EDITOR_RESET_VISUAL',
+  USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS',
+  USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE',
+  USER_SESSION_EXPIRED = 'USER_SESSION_EXPIRED',
+  UNDO = 'UNDO',
+  REDO = 'REDO',
+  HISTORY_CLEAR = 'HISTORY_CLEAR',
+  GET_PUBLISH_VERSIONS_SUCCESS = 'GET_PUBLISH_VERSIONS_SUCCESS', // remote publish
+  PUBLISH_BEGIN = 'PUBLISH_BEGIN', // remote publish
+  PUBLISH_SUCCESS = 'PUBLISH_SUCCESS', // remote publish
+  PUBLISH_ERROR = 'PUBLISH_ERROR', // remote publish
+  GET_ENDPOINT_SUCCESS = 'GET_ENDPOINT_SUCCESS', // remote publish
 }
 
 export const Tips = {
@@ -111,12 +126,22 @@ export enum LuisConfig {
   AUTHORING_KEY = 'authoringKey',
   ENVIRONMENT = 'environment',
   PROJECT_NAME = 'name',
+  REGION = 'authoringRegion',
+  LANGUAGE = 'defaultLanguage',
 }
 
 export const FileTypes = {
   FOLDER: 'folder',
   FILE: 'file',
+  BOT: 'bot',
   UNKNOW: 'unknow',
+};
+
+export const OpenStatus = {
+  NEW: 'New',
+  SAVEAS: 'Save as',
+  OPEN: 'Open',
+  CLOSE: '',
 };
 
 export enum BotStatus {
@@ -140,7 +165,7 @@ export const Steps = {
   NONE: 'NONE',
 };
 
-export const DialogInfo = {
+export const DialogCreationCopy = {
   CREATE_NEW_BOT: {
     title: formatMessage('Create from scratch?'),
     subText: formatMessage('You can create a new bot from scratch with Designer, or start with a template.'),
@@ -155,10 +180,14 @@ export const DialogInfo = {
     title: formatMessage('Select a Bot'),
     subText: formatMessage('Which bot do you want to open?'),
   },
+  SELECT_DESTINATION: {
+    title: formatMessage('Set destination folder'),
+    subText: formatMessage('Choose a location for your new bot project.'),
+  },
 };
 
 export const DialogDeleting = {
-  NO_LINKED_TITLE: formatMessage('This action cannot be undone. Do you wish to continue?'),
+  NO_LINKED_TITLE: formatMessage('This will delete the Dialog and its contents. Do you wish to continue?'),
   TITLE: formatMessage('Warning!'),
   CONTENT: formatMessage(
     `The dialog you have tried to delete is currently used in the below dialog(s). Removing this dialog will cause your Bot to malfunction without additional action.`
@@ -183,3 +212,6 @@ export const SupportedFileTypes = [
   'xlsx',
   'xsn',
 ];
+
+export const USER_TOKEN_STORAGE_KEY = 'composer.userToken';
+export const SensitiveProperties = ['MicrosoftAppPassword', 'luis.authoringKey', 'luis.endpointKey'];
