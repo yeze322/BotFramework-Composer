@@ -2,12 +2,11 @@
   "$type": "Microsoft.AdaptiveDialog",
   "$designer": {
     "createdAt": "2019-08-22T16:18:51.530Z",
-    "updatedAt": "2019-08-22T16:18:51.551Z",
+    "updatedAt": "2019-08-28T21:58:09.418Z",
     "id": "646335",
     "name": "GetContactInfo"
   },
   "autoEndDialog": true,
-  "$schema": "../../BotProject/CSharp/Schemas/app.schema",
   "rules": [
     {
       "$type": "Microsoft.EventRule",
@@ -85,8 +84,18 @@
             "updatedAt": "2019-08-23T00:51:03.844Z"
           },
           "activity": "[bfdactivity-436655]"
+        },
+        {
+          "$type": "Microsoft.BeginDialog",
+          "$designer": {
+            "name": "Begin a Dialog",
+            "id": "434013",
+            "updatedAt": "2019-08-28T18:09:51.061Z"
+          },
+          "dialog": "UserInfo"
         }
       ]
     }
-  ]
+  ],
+  "$schema": "../../BotProject/CSharp/Schemas/app.schema"
 }

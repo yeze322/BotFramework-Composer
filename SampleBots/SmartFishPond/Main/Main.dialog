@@ -2,13 +2,12 @@
   "$type": "Microsoft.AdaptiveDialog",
   "$designer": {
     "createdAt": "2019-07-11T23:45:43.726Z",
-    "updatedAt": "2019-08-26T23:31:39.954Z",
+    "updatedAt": "2019-08-28T21:56:49.110Z",
     "id": "433224",
     "description": "A bot demo about a smart fish in a small pond",
     "name": "SmartFishPond"
   },
   "autoEndDialog": true,
-  "recognizer": "Main.lu",
   "generator": "common.lg",
   "rules": [
     {
@@ -309,6 +308,15 @@
       },
       "steps": [
         {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "732741",
+            "updatedAt": "2019-08-28T19:30:39.877Z"
+          },
+          "activity": "[bfdactivity-732741]"
+        },
+        {
           "$type": "Microsoft.BeginDialog",
           "$designer": {
             "name": "Begin a Dialog",
@@ -324,5 +332,6 @@
       "intent": "test"
     }
   ],
-  "$schema": "../../app.schema"
+  "$schema": "../../app.schema",
+  "recognizer": "Main.lu"
 }

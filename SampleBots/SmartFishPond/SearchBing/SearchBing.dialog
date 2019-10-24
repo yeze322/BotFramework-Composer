@@ -21,6 +21,15 @@
       ],
       "steps": [
         {
+          "$type": "Microsoft.SendActivity",
+          "$designer": {
+            "name": "Send an Activity",
+            "id": "505419",
+            "updatedAt": "2019-08-28T19:28:02.800Z"
+          },
+          "activity": "[bfdactivity-505419]"
+        },
+        {
           "$type": "Microsoft.SetProperty",
           "$designer": {
             "name": "Set a Property",

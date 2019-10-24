@@ -1,0 +1,26 @@
+{
+    "GetContactInfo": {
+        "lastUpdateTime": 1,
+        "lastPublishTime": 1
+    },
+    "Main": {
+        "lastUpdateTime": 1566936346956,
+        "lastPublishTime": 1566936349835
+    },
+    "RootMenuDialog": {
+        "lastUpdateTime": 1,
+        "lastPublishTime": 1
+    },
+    "SearchBing": {
+        "lastUpdateTime": 1,
+        "lastPublishTime": 1
+    },
+    "ShowHelp": {
+        "lastUpdateTime": 1,
+        "lastPublishTime": 1
+    },
+    "UserInfo": {
+        "lastUpdateTime": 1,
+        "lastPublishTime": 1
+    }
+}
