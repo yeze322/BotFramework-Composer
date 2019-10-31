@@ -115,6 +115,13 @@ if ($validation) {
 		Write-Host "! Error: $($validation.error.message)"  -ForegroundColor DarkRed
 		Write-Host "! Log: $($logFile)" -ForegroundColor DarkRed
 		Write-Host "+ To delete this resource group, run 'az group delete -g $($resourceGroup) --no-wait'" -ForegroundColor Magenta
+
+		if ($validation.error.details -and $validation.error.details[0].code -eq "CanNotCreateMultipleFreeAccounts")
+		{
+			Write-Host "! Only one free account is allowed for authoring. Please get your luis authoring key and retry with the following command:"
+			Write-Host "pwsh ./Scripts/create.ps1 -name $name -environment $environment -location $location -appPassword $appPassword -luisAuthoringKey [YourLuisAuthoringKey]" -ForegroundColor Green
+		}
+
 		Break
 	}
 }
@@ -137,6 +144,7 @@ if ($outputs)
 		Write-Host "! Error: $($outputs.error.message)"  -ForegroundColor DarkRed
 		Write-Host "! Log: $($logFile)" -ForegroundColor DarkRed
 		Write-Host "+ To delete this resource group, run 'az group delete -g $($resourceGroup) --no-wait'" -ForegroundColor Magenta
+		
 		Break
 	}
 
