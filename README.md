@@ -31,11 +31,13 @@ The Bot Framework Composer is an open source tool based on the Bot Framework SDK
 
 ## Get Started
 
+You shoudl use the **Stable** branch. The *Mater* branch is the team working branch and may break or contain breaking changes. 
+
 - To learn about the Bot Framework Composer, read the [documentation][5].
 - To get yourself familiar with the Composer, read [Introduction to Bot Framework Composer][1].
 - [Deploy Bot Framework Composer][2] on your local machine and [create your first bot][3].
 
-To build and run the Composer project locally. From the Composer folder, run the following commands
+To build and run the Composer project locally. From the Composer folder, run the following commands:
 
 ```
 $ cd Composer // switch to Composer folder
