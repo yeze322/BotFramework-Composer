@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { AdaptiveEventEditor } from '../../../src/containers/AdaptiveEventEditor';
-import { NodeEventTypes } from '../../../src/constants/NodeEventTypes';
+import { NodeEventTypes } from '../../../src/components/nodes/types/NodeEventTypes';
 import { JsonBlock } from '../components/json-block';
 import ToDoBot from '../samples/todo/ToDoBot.main.json';
 
