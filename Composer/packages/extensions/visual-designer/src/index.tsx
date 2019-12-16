@@ -9,8 +9,7 @@ import isEqual from 'lodash/isEqual';
 import formatMessage from 'format-message';
 import { ShellData, ShellApi } from '@bfc/shared';
 
-import { VisualEditor } from './containers/VisualEditor';
-import { NodeRendererContext } from './store/NodeRendererContext';
+import { VisualDesigner } from './containers/VisualDesigner';
 import { SelfHostContext } from './store/SelfHostContext';
 import useStore from './store/useStore';
 import resetStore from './actions/resetDialog';
@@ -57,39 +56,36 @@ const ComposerVisualDesigner: React.FC<ComposerVisualDesignerProps> = ({
     dataCache.current = inputData;
   }
 
-  const {
-    addCoachMarkRef,
-    updateLgTemplate,
-    getLgTemplates,
-    copyLgTemplate,
-    removeLgTemplate,
-    removeLgTemplates,
-  } = shellApi;
-
-  const focusedId = Array.isArray(focusedActions) && focusedActions[0] ? focusedActions[0] : '';
-
-  const nodeContext = {
-    focusedId,
-    focusedEvent,
-    focusedTab,
-    clipboardActions: clipboardActions || [],
-    updateLgTemplate,
-    getLgTemplates,
-    copyLgTemplate,
-    removeLgTemplate,
-    removeLgTemplates,
-  };
-
   return (
     <CacheProvider value={emotionCache}>
       <StoreContext.Provider value={{ state, dispatch }}>
-        <NodeRendererContext.Provider value={nodeContext}>
-          <SelfHostContext.Provider value={hosted} /** selfhost only influences the edge menu */>
-            <div data-testid="visualdesigner-container" css={{ width: '100%', height: '100%', overflow: 'scroll' }}>
-              <VisualEditor key={dialogId} addCoachMarkRef={addCoachMarkRef} />
-            </div>
-          </SelfHostContext.Provider>
-        </NodeRendererContext.Provider>
+        <SelfHostContext.Provider value={hosted} /** selfhost only influences the edge menu */>
+          <div data-testid="visualdesigner-container" css={{ width: '100%', height: '100%', overflow: 'scroll' }}>
+            <VisualDesigner
+              dialogId={dialogId}
+              dialogData={inputData}
+              saveDialog={shellApi.saveData}
+              focusedActions={focusedActions}
+              onFocusActions={shellApi.onFocusSteps}
+              focusedEvent={focusedEvent}
+              onFocusEvent={shellApi.onFocusEvent}
+              focusedTab={focusedTab}
+              onFocusTab={() => null}
+              selection={[]}
+              onSelect={shellApi.onSelect}
+              clipboardActions={clipboardActions}
+              onChangeClipboard={shellApi.onCopy}
+              navToDialog={shellApi.navTo}
+              undo={shellApi.undo}
+              redo={shellApi.redo}
+              updateLgTemplate={shellApi.updateLgTemplate}
+              copyLgTemplate={shellApi.copyLgTemplate}
+              removeLgTemplate={shellApi.removeLgTemplate}
+              removeLgTemplates={shellApi.removeLgTemplates}
+              addCoachMarkPosition={shellApi.addCoachMarkRef}
+            />
+          </div>
+        </SelfHostContext.Provider>
       </StoreContext.Provider>
     </CacheProvider>
   );

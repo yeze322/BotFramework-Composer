@@ -4,6 +4,8 @@
 import { BaseSchema } from '@bfc/shared';
 
 export interface VisualDesignerProps {
+  /** ABSH */
+  isAbshHosted?: boolean;
   /** Dialog */
   dialogId: string;
   dialogData: any;
@@ -14,6 +16,8 @@ export interface VisualDesignerProps {
   onFocusActions: (actionIds: string[]) => void;
   focusedEvent: string;
   onFocusEvent: (eventId: string) => void;
+  focusedTab?: string;
+  onFocusTab: (tab: string) => void;
 
   /** Selection states */
   selection: string[];
