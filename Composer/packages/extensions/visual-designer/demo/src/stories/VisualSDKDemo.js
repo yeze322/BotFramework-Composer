@@ -19,7 +19,7 @@ export class VisualSDKDemo extends Component {
     const { json } = this.state;
     const Renderer = resolveAdaptiveDataRenderer(json);
     if (Renderer) {
-      return <Renderer id={''} data={json} onEvent={(eventName, e) => console.log(eventName, e)} />;
+      return <Renderer id={''} data={json} dispatchAction={(eventName, e) => console.log(eventName)} />;
     }
   }
 
