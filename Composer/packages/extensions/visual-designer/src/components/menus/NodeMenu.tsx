@@ -9,7 +9,6 @@ import classnames from 'classnames';
 import { MenuTypes } from '../../constants/MenuTypes';
 import { AttrNames } from '../../constants/ElementAttributes';
 import { EditorContext } from '../../store/EditorContext';
-import deleteAdaptiveElement from '../../actions/deleteAdaptiveElement';
 
 import { IconMenu } from './IconMenu';
 
@@ -19,7 +18,8 @@ const declareElementAttributes = (id: string) => {
     [AttrNames.SelectedId]: `${id}${MenuTypes.NodeMenu}`,
   };
 };
-export const NodeMenu = ({ id, onEvent }): JSX.Element => {
+
+export const NodeMenu = ({ id, onClick }): JSX.Element => {
   const menuItems = [
     {
       key: 'delete',
@@ -27,7 +27,7 @@ export const NodeMenu = ({ id, onEvent }): JSX.Element => {
       iconProps: {
         iconName: 'Cancel',
       },
-      onClick: () => deleteAdaptiveElement(id),
+      onClick: () => onClick('delete'),
     },
   ];
   const { selectedIds } = useContext(EditorContext);
