@@ -11,11 +11,14 @@ import setFocusState from '../actions/setFocusState';
 import { NodeIndexGenerator } from '../utils/NodeIndexGetter';
 import { StoreContext } from '../store/StoreContext';
 import { StoreState } from '../store/store';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { NodeEventTypes } from '../components/nodes';
+import { KeyboardCommand } from '../constants/KeyboardCommandTypes';
+import setDragSelection from '../actions/setDragSelection';
 
 import mapEditorEventToAction from './mapEditorEventToAction';
 import mapShortcutToEditorEvent from './mapShortcutToEditorEvent';
 import { AdaptiveDialogEditor, AdaptiveDialogEditorProps } from './AdaptiveDialogEditor';
+import { VisualDesignerProps } from './VisualDesignerProps';
 
 const mapStateToEditorProps = (state: StoreState): AdaptiveDialogEditorProps => {
   const { dialog, eventPath, focusedId, focusedTab, selectedIds } = state;
@@ -30,17 +33,14 @@ const mapStateToEditorProps = (state: StoreState): AdaptiveDialogEditorProps => 
 };
 
 /**
- * Visual Editor is a custmized version of EventEditor used by Composer.
- * Provides two more features: drag selection, keyboard navigation.
+ * Fully controlled, event handler wrapper.
  */
-export const VisualEditor: FC<VisualDesignerProps> = ({ addCoachMarkRef }): JSX.Element | null => {
-  let divRef;
-
+export const VisualDesigner: FC<VisualDesignerProps> = (props): JSX.Element | null => {
   const { state: store, dispatch } = useContext(StoreContext);
 
-  const mapEditorEventToHandler = (eventName: NodeEventTypes) => {
+  /** Editor Event handler */
+  const mapEditorEventToHandler = (eventName: NodeEventTypes, eventData?: any) => {
     let handler;
-    // dialog json indexer;
     return handler;
   };
 
@@ -57,13 +57,17 @@ export const VisualEditor: FC<VisualDesignerProps> = ({ addCoachMarkRef }): JSX.
     }
   };
 
-  const handleKeyboardCommand = command => {
-    const e = mapShortcutToEditorEvent(command);
-    if (e) {
-      handleEditorEvent(e.eventName, e.eventData);
-    }
+  /** Keyboard Shortcuts */
+  let divRef;
+  const autoFocus = () => {
+    divRef.focus({ preventScroll: true });
+  };
+  const handleKeyboardCommand = (command: KeyboardCommand) => {
+    const editorEvent = mapShortcutToEditorEvent(command, store);
+    if (!editorEvent) return;
   };
 
+  /** Drag Selection */
   const nodeIndexGenerator = useRef(new NodeIndexGenerator());
   const nodeItems = nodeIndexGenerator.current.getItemList();
   const selection = new Selection({
@@ -72,9 +76,9 @@ export const VisualEditor: FC<VisualDesignerProps> = ({ addCoachMarkRef }): JSX.
       const selectedIds = selectedIndices.map(index => nodeItems[index].key as string);
 
       if (selectedIds.length === 1) {
-        handleEditorEvent(NodeEventTypes.Focus, { id: selectedIds[0] });
+        dispatch(setFocusState(selectedIds[0]));
       }
-      handleEditorEvent(NodeEventTypes.Select, selectedIds);
+      dispatch(setDragSelection(selectedIds));
     },
   });
 
@@ -82,6 +86,7 @@ export const VisualEditor: FC<VisualDesignerProps> = ({ addCoachMarkRef }): JSX.
     selection.setItems(nodeIndexGenerator.current.getItemList());
   });
 
+  /** Render */
   if (!store.dialog.json) return null;
   return (
     <KeyboardZone onCommand={handleKeyboardCommand}>
@@ -107,7 +112,7 @@ export const VisualEditor: FC<VisualDesignerProps> = ({ addCoachMarkRef }): JSX.
             {...mapStateToEditorProps(store)}
             generateTabIndex={(nodeId: string) => nodeIndexGenerator.current.getNodeIndex(nodeId)}
             onEvent={(eventName, eventData) => {
-              divRef.focus({ preventScroll: true });
+              autoFocus();
               handleEditorEvent(eventName, eventData);
             }}
           />
@@ -117,10 +122,7 @@ export const VisualEditor: FC<VisualDesignerProps> = ({ addCoachMarkRef }): JSX.
   );
 };
 
-VisualEditor.defaultProps = {
-  addCoachMarkRef: () => null,
+VisualDesigner.defaultProps = {
+  dialogId: '',
+  dialogData: {},
 };
-
-interface VisualDesignerProps {
-  addCoachMarkRef?: (_: any) => void;
-}

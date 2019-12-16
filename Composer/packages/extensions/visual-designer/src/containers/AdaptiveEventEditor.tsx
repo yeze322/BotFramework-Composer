@@ -6,8 +6,8 @@ import { jsx } from '@emotion/core';
 import { FC } from 'react';
 
 import { EditorContext } from '../store/EditorContext';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
 import { AdaptiveEvent } from '../adaptive/AdaptiveEvent';
+import { EditorActionDispatcher } from '../actions/types/EditorAction';
 
 export interface AdaptiveEventEditorProps {
   dialogId: string;
@@ -17,7 +17,7 @@ export interface AdaptiveEventEditorProps {
   focusedTab: string;
   selectedIds: string[];
   generateTabIndex?: (nodeId: string) => number;
-  onEvent: (eventName: NodeEventTypes, eventData?: any) => any;
+  onEvent: EditorActionDispatcher;
 }
 
 const mapPropsToEditorContext = (props: AdaptiveEventEditorProps) => {
@@ -40,7 +40,7 @@ export const AdaptiveEventEditor: FC<AdaptiveEventEditorProps> = (props): JSX.El
         getNodeIndex: props.generateTabIndex || (() => 0),
       }}
     >
-      <AdaptiveEvent key={`${dialogId}/${eventPath}`} path={eventPath} data={eventData} onEvent={onEvent} />
+      <AdaptiveEvent key={`${dialogId}/${eventPath}`} path={eventPath} data={eventData} dispatchAction={onEvent} />
     </EditorContext.Provider>
   );
 };

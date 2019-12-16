@@ -7,7 +7,7 @@ import { FC } from 'react';
 import get from 'lodash/get';
 
 import { EditorContext } from '../store/EditorContext';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { NodeEventTypes } from '../components/nodes';
 import { AdaptiveDialog } from '../adaptive/AdaptiveDialog';
 import { Collapse } from '../components/lib/Collapse';
 import { AdaptiveEvent } from '../adaptive/AdaptiveEvent';
@@ -42,7 +42,7 @@ export const AdaptiveDialogEditor: FC<AdaptiveDialogEditorProps> = (props): JSX.
     const { focusedEvent } = props;
     const focusedEventData = focusedEvent ? get(dialogData, focusedEvent) : null;
     if (focusedEventData) {
-      return <AdaptiveEvent path={focusedEvent} data={focusedEventData} onEvent={onEvent} />;
+      return <AdaptiveEvent path={focusedEvent} data={focusedEventData} dispatchAction={() => null} />;
     }
     return null;
   };
@@ -63,11 +63,11 @@ export const AdaptiveDialogEditor: FC<AdaptiveDialogEditorProps> = (props): JSX.
         }}
         onClick={e => {
           e.stopPropagation();
-          onEvent(NodeEventTypes.Focus, { id: '' });
+          onEvent(NodeEventTypes.ClickNode, { id: '' });
         }}
       >
         {EditorConfig.features.showEvents ? (
-          <AdaptiveDialog path={dialogId} data={dialogData} onEvent={onEvent} />
+          <AdaptiveDialog path={dialogId} data={dialogData} dispatchAction={() => null} />
         ) : null}
         <div className="editor-interval" style={{ height: 50 }} />
         <Collapse text="Actions">

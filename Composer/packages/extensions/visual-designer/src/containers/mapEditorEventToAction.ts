@@ -1,18 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { EditorActionTypes } from '../actions/types/EditorActionTypes';
 import setFocusState from '../actions/setFocusState';
 import setEventPath from '../actions/setEventPath';
 import setDragSelection from '../actions/setDragSelection';
 
 export default function mapEditorEventToAction(eventName, e, store) {
   switch (eventName) {
-    case NodeEventTypes.Focus:
+    case EditorActionTypes.Focus:
       return setFocusState(e.id, e.type);
-    case NodeEventTypes.FocusEvent:
+    case EditorActionTypes.FocusEvent:
       return setEventPath(e);
-    case NodeEventTypes.Select:
+    case EditorActionTypes.Select:
       return setDragSelection(e);
   }
   return null;
