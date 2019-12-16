@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-import { BaseSchema } from '@bfc/shared';
+import { BaseSchema, seedNewDialog } from '@bfc/shared';
 
-export const INSERT_NODE = 'VISUAL/INSERT_NODE';
+import { EditorActionTypes } from './types/EditorActionTypes';
+
 export function insertNode(targetArrayId: string, targetArrayIndex: number, newNode: BaseSchema) {
   return {
-    type: INSERT_NODE,
+    type: EditorActionTypes.Insert,
     payload: {
       targetArrayId,
       targetArrayIndex,
@@ -16,21 +17,22 @@ export function insertNode(targetArrayId: string, targetArrayIndex: number, newN
 }
 
 export const CREATE_NODE = 'VISUAL/CREATE_NODE';
-export function createNode(targetArrayId: string, targetArrayIndex: string, $type: string) {
+export function createNodeByType(targetArrayId: string, targetArrayIndex: string, $type: string) {
+  const node = seedNewDialog($type);
   return {
-    type: CREATE_NODE,
+    type: EditorActionTypes.Insert,
     payload: {
       targetArrayId,
       targetArrayIndex,
-      $type,
+      node,
     },
   };
 }
 
 export const CREATE_EVENT = 'VISUAL/CREATE_EVENT';
-export function createEvent(targetIndex: string, $type: string) {
+export function createEventByType(targetIndex: string, $type: string) {
   return {
-    type: CREATE_EVENT,
+    type: EditorActionTypes.InsertEvent,
     payload: {
       targetIndex,
       $type,
@@ -38,10 +40,9 @@ export function createEvent(targetIndex: string, $type: string) {
   };
 }
 
-export const APPEND_NODES = 'VISUAL/APPEND_NODES';
 export function appendNodes(targetNodeId: string, actions: BaseSchema[]) {
   return {
-    type: APPEND_NODES,
+    type: EditorActionTypes.InsertAfter,
     payload: {
       targetNodeId,
       actions,
@@ -49,45 +50,49 @@ export function appendNodes(targetNodeId: string, actions: BaseSchema[]) {
   };
 }
 
-export const DELETE_NODE = 'VISUAL/DELETE_NODE';
 export function deleteNode(nodeId: string) {
   return {
-    type: DELETE_NODE,
+    type: EditorActionTypes.Delete,
     payload: nodeId,
   };
 }
 
-export const DELETE_NODES = 'VISUAL/DELETE_NODES';
 export function deleteNodes(nodeIds: string[]) {
   return {
-    type: DELETE_NODES,
+    type: EditorActionTypes.DeleteSelection,
     payload: nodeIds,
   };
 }
 
-export const COPY_NODES = 'VISUAL/COPY_NODES';
 export function copyNodes(nodeIds: string[]) {
   return {
-    type: COPY_NODES,
+    type: EditorActionTypes.CopySelection,
     payload: nodeIds,
   };
 }
 
-export const CUT_NODES = 'VISUAL/CUT_NODES';
 export function cutNodes(nodeIds: string[]) {
   return {
-    type: CUT_NODES,
+    type: EditorActionTypes.CutSelection,
     payload: nodeIds,
   };
 }
 
-export const PASTE_NODES = 'VISUAL/PASTE_NODES';
 export function pasteNodes(targetArrayId: string, targetArrayIndex: number) {
   return {
-    type: PASTE_NODES,
+    type: EditorActionTypes.InsertSelection,
     payload: {
       targetArrayId,
       targetArrayIndex,
+    },
+  };
+}
+
+export function pasteNodesAfter(targetNodeId: string) {
+  return {
+    type: EditorActionTypes.InsertSelection,
+    payload: {
+      targetNodeId,
     },
   };
 }

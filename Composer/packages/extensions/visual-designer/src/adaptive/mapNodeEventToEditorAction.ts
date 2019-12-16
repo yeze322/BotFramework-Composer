@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import { NodeEventTypes } from '../components/nodes';
 import { EditorAction } from '../actions/types/EditorAction';
 import setFocusState from '../actions/setFocusState';
-import navigateToDialog from '../actions/navigateToDialog';
+import { navigateToDialog } from '../actions/navigation';
 import setEventPath from '../actions/setEventPath';
 
 export default function mapNodeEventToEditorAction(

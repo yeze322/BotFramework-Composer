@@ -7,6 +7,7 @@ export enum EditorActionTypes {
   Select = 'event.view.select',
   Navigation = 'event.view.navigation',
   FocusEvent = 'event.view.focus-event',
+  CursorMove = 'event.view.cursor-move',
   OpenDialog = 'event.nav.opendialog',
   Delete = 'event.data.delete',
   InsertBefore = 'event.data.insert-before',
