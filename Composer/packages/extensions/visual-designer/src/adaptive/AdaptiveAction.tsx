@@ -6,21 +6,34 @@ import { jsx } from '@emotion/core';
 import { FC } from 'react';
 import { BaseSchema } from '@bfc/shared';
 
-import { Boundary } from '../models/Boundary';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
-import { StepRenderer } from '../components/renderers/StepRenderer';
+import { StepRenderer } from '../components/nodes';
+import { EditorActionDispatcher } from '../actions/types/EditorAction';
+
+import mapNodeEventToEditorAction from './mapNodeEventToEditorAction';
+import { NodeOperationMenu, CreateAdaptiveJsonMenu } from './adaptiveMenus';
 
 export interface AdaptiveActionProps {
   path: string;
   data: BaseSchema;
-  onEvent: (eventName: NodeEventTypes, eventData?: any) => any;
-  onResize?: (boundary?: Boundary) => any;
+  dispatchAction: EditorActionDispatcher;
 }
 
-export const AdaptiveAction: FC<AdaptiveActionProps> = ({ path, data, onEvent, onResize }) => {
-  return <StepRenderer id={path} data={data} onEvent={onEvent} onResize={onResize} />;
-};
-
-AdaptiveAction.defaultProps = {
-  onResize: () => null,
+export const AdaptiveAction: FC<AdaptiveActionProps> = ({ path, data, dispatchAction }) => {
+  return (
+    <StepRenderer
+      id={path}
+      data={data}
+      onEvent={(...params) => {
+        const action = mapNodeEventToEditorAction(...params);
+        if (action) {
+          dispatchAction(action);
+        }
+      }}
+      onResize={() => null}
+      renderers={{
+        NodeMenu: NodeOperationMenu(dispatchAction),
+        EdgeMenu: CreateAdaptiveJsonMenu(dispatchAction),
+      }}
+    />
+  );
 };

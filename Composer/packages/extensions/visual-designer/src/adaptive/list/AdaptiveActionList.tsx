@@ -3,20 +3,24 @@
 
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { useEffect, useState, FC } from 'react';
+import { useEffect, FC } from 'react';
 import { BaseSchema } from '@bfc/shared';
 
 import { Terminator } from '../../components/decorations/Terminator';
-import { StepGroup } from '../../components/groups';
 import { Edge } from '../../components/lib/EdgeComponents';
+import { StepGroup } from '../../components/nodes/groups/StepGroup';
 import { OffsetContainer } from '../../components/lib/OffsetContainer';
 import { EdgeMenu } from '../../components/menus/EdgeMenu';
 import { ElementInterval, TriggerSize, TerminatorSize, InitNodeSize } from '../../constants/ElementSizes';
-import { NodeEventTypes } from '../../constants/NodeEventTypes';
 import { measureJsonBoundary } from '../../layouters/measureJsonBoundary';
 import { Boundary } from '../../models/Boundary';
 import { useWindowDimensions } from '../../utils/hooks';
 import { ObiTypes } from '../../constants/ObiTypes';
+import { EditorActionDispatcher } from '../../actions/types/EditorAction';
+import reportActionPosition from '../../actions/reportActionPosition';
+import { insertAdaptiveElementByType } from '../../actions/insertAdaptiveElement';
+import mapNodeEventToEditorAction from '../mapNodeEventToEditorAction';
+import { CreateAdaptiveJsonMenu, NodeOperationMenu } from '../adaptiveMenus';
 
 const HeadSize = {
   width: TriggerSize.width,
@@ -31,11 +35,15 @@ export interface AdaptiveActionListProps {
   path: string;
   actions: BaseSchema[];
   header: JSX.Element;
-  onEvent: (eventName: NodeEventTypes, eventData?: any) => any;
-  onResize?: (boundary: Boundary) => any;
+  dispatchAction: EditorActionDispatcher;
 }
 
-export const AdaptiveActionList: FC<AdaptiveActionListProps> = ({ path, actions, header, onEvent }): JSX.Element => {
+export const AdaptiveActionList: FC<AdaptiveActionListProps> = ({
+  path,
+  actions,
+  header,
+  dispatchAction,
+}): JSX.Element => {
   const data = { $type: ObiTypes.StepGroup, children: actions };
 
   const stepGroupBoundary = measureJsonBoundary(data);
@@ -57,17 +65,31 @@ export const AdaptiveActionList: FC<AdaptiveActionListProps> = ({ path, actions,
       x: (width + editorWidth) / 2,
       y: (hasNoSteps ? InitNodeSize.height / 2 : (3 * InitNodeSize.height) / 2 + ElementInterval.y) + 48,
     };
-    onEvent(NodeEventTypes.AddCoachMarkRef, coachMarkPosition);
+    dispatchAction(reportActionPosition(coachMarkPosition.x, coachMarkPosition.y));
   }, [width]);
 
   const content = hasNoSteps ? (
     <EdgeMenu
-      onClick={$type => onEvent(NodeEventTypes.Insert, { id: path, $type, position: 0 })}
+      onClick={$type => dispatchAction(insertAdaptiveElementByType(path, 0, $type))}
       data-testid="StepGroupAdd"
       id={`${path}[0]`}
     />
   ) : (
-    <StepGroup id={path} data={data} onEvent={onEvent} />
+    <StepGroup
+      id={path}
+      data={data}
+      onEvent={(...params) => {
+        const action = mapNodeEventToEditorAction(...params);
+        if (action) {
+          dispatchAction(action);
+        }
+      }}
+      onResize={() => null}
+      renderers={{
+        NodeMenu: NodeOperationMenu(dispatchAction),
+        EdgeMenu: CreateAdaptiveJsonMenu(dispatchAction),
+      }}
+    />
   );
 
   return (

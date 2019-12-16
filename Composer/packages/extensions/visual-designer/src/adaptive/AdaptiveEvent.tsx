@@ -7,20 +7,21 @@ import { useMemo, useRef, FC } from 'react';
 import isEqual from 'lodash/isEqual';
 import { BaseSchema } from '@bfc/shared';
 
-import { Trigger } from '../components/nodes/Trigger';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
 import { outlineObiJson } from '../utils/outlineObiJson';
 import { ObiFieldNames } from '../constants/ObiFieldNames';
+import { EditorActionDispatcher } from '../actions/types/EditorAction';
+import setFocusState from '../actions/setFocusState';
+import { Trigger } from '../components/nodes/steps/Trigger';
 
 import { AdaptiveActionList } from './list/AdaptiveActionList';
 
 export interface AdaptiveEventProps {
   path: string;
   data: BaseSchema;
-  onEvent: (eventName: NodeEventTypes, eventData?: any) => any;
+  dispatchAction: EditorActionDispatcher;
 }
 
-export const AdaptiveEvent: FC<AdaptiveEventProps> = ({ path, data, onEvent }): JSX.Element => {
+export const AdaptiveEvent: FC<AdaptiveEventProps> = ({ path, data, dispatchAction }): JSX.Element => {
   const outlineCache = useRef();
   const outlineVersion = useRef(0);
 
@@ -48,14 +49,14 @@ export const AdaptiveEvent: FC<AdaptiveEventProps> = ({ path, data, onEvent }): 
       }}
       onClick={e => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.Focus, { id: '' });
+        dispatchAction(setFocusState(''));
       }}
     >
       <AdaptiveActionList
         key={actionListPath + '?version=' + outlineVersion.current}
         path={actionListPath}
         actions={actionList}
-        onEvent={onEvent}
+        dispatchAction={dispatchAction}
         header={<Trigger data={data} />}
       />
     </div>

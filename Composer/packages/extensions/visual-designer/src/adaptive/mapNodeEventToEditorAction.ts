@@ -7,6 +7,7 @@ import { NodeEventTypes } from '../components/nodes';
 import { EditorAction } from '../actions/types/EditorAction';
 import setFocusState from '../actions/setFocusState';
 import navigateToDialog from '../actions/navigateToDialog';
+import setEventPath from '../actions/setEventPath';
 
 export default function mapNodeEventToEditorAction(
   nodeId: string,
@@ -18,6 +19,8 @@ export default function mapNodeEventToEditorAction(
       return setFocusState(nodeId, get(eventData, 'part'));
     case NodeEventTypes.ClickHyperlink:
       return navigateToDialog(get(eventData, 'target'));
+    case NodeEventTypes.ExpandNode:
+      return setEventPath(nodeId);
   }
   return;
 }
