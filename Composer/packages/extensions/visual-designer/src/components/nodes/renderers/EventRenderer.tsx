@@ -6,21 +6,13 @@ import { jsx, css } from '@emotion/core';
 import { FC, ComponentClass, useContext } from 'react';
 import classnames from 'classnames';
 
-import { ObiTypes } from '../../../constants/ObiTypes';
 import { EditorContext } from '../../../store/EditorContext';
-import { IntentRule, ConversationUpdateActivityRule, EventRule, UnknownIntentRule } from '../index';
-import { NodeProps, defaultNodeProps } from '../types/nodeProps';
+import { defaultNodeProps, NodeProps } from '../types/nodeProps';
 
-const rendererByObiType = {
-  [ObiTypes.OnCondition]: EventRule,
-  [ObiTypes.OnIntent]: IntentRule,
-  [ObiTypes.OnUnknownIntent]: UnknownIntentRule,
-  [ObiTypes.OnConversationUpdateActivity]: ConversationUpdateActivityRule,
-};
-const DEFAULT_RENDERER = UnknownIntentRule;
+import { eventRendererMap } from './rendererMaps';
 
 function chooseRendererByType($type): FC<NodeProps> | ComponentClass<NodeProps> {
-  const renderer = rendererByObiType[$type] || DEFAULT_RENDERER;
+  const renderer = eventRendererMap[$type] || eventRendererMap.default;
   return renderer;
 }
 

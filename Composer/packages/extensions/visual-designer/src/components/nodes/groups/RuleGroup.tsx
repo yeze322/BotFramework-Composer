@@ -29,7 +29,7 @@ export class RuleGroup extends React.Component<NodeProps> {
   }
 
   renderRule(rule, index: number): JSX.Element {
-    const { id, onEvent } = this.props;
+    const { id, onEvent, renderers } = this.props;
     const elementId = `${id}[${index}]`;
     return (
       <div
@@ -47,6 +47,7 @@ export class RuleGroup extends React.Component<NodeProps> {
           onResize={() => {
             this.propagateBoundary();
           }}
+          renderers={renderers}
         />
       </div>
     );

@@ -6,35 +6,14 @@ import { jsx, css } from '@emotion/core';
 import { FC, ComponentClass, useContext } from 'react';
 import classnames from 'classnames';
 
-import { ObiTypes } from '../../../constants/ObiTypes';
 import { AttrNames } from '../../../constants/ElementAttributes';
 import { EditorContext } from '../../../store/EditorContext';
-import {
-  DefaultRenderer,
-  BeginDialog,
-  ReplaceDialog,
-  ActivityRenderer,
-  ChoiceInput,
-  BotAsks,
-  UserInput,
-  InvalidPromptBrick,
-} from '../index';
 import { NodeProps, defaultNodeProps } from '../types/nodeProps';
 
-const rendererByObiType = {
-  [ObiTypes.BeginDialog]: BeginDialog,
-  [ObiTypes.ConditionNode]: DefaultRenderer,
-  [ObiTypes.ReplaceDialog]: ReplaceDialog,
-  [ObiTypes.SendActivity]: ActivityRenderer,
-  [ObiTypes.ChoiceInputDetail]: ChoiceInput,
-  [ObiTypes.BotAsks]: BotAsks,
-  [ObiTypes.UserAnswers]: UserInput,
-  [ObiTypes.InvalidPromptBrick]: InvalidPromptBrick,
-};
-const DEFAULT_RENDERER = DefaultRenderer;
+import { elementRendererMap } from './rendererMaps';
 
 function chooseRendererByType($type): FC<NodeProps> | ComponentClass<NodeProps> {
-  const renderer = rendererByObiType[$type] || DEFAULT_RENDERER;
+  const renderer = elementRendererMap[$type] || elementRendererMap.default;
   return renderer;
 }
 
