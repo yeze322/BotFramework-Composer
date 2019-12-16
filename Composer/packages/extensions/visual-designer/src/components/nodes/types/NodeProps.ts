@@ -14,7 +14,7 @@ export interface NodeProps {
   focused?: boolean;
   isRoot?: boolean;
   onEvent: NodeEventhandler;
-  onResize: (boundary?: Boundary, id?) => object | void;
+  onResize: (boundary?: Boundary, id?) => any;
   renderers: {
     EdgeMenu: ComponentClass<EdgeMenuProps> | FC<EdgeMenuProps>;
     NodeMenu: ComponentClass<NodeMenuProps> | FC<NodeMenuProps>;

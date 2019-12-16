@@ -9,7 +9,7 @@ export interface NodeMenuProps {
 }
 
 export interface EdgeMenuProps {
-  nodeArrayId: string;
+  nodeArrayPath: string;
   nodeArrayIndex: number;
   onEvent: NodeEventhandler;
 }
