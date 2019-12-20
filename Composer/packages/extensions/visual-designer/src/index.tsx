@@ -22,7 +22,7 @@ const emotionCache = createCache({
   nonce: window.__nonce__,
 });
 
-const VisualDesigner: React.FC<VisualDesignerProps> = ({
+const VisualDesigner: React.FC<any | VisualDesignerProps> = ({
   dialogId,
   focusedEvent,
   focusedActions,
@@ -124,3 +124,4 @@ VisualDesigner.defaultProps = {
 };
 
 export default VisualDesigner;
+export { ObiEditor } from './editors/ObiEditor';
