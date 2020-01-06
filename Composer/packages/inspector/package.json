@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "start:server": "node server/socket-server",
     "test": "jest",
     "lint": "eslint --quiet --ext .js,.jsx,.ts,.tsx ./src ./__tests__",
     "lint:fix": "yarn lint --fix",
@@ -95,6 +96,7 @@
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
     "react-testing-library": "^6.0.1",
+    "socket.io": "^2.3.0",
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "2.2.1",
     "url-loader": "2.2.0",
