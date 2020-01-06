@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React, { useReducer } from 'react';
+import React from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 
 import { reducer } from './reducer';
 import { initialStore } from './store';
 import { WindowController } from './WindowController';
+import { StoreContext } from './store/StoreContext';
+import { useStore } from './store/useStore';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -30,24 +32,26 @@ const mockShellApi = [
 mockShellApi.getLgTemplates = null;
 
 export const App = () => {
-  const [state] = useReducer(reducer, initialStore);
+  const { store, dispatch } = useStore();
 
-  const { project, dialogName, focusedEvent, focusedAction } = state;
+  const { project, dialogName, focusedEvent, focusedAction } = store;
 
   return (
-    <div>
-      <WindowController />
-      <VisualDesigner
-        dialogId={dialogName}
-        data={project[dialogName]}
-        focusedEvent={focusedEvent}
-        focusedActions={[focusedAction]}
-        focusedTab={''}
-        clipboardActions={[]}
-        hosted={false}
-        shellApi={mockShellApi}
-        onChange={() => null}
-      />
-    </div>
+    <StoreContext.Provider value={{ store, dispatch }}>
+      <div>
+        <WindowController />
+        <VisualDesigner
+          dialogId={dialogName}
+          data={project[dialogName]}
+          focusedEvent={focusedEvent}
+          focusedActions={[focusedAction]}
+          focusedTab={''}
+          clipboardActions={[]}
+          hosted={false}
+          shellApi={mockShellApi}
+          onChange={() => null}
+        />
+      </div>
+    </StoreContext.Provider>
   );
 };

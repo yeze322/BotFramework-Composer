@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React, { useReducer } from 'react';
+import React, { useContext } from 'react';
 
-import { reducer } from './reducer';
-import { initialStore } from './store';
 import { setTrigger, setAction } from './actions/messengerActions';
+import { StoreContext } from './store/StoreContext';
 
 export const WindowController = () => {
-  const [state, dispatch] = useReducer(reducer, initialStore);
+  const { store, dispatch } = useContext(StoreContext);
 
   const globalWindow = window as any;
   globalWindow.setTriggerId = triggerId => dispatch(setTrigger(triggerId));
