@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 
-import SampleDialog from './data/Main.json';
+import { reducer } from './reducer/index.js';
+import { initialStore } from './store/index.js';
+import { WindowController } from './WindowController.js';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -28,16 +30,18 @@ const mockShellApi = [
 mockShellApi.getLgTemplates = null;
 
 export const App = () => {
-  const [trigger, setTrigger] = useState('triggers[0]');
-  (window as any).setTrigger = trigger => setTrigger(trigger);
+  const [state] = useReducer(reducer, initialStore);
+
+  const { project, dialogName, focusedEvent, focusedAction } = state;
 
   return (
     <div>
+      <WindowController />
       <VisualDesigner
-        dialogId={'todo'}
-        data={SampleDialog}
-        focusedEvent={trigger}
-        focusedActions={[]}
+        dialogId={dialogName}
+        data={project[dialogName]}
+        focusedEvent={focusedEvent}
+        focusedActions={[focusedAction]}
         focusedTab={''}
         clipboardActions={[]}
         hosted={false}
