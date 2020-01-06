@@ -4,9 +4,9 @@
 import React, { useReducer } from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 
-import { reducer } from './reducer/index.js';
-import { initialStore } from './store/index.js';
-import { WindowController } from './WindowController.js';
+import { reducer } from './reducer';
+import { initialStore } from './store';
+import { WindowController } from './WindowController';
 
 const mockShellApi = [
   'addCoachMarkRef',
