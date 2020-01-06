@@ -16,7 +16,7 @@ export const initialStore: InspectorStore = {
     todo: SampleDialog,
   },
   dialogName: 'todo',
-  focusedEvent: '',
+  focusedEvent: 'triggers[0]',
   focusedAction: '',
   logs: [],
 };
