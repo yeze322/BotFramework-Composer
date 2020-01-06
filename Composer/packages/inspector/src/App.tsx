@@ -4,11 +4,10 @@
 import React from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 
-import { reducer } from './reducer';
-import { initialStore } from './store';
 import { WindowController } from './WindowController';
 import { StoreContext } from './store/StoreContext';
 import { useStore } from './store/useStore';
+import { SocketController } from './SocketController';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -40,6 +39,7 @@ export const App = () => {
     <StoreContext.Provider value={{ store, dispatch }}>
       <div>
         <WindowController />
+        <SocketController />
         <VisualDesigner
           dialogId={dialogName}
           data={project[dialogName]}
