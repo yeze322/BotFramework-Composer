@@ -7,17 +7,19 @@ import { StoreContext } from './store/StoreContext';
 import RuntimeMessageCenter from './messengers/RuntimeMessageCenter';
 import { setAction, setTrigger } from './actions/messengerActions';
 
-const runtimeMessageCenter = new RuntimeMessageCenter();
+let storeDispatcher = action => {};
+
+const runtimeMessageCenter = new RuntimeMessageCenter((eName, eData) => console.log(`Event ${eName} - ${eData}`));
+runtimeMessageCenter.triggerChanged$.subscribe(data => {
+  storeDispatcher(setTrigger(data));
+});
+
+runtimeMessageCenter.actionChanged$.subscribe(data => {
+  storeDispatcher(setAction(data));
+});
 
 export const SocketController = () => {
   const { store, dispatch } = useContext(StoreContext);
-
-  runtimeMessageCenter.triggerChanged$.subscribe(data => {
-    dispatch(setTrigger(data));
-  });
-
-  runtimeMessageCenter.actionChanged$.subscribe(data => {
-    dispatch(setAction(data));
-  });
+  storeDispatcher = dispatch;
   return <></>;
 };
