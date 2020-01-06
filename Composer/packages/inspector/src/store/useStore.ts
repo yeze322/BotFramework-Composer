@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 import { useReducer } from 'react';
-import { applyMiddleware } from '@src/utils/applyMiddleware';
 
+import { applyMiddleware } from '../utils/applyMiddleware';
 import { reducer } from '../reducer';
 
 import { initialStore } from './index';
