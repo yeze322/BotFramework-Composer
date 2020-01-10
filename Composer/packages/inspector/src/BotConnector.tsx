@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 
 import { StoreContext } from './store/StoreContext';
-import { setProject } from './actions/messengerActions';
+import { init } from './actions/messengerActions';
 import { RuntimeUrl } from './messengers/config';
 
 export const BotConnector = () => {
@@ -13,12 +13,20 @@ export const BotConnector = () => {
   const [url, setUrl] = useState(RuntimeUrl);
 
   const connectBot = () => {
-    axios({
+    const tracePromise = axios({
       method: 'get',
       url: RuntimeUrl + '/api/dialog',
     }).then(response => {
-      console.log('data = ', response.data);
-      dispatch(setProject(response.data));
+      return response.data;
+    });
+
+    const projectPromise = axios({
+      method: 'get',
+      url: RuntimeUrl + '/api/resource',
+    }).then(response => response.data);
+
+    Promise.all([tracePromise, projectPromise]).then(([trace, project]) => {
+      dispatch(init({ project, trace }));
     });
   };
 

@@ -4,17 +4,21 @@
 import SampleDialog from '../data/Main.json';
 
 export interface InspectorStore {
-  project: any;
-  dialog: any;
-  focusedEvent: string;
-  focusedAction: string;
+  /** runtime dialog stack object */
+  trace: any;
+  /** dialog collections. */
+  project: { [dialogName: string]: any };
+  dialogPath: string;
+  triggerPath: string;
+  actionPath: string;
   logs: any[];
 }
 
 export const initialStore: InspectorStore = {
-  project: SampleDialog,
-  dialog: SampleDialog,
-  focusedEvent: 'triggers[0]',
-  focusedAction: '',
+  trace: {},
+  project: { Main: SampleDialog },
+  dialogPath: 'Main',
+  triggerPath: 'triggers[0]',
+  actionPath: '',
   logs: [],
 };

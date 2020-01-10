@@ -5,17 +5,17 @@ import React, { useContext } from 'react';
 
 import { StoreContext } from './store/StoreContext';
 import RuntimeMessageCenter from './messengers/RuntimeMessageCenter';
-import { setAction, setTrigger } from './actions/messengerActions';
+import { setXpath } from './actions/setXpath';
 
 let storeDispatcher = action => {};
 
 const runtimeMessageCenter = new RuntimeMessageCenter((eName, eData) => console.log(`Event ${eName} - ${eData}`));
 runtimeMessageCenter.triggerChanged$.subscribe(data => {
-  storeDispatcher(setTrigger(data));
+  storeDispatcher(setXpath(data));
 });
 
 runtimeMessageCenter.actionChanged$.subscribe(data => {
-  storeDispatcher(setAction(data));
+  storeDispatcher(setXpath(data));
 });
 
 export const SocketController = () => {

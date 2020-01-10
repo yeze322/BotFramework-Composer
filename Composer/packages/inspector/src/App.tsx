@@ -35,7 +35,8 @@ mockShellApi.getLgTemplates = null;
 export const App = () => {
   const { store, dispatch } = useStore();
 
-  const { dialog, focusedEvent, focusedAction } = store;
+  const { project, trace, dialogPath, triggerPath, actionPath } = store;
+  const dialogName = get(trace, dialogPath + '._id', 'Main');
 
   return (
     <StoreContext.Provider value={{ store, dispatch }}>
@@ -44,16 +45,17 @@ export const App = () => {
         <WindowController />
         <SocketController />
         <VisualDesigner
-          dialogId={get(dialog, '_id', 'Dialog')}
-          data={dialog}
-          focusedEvent={focusedEvent}
-          focusedActions={[focusedAction]}
+          dialogId={dialogPath}
+          data={get(project, dialogName)}
+          focusedEvent={triggerPath}
+          focusedActions={[actionPath]}
           focusedTab={''}
           clipboardActions={[]}
           hosted={false}
           shellApi={mockShellApi}
           onChange={() => null}
         />
+        {JSON.stringify({ dialogName, dialogPath, triggerPath, actionPath }, null, '\t')}
       </div>
     </StoreContext.Provider>
   );

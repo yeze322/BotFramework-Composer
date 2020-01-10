@@ -1,11 +1,22 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-export const SET_PROJECT = 'SET_PROJECT';
-export const setProject = project => {
+export const INIT = 'init';
+export const init = ({ project, trace }) => {
   return {
-    type: SET_PROJECT,
-    payload: project,
+    type: INIT,
+    payload: {
+      project,
+      trace,
+    },
+  };
+};
+
+export const SET_DIALOG = 'SET_DIALOG';
+export const setDialog = dialogName => {
+  return {
+    type: SET_DIALOG,
+    payload: dialogName || 'Main',
   };
 };
 
