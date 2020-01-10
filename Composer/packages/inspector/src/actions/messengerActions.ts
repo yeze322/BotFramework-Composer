@@ -9,14 +9,6 @@ export const setProject = project => {
   };
 };
 
-export const SET_DIALOG = 'SET_DIALOG';
-export const setDialog = dialogPath => {
-  return {
-    type: SET_DIALOG,
-    payload: dialogPath || '',
-  };
-};
-
 export const SET_TRIGGER = 'SET_TRIGGER';
 export const setTrigger = triggerPath => {
   return {

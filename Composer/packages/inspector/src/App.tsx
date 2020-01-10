@@ -3,11 +3,13 @@
 
 import React from 'react';
 import VisualDesigner from '@bfc/visual-designer';
+import get from 'lodash/get';
 
 import { WindowController } from './WindowController';
 import { StoreContext } from './store/StoreContext';
 import { useStore } from './store/useStore';
 import { SocketController } from './SocketController';
+import { BotConnector } from './BotConnector';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -33,16 +35,17 @@ mockShellApi.getLgTemplates = null;
 export const App = () => {
   const { store, dispatch } = useStore();
 
-  const { project, dialogName, focusedEvent, focusedAction } = store;
+  const { dialog, focusedEvent, focusedAction } = store;
 
   return (
     <StoreContext.Provider value={{ store, dispatch }}>
       <div>
+        <BotConnector />
         <WindowController />
         <SocketController />
         <VisualDesigner
-          dialogId={dialogName}
-          data={project[dialogName]}
+          dialogId={get(dialog, '_id', 'Dialog')}
+          data={dialog}
           focusedEvent={focusedEvent}
           focusedActions={[focusedAction]}
           focusedTab={''}

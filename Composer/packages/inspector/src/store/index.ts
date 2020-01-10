@@ -5,17 +5,15 @@ import SampleDialog from '../data/Main.json';
 
 export interface InspectorStore {
   project: any;
-  dialogName: string;
+  dialog: any;
   focusedEvent: string;
   focusedAction: string;
   logs: any[];
 }
 
 export const initialStore: InspectorStore = {
-  project: {
-    todo: SampleDialog,
-  },
-  dialogName: 'todo',
+  project: SampleDialog,
+  dialog: SampleDialog,
   focusedEvent: 'triggers[0]',
   focusedAction: '',
   logs: [],
