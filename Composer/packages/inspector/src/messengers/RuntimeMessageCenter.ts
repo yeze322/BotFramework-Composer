@@ -6,11 +6,12 @@ import { Observable } from 'rxjs';
 
 import { RuntimeProjectData, TriggerData, ActionData } from './RuntimeMessageTypes';
 import { LoadProject, HitTrigger, HitAction } from './RuntimeSocketEvents';
+import { RuntimeUrl } from './config';
 
 type EventMiddleware = (eventName: string, eventPayload: any) => void;
 
 export default class RuntimeMessageCenter {
-  private runtimeUrl = 'http://localhost:4001';
+  private runtimeUrl = RuntimeUrl;
   private socket: SocketIOClient.Socket;
   private onEventMiddleware?: EventMiddleware;
 
