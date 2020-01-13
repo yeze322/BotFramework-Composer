@@ -9,12 +9,13 @@
 }
 
 .AppFooter {
+  display: none;
   height: 100px;
 }
 
 .AppContent {
   width: 100%;
-  height: calc(100% - 160px);
+  height: calc(100% - 60px);
   display: flex;
   flex-direction: row;
 }

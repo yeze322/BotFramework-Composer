@@ -28,11 +28,13 @@ export const reducer = (store: InspectorStore = initialStore, action): Inspector
       return {
         ...store,
         historys: appendBotResponseToHistorys(store.historys, payload),
+        logs: [...store.logs, new RuntimeActivity(RuntimeActivityTypes.BotAsks, payload.text)],
       };
     case USER_INPUT:
       return {
         ...store,
         historys: appendUserInputToHistorys(store.historys, payload),
+        logs: [...store.logs, new RuntimeActivity(RuntimeActivityTypes.UserInput, payload.text)],
       };
     case APPEND_LOG:
       return { ...store, logs: [...store.logs, payload] };

@@ -13,6 +13,7 @@ import { useStore } from './store/useStore';
 import { SocketController } from './SocketController';
 import { BotConnector } from './BotConnector';
 import { RuntimeTimeline } from './RuntimeTimeline';
+import { ChatLog } from './ChatLog';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -38,7 +39,7 @@ mockShellApi.getLgTemplates = null;
 export const App = () => {
   const { store, dispatch } = useStore();
 
-  const { project, trace, dialogPath, triggerPath, actionPath, historys } = store;
+  const { project, trace, dialogPath, triggerPath, actionPath, historys, logs } = store;
   const dialogName = get(trace, dialogPath + '._id', 'Main');
 
   return (
@@ -66,7 +67,9 @@ export const App = () => {
               onChange={() => null}
             />
           </div>
-          <div className="AppContent__Right">chat</div>
+          <div className="AppContent__Right">
+            <ChatLog logs={logs} />
+          </div>
         </div>
         <div className="AppFooter">
           {JSON.stringify({ dialogName, dialogPath, triggerPath, actionPath, historys }, null, '\t')}
