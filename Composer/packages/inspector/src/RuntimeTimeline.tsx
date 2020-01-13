@@ -5,16 +5,26 @@ import React, { useContext } from 'react';
 import { Timeline } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
-import { RuntimeHistory } from './store';
+import { RuntimeHistory, RuntimeActivity } from './store';
+
+const RuntimeActivityRenderer: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {
+  return <p>{activity.value}</p>;
+};
+
+const RuntimeTriggerItem: React.FC<{ history: RuntimeHistory }> = ({ history }) => {
+  return (
+    <p>
+      {history.dialog} / {history.trigger}
+    </p>
+  );
+};
 
 const RuntimeHistoryCard: React.FC<{ history: RuntimeHistory }> = ({ history }) => {
   return (
     <div>
-      <p>
-        {history.dialog} / {history.trigger}
-      </p>
+      {<RuntimeTriggerItem history={history} />}
       {history.actions.map((act, index) => (
-        <p key={`${history.dialog}/${history.trigger}[${index}]`}>{act.value}</p>
+        <RuntimeActivityRenderer key={`${history.dialog}/${history.trigger}[${index}]`} activity={act} />
       ))}
     </div>
   );
