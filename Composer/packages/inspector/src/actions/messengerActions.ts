@@ -46,3 +46,19 @@ export const appendLog = (nodePath, severity, text) => {
     },
   };
 };
+
+export const BOT_RESPONSE = 'BOT_RESPONSE';
+export const botResponse = message => {
+  return {
+    type: BOT_RESPONSE,
+    payload: JSON.parse(message),
+  };
+};
+
+export const USER_INPUT = 'USER_INPUT';
+export const userInput = message => {
+  return {
+    type: USER_INPUT,
+    payload: JSON.parse(message),
+  };
+};

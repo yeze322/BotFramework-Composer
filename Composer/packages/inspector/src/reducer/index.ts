@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { SET_XPATH } from '../actions/setXpath';
-import { INIT, APPEND_LOG } from '../actions/messengerActions';
+import { INIT, APPEND_LOG, BOT_RESPONSE, USER_INPUT } from '../actions/messengerActions';
 import { initialStore, InspectorStore, RuntimeHistory, RuntimeActivity, RuntimeActivityTypes } from '../store';
 
 export const reducer = (store: InspectorStore = initialStore, action): InspectorStore => {
@@ -21,6 +21,16 @@ export const reducer = (store: InspectorStore = initialStore, action): Inspector
         ...store,
         ...payload,
         historys: updateHistoryByXapth(store.historys, payload),
+      };
+    case BOT_RESPONSE:
+      return {
+        ...store,
+        historys: appendBotResponseToHistorys(store.historys, payload),
+      };
+    case USER_INPUT:
+      return {
+        ...store,
+        historys: appendUserInputToHistorys(store.historys, payload),
       };
     case APPEND_LOG:
       return { ...store, logs: [...store.logs, payload] };
@@ -64,4 +74,22 @@ const updateHistoryByXapth = (
       ),
     ];
   }
+};
+
+const appendBotResponseToHistorys = (historys: RuntimeHistory[], message): RuntimeHistory[] => {
+  const activity = new RuntimeActivity(RuntimeActivityTypes.BotAsks, message.text);
+  return appendActivityToHistorys(historys, activity);
+};
+
+const appendUserInputToHistorys = (historys: RuntimeHistory[], message): RuntimeHistory[] => {
+  const activity = new RuntimeActivity(RuntimeActivityTypes.UserInput, message.text);
+  return appendActivityToHistorys(historys, activity);
+};
+
+const appendActivityToHistorys = (historys: RuntimeHistory[], activity: RuntimeActivity): RuntimeHistory[] => {
+  if (!Array.isArray(historys) || historys.length === 0) return historys;
+  const historysCopy = [...historys];
+  const last = historysCopy.pop() as RuntimeHistory;
+  const updatedActions = [...last.actions, activity];
+  return [...historysCopy, new RuntimeHistory(last.dialog, last.trigger, updatedActions)];
 };

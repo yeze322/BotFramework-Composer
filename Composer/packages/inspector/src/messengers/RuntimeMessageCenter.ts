@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import { Observable } from 'rxjs';
 
 import { RuntimeProjectData } from './RuntimeMessageTypes';
-import { LoadProject, HitTrigger, HitAction } from './RuntimeSocketEvents';
+import { LoadProject, HitTrigger, HitAction, BotResponse, UserInput } from './RuntimeSocketEvents';
 import { RuntimeUrl } from './config';
 
 type EventMiddleware = (eventName: string, eventPayload: any) => void;
@@ -18,6 +18,8 @@ export default class RuntimeMessageCenter {
   projectChanged$: Observable<RuntimeProjectData>;
   triggerChanged$: Observable<string>;
   actionChanged$: Observable<string>;
+  botResponse$: Observable<string>;
+  userInput$: Observable<string>;
 
   constructor(onEventMiddleware?: EventMiddleware) {
     this.onEventMiddleware = onEventMiddleware;
@@ -26,6 +28,8 @@ export default class RuntimeMessageCenter {
     this.projectChanged$ = this.observeSocketEvent<RuntimeProjectData>(LoadProject);
     this.triggerChanged$ = this.observeSocketEvent<string>(HitTrigger);
     this.actionChanged$ = this.observeSocketEvent<string>(HitAction);
+    this.botResponse$ = this.observeSocketEvent<string>(BotResponse);
+    this.userInput$ = this.observeSocketEvent<string>(UserInput);
   }
 
   private observeSocketEvent = <T>(eventName) => {

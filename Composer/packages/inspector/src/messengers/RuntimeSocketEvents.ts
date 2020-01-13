@@ -4,6 +4,8 @@
 export const LoadProject = 'runtime/LoadProject';
 export const HitTrigger = 'runtime/HitTrigger';
 export const HitAction = 'runtime/HitAction';
+export const BotResponse = 'runtime/BotResponse';
+export const UserInput = 'runtime/UserInput';
 
 export const LOG = 'runtime/log/info';
 export const Warning = 'runtime/log/warning';
