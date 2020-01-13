@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { SET_XPATH } from '../actions/setXpath';
+import { SET_XPATH_ACTION, SET_XPATH_TRIGGER } from '../actions/setXpath';
 import { INIT, APPEND_LOG, BOT_RESPONSE, USER_INPUT } from '../actions/messengerActions';
 import { initialStore, InspectorStore, RuntimeHistory, RuntimeActivity, RuntimeActivityTypes } from '../store';
 
@@ -18,11 +18,19 @@ export const reducer = (store: InspectorStore = initialStore, action): Inspector
         historys: [],
         logs: [],
       };
-    case SET_XPATH:
+    case SET_XPATH_TRIGGER:
       return {
         ...store,
         ...payload,
         historys: updateHistoryByXapth(store.historys, payload),
+        logs: [...store.logs, new RuntimeActivity(RuntimeActivityTypes.Trigger, payload.xpath)],
+      };
+    case SET_XPATH_ACTION:
+      return {
+        ...store,
+        ...payload,
+        historys: updateHistoryByXapth(store.historys, payload),
+        logs: [...store.logs, new RuntimeActivity(RuntimeActivityTypes.Action, payload.xpath)],
       };
     case BOT_RESPONSE:
       return {

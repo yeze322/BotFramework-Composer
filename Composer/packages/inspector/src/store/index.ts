@@ -4,6 +4,7 @@
 import SampleDialog from '../data/Main.json';
 
 export enum RuntimeActivityTypes {
+  Trigger = 'trigger',
   Action = 'action',
   BotAsks = 'bot',
   UserInput = 'user',
@@ -38,7 +39,7 @@ export interface InspectorStore {
   triggerPath: string;
   actionPath: string;
   historys: RuntimeHistory[];
-  logs: any[];
+  logs: RuntimeActivity[];
 }
 
 export const initialStore: InspectorStore = {

@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-export const SET_XPATH = 'SET_XPATH';
-export const setXpath = (xpath = '') => {
+const parseXpath = (xpath = '') => {
   const result = {
     dialogPath: 'Main',
     triggerPath: '',
@@ -22,8 +21,29 @@ export const setXpath = (xpath = '') => {
     result.actionPath = rest.length ? last : '';
   }
 
+  return result;
+};
+
+export const SET_XPATH_TRIGGER = 'SET_XPATH_TRIGGER';
+export const setXpathTrigger = (xpath = '') => {
+  const paths = parseXpath(xpath);
   return {
-    type: SET_XPATH,
-    payload: result,
+    type: SET_XPATH_TRIGGER,
+    payload: {
+      ...paths,
+      xpath,
+    },
+  };
+};
+
+export const SET_XPATH_ACTION = 'SET_XPATH_ACTION';
+export const setXpathAction = (xpath = '') => {
+  const paths = parseXpath(xpath);
+  return {
+    type: SET_XPATH_ACTION,
+    payload: {
+      ...paths,
+      xpath,
+    },
   };
 };
