@@ -1,0 +1,40 @@
+#root,
+.App {
+  width: 100%;
+  height: 100%;
+}
+
+.AppHeader {
+  height: 60px;
+}
+
+.AppFooter {
+  height: 100px;
+}
+
+.AppContent {
+  width: 100%;
+  height: calc(100% - 160px);
+  display: flex;
+  flex-direction: row;
+}
+
+.AppContent__Left {
+  padding: 20px;
+  width: 22%;
+}
+
+.AppContent__Middle {
+  padding: 20px;
+  width: 56%;
+}
+
+.AppContent__Middle * {
+  overflow: hidden;
+}
+
+.AppContent__Right {
+  padding: 20px;
+  width: 25%;
+}
+

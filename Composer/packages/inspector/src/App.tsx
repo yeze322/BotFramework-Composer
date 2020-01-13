@@ -4,12 +4,15 @@
 import React from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 import get from 'lodash/get';
+import 'antd/dist/antd.css';
 
+import './App.css';
 import { WindowController } from './WindowController';
 import { StoreContext } from './store/StoreContext';
 import { useStore } from './store/useStore';
 import { SocketController } from './SocketController';
 import { BotConnector } from './BotConnector';
+import { RuntimeTimeline } from './RuntimeTimeline';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -40,22 +43,34 @@ export const App = () => {
 
   return (
     <StoreContext.Provider value={{ store, dispatch }}>
-      <div>
-        <BotConnector />
-        <WindowController />
-        <SocketController />
-        <VisualDesigner
-          dialogId={dialogPath}
-          data={get(project, dialogName)}
-          focusedEvent={triggerPath}
-          focusedActions={[actionPath]}
-          focusedTab={''}
-          clipboardActions={[]}
-          hosted={false}
-          shellApi={mockShellApi}
-          onChange={() => null}
-        />
-        {JSON.stringify({ dialogName, dialogPath, triggerPath, actionPath }, null, '\t')}
+      <div className="App">
+        <div className="AppHeader">
+          <BotConnector />
+          <WindowController />
+          <SocketController />
+        </div>
+        <div className="AppContent">
+          <div className="AppContent__Left">
+            <RuntimeTimeline />
+          </div>
+          <div className="AppContent__Middle">
+            <VisualDesigner
+              dialogId={dialogPath}
+              data={get(project, dialogName)}
+              focusedEvent={triggerPath}
+              focusedActions={[actionPath]}
+              focusedTab={''}
+              clipboardActions={[]}
+              hosted={false}
+              shellApi={mockShellApi}
+              onChange={() => null}
+            />
+          </div>
+          <div className="AppContent__Right">chat</div>
+        </div>
+        <div className="AppFooter">
+          {JSON.stringify({ dialogName, dialogPath, triggerPath, actionPath }, null, '\t')}
+        </div>
       </div>
     </StoreContext.Provider>
   );
