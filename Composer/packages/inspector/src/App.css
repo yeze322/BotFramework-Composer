@@ -29,8 +29,8 @@
   width: 56%;
 }
 
-.AppContent__Middle * {
-  overflow: hidden;
+.AppContent__Middle svg:not(:root) {
+  overflow: visible !important;
 }
 
 .AppContent__Right {
