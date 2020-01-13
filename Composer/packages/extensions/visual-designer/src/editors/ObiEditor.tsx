@@ -4,7 +4,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useContext, FC, useEffect, useState, useRef } from 'react';
-import { MarqueeSelection, Selection } from 'office-ui-fabric-react/lib/MarqueeSelection';
+import { Selection } from 'office-ui-fabric-react/lib/MarqueeSelection';
 import { deleteAction, deleteActions, LgTemplateRef, LgMetaData } from '@bfc/shared';
 
 import { NodeEventTypes } from '../constants/NodeEventTypes';
@@ -295,35 +295,33 @@ export const ObiEditor: FC<ObiEditorProps> = ({
   return (
     <SelectionContext.Provider value={selectionContext}>
       <KeyboardZone onCommand={handleKeyboardCommand} when={keyboardStatus}>
-        <MarqueeSelection selection={selection} css={{ width: '100%', height: '100%' }}>
-          <div
-            tabIndex={0}
-            className="obi-editor-container"
-            data-testid="obi-editor-container"
-            css={{
-              width: '100%',
-              height: '100%',
-              padding: '48px 20px',
-              boxSizing: 'border-box',
-              '&:focus': { outline: 'none' },
+        <div
+          tabIndex={0}
+          className="obi-editor-container"
+          data-testid="obi-editor-container"
+          css={{
+            width: '100%',
+            height: '100%',
+            padding: '48px 20px',
+            boxSizing: 'border-box',
+            '&:focus': { outline: 'none' },
+          }}
+          ref={el => (divRef = el)}
+          onClick={e => {
+            e.stopPropagation();
+            dispatchEvent(NodeEventTypes.Focus, { id: '' });
+          }}
+        >
+          <AdaptiveDialogEditor
+            id={path}
+            data={data}
+            onEvent={(eventName, eventData) => {
+              divRef.focus({ preventScroll: true });
+              dispatchEvent(eventName, eventData);
             }}
-            ref={el => (divRef = el)}
-            onClick={e => {
-              e.stopPropagation();
-              dispatchEvent(NodeEventTypes.Focus, { id: '' });
-            }}
-          >
-            <AdaptiveDialogEditor
-              id={path}
-              data={data}
-              onEvent={(eventName, eventData) => {
-                divRef.focus({ preventScroll: true });
-                dispatchEvent(eventName, eventData);
-              }}
-              addCoachMarkRef={addCoachMarkRef}
-            />
-          </div>
-        </MarqueeSelection>
+            addCoachMarkRef={addCoachMarkRef}
+          />
+        </div>
       </KeyboardZone>
     </SelectionContext.Provider>
   );
