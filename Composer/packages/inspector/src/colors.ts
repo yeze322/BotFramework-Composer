@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 export const Colors = {
-  User: '#F50',
-  Bot: '#108ee9',
-  Trigger: 'blue',
-  Action: 'green',
+  User: 'cyan',
+  Bot: 'purple',
+  Trigger: '#108ee9',
+  Action: '#87d068',
 };
