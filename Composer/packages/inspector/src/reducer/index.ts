@@ -3,6 +3,7 @@
 
 import { SET_XPATH_ACTION, SET_XPATH_TRIGGER } from '../actions/setXpath';
 import { INIT, APPEND_LOG, BOT_RESPONSE, USER_INPUT } from '../actions/messengerActions';
+import { CHANGE_PROGRESS, RESET_PROGRESS } from '../actions/progressActions';
 import { initialStore, InspectorStore, RuntimeActivity, RuntimeActivityTypes } from '../store';
 
 export const reducer = (store: InspectorStore = initialStore, action): InspectorStore => {
@@ -33,6 +34,16 @@ export const reducer = (store: InspectorStore = initialStore, action): Inspector
       return {
         ...store,
         logs: [...store.logs, new RuntimeActivity(RuntimeActivityTypes.UserInput, payload.text)],
+      };
+    case CHANGE_PROGRESS:
+      return {
+        ...store,
+        logProgress: payload,
+      };
+    case RESET_PROGRESS:
+      return {
+        ...store,
+        logProgress: undefined,
       };
     case APPEND_LOG:
       return { ...store, logs: [...store.logs, payload] };

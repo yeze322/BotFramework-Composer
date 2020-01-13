@@ -43,6 +43,7 @@ export interface InspectorStore {
   /** dialog collections. */
   project: { [dialogName: string]: any };
   logs: RuntimeActivity[];
+  logProgress?: number;
 }
 
 export const initialStore: InspectorStore = {
