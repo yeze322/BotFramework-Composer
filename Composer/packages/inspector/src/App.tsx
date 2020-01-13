@@ -56,9 +56,11 @@ export const App = () => {
         </div>
         <div className="AppContent">
           <div className="AppContent__Left">
+            <h3>Timeline</h3>
             <RuntimeTimeline historys={historys} />
           </div>
           <div className="AppContent__Middle">
+            <h3>Snapshot - Dialog</h3>
             <VisualDesigner
               dialogId={dialogPath}
               data={get(project, dialogName)}
@@ -72,6 +74,7 @@ export const App = () => {
             />
           </div>
           <div className="AppContent__Right">
+            <h3>Snapshot - Chatlog</h3>
             <ChatLog logs={activities} />
           </div>
         </div>

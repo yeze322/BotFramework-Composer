@@ -32,9 +32,9 @@ const RuntimeHistoryCard: React.FC<{ history: RuntimeHistory }> = ({ history }) 
 export const RuntimeTimeline: FC<{ historys: RuntimeHistory[] }> = ({ historys }) => {
   return (
     <Timeline>
-      {historys.map(history => {
+      {historys.map((history, index) => {
         return (
-          <Timeline.Item key={`${history.dialog}/${history.trigger}`}>
+          <Timeline.Item key={`history[${index}]`}>
             <RuntimeHistoryCard history={history} />
           </Timeline.Item>
         );
