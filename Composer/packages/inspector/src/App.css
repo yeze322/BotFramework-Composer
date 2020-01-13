@@ -23,6 +23,9 @@
 .AppContent__Left {
   padding: 20px;
   width: 22%;
+  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .AppContent__Middle {
@@ -41,5 +44,8 @@
 .AppContent__Right {
   padding: 20px;
   width: 25%;
+  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
