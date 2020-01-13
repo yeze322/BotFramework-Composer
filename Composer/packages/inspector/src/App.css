@@ -34,6 +34,10 @@
   overflow: visible !important;
 }
 
+.AppContent__Middle > div {
+  overflow: hidden;
+}
+
 .AppContent__Right {
   padding: 20px;
   width: 25%;
