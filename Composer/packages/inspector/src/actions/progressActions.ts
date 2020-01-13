@@ -3,10 +3,10 @@
 
 export const CHANGE_PROGRESS = 'CHANGE_PROGRESS';
 
-export const changeProgress = (logIndex: number) => {
+export const changeProgress = (logIndexRange: number) => {
   return {
     type: CHANGE_PROGRESS,
-    payload: logIndex,
+    payload: logIndexRange,
   };
 };
 

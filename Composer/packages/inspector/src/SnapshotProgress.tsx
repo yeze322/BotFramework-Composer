@@ -52,20 +52,18 @@ const stop = e => {
 };
 export const SnapshotProgress = () => {
   const { store, dispatch } = useContext(StoreContext);
-  const { logs } = store;
-  const [localProgress, setLocalProgress] = useState(0);
+  const { logs, logProgress } = store;
   const { displayedMarks, positionByLogIndex, logIndexByPosition } = generateMarkAssets(logs);
+  const currentProgress = positionByLogIndex[logProgress ? logProgress - 1 : logs.length - 1];
 
   const onProgressChange = position => {
-    setLocalProgress(position);
     const logIndex = logIndexByPosition[position];
     if (typeof logIndex === 'number') {
-      dispatch(changeProgress(logIndex));
+      dispatch(changeProgress(logIndex + 1));
     }
   };
   const onProgressReset = () => {
     dispatch(resetProgress());
-    setLocalProgress(positionByLogIndex[logs.length - 1]);
   };
   return (
     <div
@@ -76,7 +74,13 @@ export const SnapshotProgress = () => {
       onDragOver={stop}
       style={{ padding: 10 }}
     >
-      <Slider marks={displayedMarks} step={1} value={localProgress} onChange={onProgressChange} />
+      <Slider
+        key={logs.length}
+        marks={displayedMarks}
+        step={1}
+        defaultValue={currentProgress}
+        onChange={onProgressChange}
+      />
       <Button onClick={onProgressReset}>Reset</Button>
     </div>
   );
