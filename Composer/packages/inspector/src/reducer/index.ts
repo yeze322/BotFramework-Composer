@@ -15,6 +15,8 @@ export const reducer = (store: InspectorStore = initialStore, action): Inspector
         dialogPath: 'Main',
         triggerPath: '',
         actionPath: '',
+        historys: [],
+        logs: [],
       };
     case SET_XPATH:
       return {
