@@ -3,6 +3,17 @@
 
 import SampleDialog from '../data/Main.json';
 
+export class RuntimeHistory {
+  dialog: string;
+  trigger: string;
+  actions: string[];
+  constructor(dialog: string, trigger: string, actions: string[]) {
+    this.dialog = dialog;
+    this.trigger = trigger;
+    this.actions = [...actions];
+  }
+}
+
 export interface InspectorStore {
   /** runtime dialog stack object */
   trace: any;
@@ -11,6 +22,7 @@ export interface InspectorStore {
   dialogPath: string;
   triggerPath: string;
   actionPath: string;
+  historys: RuntimeHistory[];
   logs: any[];
 }
 
@@ -20,5 +32,6 @@ export const initialStore: InspectorStore = {
   dialogPath: 'Main',
   triggerPath: 'triggers[0]',
   actionPath: '',
+  historys: [],
   logs: [],
 };

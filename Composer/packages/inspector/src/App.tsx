@@ -38,7 +38,7 @@ mockShellApi.getLgTemplates = null;
 export const App = () => {
   const { store, dispatch } = useStore();
 
-  const { project, trace, dialogPath, triggerPath, actionPath } = store;
+  const { project, trace, dialogPath, triggerPath, actionPath, historys } = store;
   const dialogName = get(trace, dialogPath + '._id', 'Main');
 
   return (
@@ -69,7 +69,7 @@ export const App = () => {
           <div className="AppContent__Right">chat</div>
         </div>
         <div className="AppFooter">
-          {JSON.stringify({ dialogName, dialogPath, triggerPath, actionPath }, null, '\t')}
+          {JSON.stringify({ dialogName, dialogPath, triggerPath, actionPath, historys }, null, '\t')}
         </div>
       </div>
     </StoreContext.Provider>
