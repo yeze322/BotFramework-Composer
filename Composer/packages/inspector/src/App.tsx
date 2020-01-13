@@ -40,9 +40,9 @@ mockShellApi.getLgTemplates = null;
 export const App = () => {
   const { store, dispatch } = useStore();
 
-  const { project, trace, logs } = store;
+  const { project, trace, logs, logProgress } = store;
   const historys = useMemo(() => computeTimelineFromLogs(logs), [logs]);
-  const snapshot = useMemo(() => computeSnapshotFromLogs(logs), [logs]);
+  const snapshot = useMemo(() => computeSnapshotFromLogs(logs, logProgress), [logs, logProgress]);
   const { dialogPath, triggerPath, actionPath, activities } = snapshot;
   const dialogName = get(trace, dialogPath + '._id', 'Main');
 

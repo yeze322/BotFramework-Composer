@@ -20,23 +20,24 @@ export const computeTimelineFromLogs = (logs: RuntimeActivity[]): RuntimeHistory
   return results;
 };
 
-export const computeSnapshotFromLogs = (logs: RuntimeActivity[]): Snapshot => {
-  const reverseLogs = [...logs].reverse();
-  const lastSnapshotLog = reverseLogs.find(
+export const computeSnapshotFromLogs = (logs: RuntimeActivity[], logProgress?: number): Snapshot => {
+  const rangeLogs = logs.slice(0, logProgress);
+  const reverseRangeLogs = [...rangeLogs].reverse();
+  const lastSnapshotLog = reverseRangeLogs.find(
     x => x.type === RuntimeActivityTypes.Trigger || x.type === RuntimeActivityTypes.Action
   );
   if (lastSnapshotLog) {
     const paths = parseXpath(lastSnapshotLog.value);
     return {
       ...paths,
-      activities: [...logs],
+      activities: [...rangeLogs],
     };
   }
   return {
     dialogPath: '',
     triggerPath: '',
     actionPath: '',
-    activities: [...logs],
+    activities: [...rangeLogs],
   };
 };
 
