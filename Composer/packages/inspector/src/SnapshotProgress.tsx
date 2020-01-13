@@ -2,22 +2,23 @@
 // Licensed under the MIT License.
 
 import React, { useContext, useState } from 'react';
-import { Button, Slider } from 'antd';
+import { Button, Slider, Tag } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
 import { RuntimeActivity, RuntimeActivityTypes } from './store';
 import { changeProgress, resetProgress } from './actions/progressActions';
+import { Colors } from './colors';
 
 const getMarkValue = (activity: RuntimeActivity) => {
   switch (activity.type) {
     case RuntimeActivityTypes.Trigger:
-      return 'T';
+      return <Tag color={Colors.Trigger}>T</Tag>;
     case RuntimeActivityTypes.Action:
-      return 'A';
+      return <Tag color={Colors.Action}>A</Tag>;
     case RuntimeActivityTypes.BotAsks:
-      return 'B';
+      return <Tag color={Colors.Bot}>Bot</Tag>;
     case RuntimeActivityTypes.UserInput:
-      return 'U';
+      return <Tag color={Colors.User}>User</Tag>;
     default:
       return activity.value;
   }
@@ -51,11 +52,10 @@ const stop = e => {
 };
 export const SnapshotProgress = () => {
   const { store, dispatch } = useContext(StoreContext);
-  const { logs, logProgress } = store;
+  const { logs } = store;
   const [localProgress, setLocalProgress] = useState(0);
   const { displayedMarks, positionByLogIndex, logIndexByPosition } = generateMarkAssets(logs);
 
-  const currentProgress = positionByLogIndex[logProgress === undefined ? logs.length - 1 : logProgress];
   const onProgressChange = position => {
     setLocalProgress(position);
     const logIndex = logIndexByPosition[position];
