@@ -14,7 +14,7 @@ const RuntimeHistoryCard: React.FC<{ history: RuntimeHistory }> = ({ history }) 
         {history.dialog} / {history.trigger}
       </p>
       {history.actions.map((act, index) => (
-        <p key={`${history.dialog}/${history.trigger}[${index}]`}>{act}</p>
+        <p key={`${history.dialog}/${history.trigger}[${index}]`}>{act.value}</p>
       ))}
     </div>
   );
