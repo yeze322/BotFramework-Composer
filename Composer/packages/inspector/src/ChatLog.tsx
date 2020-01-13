@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { Switch } from 'antd';
 
 import { RuntimeActivity, RuntimeActivityTypes } from './store';
+import { Colors } from './colors';
 
 const Bubble = ({ text, color = '#eee' }) => (
   <span style={{ border: `1px solid ${color}`, padding: '10px', display: 'inline-block' }}>{text}</span>
@@ -19,8 +20,10 @@ const ActivityItem: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => 
       content = <>{activity.value}</>;
       break;
     case RuntimeActivityTypes.BotAsks:
+      content = <Bubble color={Colors.Bot} text={activity.value} />;
+      break;
     case RuntimeActivityTypes.UserInput:
-      content = <Bubble text={activity.value} />;
+      content = <Bubble color={Colors.User} text={activity.value} />;
       break;
   }
   return (
