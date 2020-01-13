@@ -30,24 +30,23 @@ export class RuntimeHistory {
   }
 }
 
+export interface Snapshot {
+  dialogPath: string;
+  triggerPath: string;
+  actionPath: string;
+  activities: RuntimeActivity[];
+}
+
 export interface InspectorStore {
   /** runtime dialog stack object */
   trace: any;
   /** dialog collections. */
   project: { [dialogName: string]: any };
-  dialogPath: string;
-  triggerPath: string;
-  actionPath: string;
-  historys: RuntimeHistory[];
   logs: RuntimeActivity[];
 }
 
 export const initialStore: InspectorStore = {
   trace: {},
   project: { Main: SampleDialog },
-  dialogPath: 'Main',
-  triggerPath: 'triggers[0]',
-  actionPath: '',
-  historys: [],
   logs: [],
 };

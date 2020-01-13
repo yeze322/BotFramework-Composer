@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React, { useContext } from 'react';
+import React, { FC } from 'react';
 import { Timeline } from 'antd';
 
-import { StoreContext } from './store/StoreContext';
 import { RuntimeHistory, RuntimeActivity } from './store';
 
 const RuntimeActivityRenderer: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {
@@ -30,9 +29,7 @@ const RuntimeHistoryCard: React.FC<{ history: RuntimeHistory }> = ({ history }) 
   );
 };
 
-export const RuntimeTimeline = () => {
-  const { store } = useContext(StoreContext);
-  const { historys } = store;
+export const RuntimeTimeline: FC<{ historys: RuntimeHistory[] }> = ({ historys }) => {
   return (
     <Timeline>
       {historys.map(history => {

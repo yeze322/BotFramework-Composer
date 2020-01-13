@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const parseXpath = (xpath = '') => {
+export const parseXpath = (xpath = '') => {
   const result = {
     dialogPath: 'Main',
     triggerPath: '',
@@ -29,10 +29,7 @@ export const setXpathTrigger = (xpath = '') => {
   const paths = parseXpath(xpath);
   return {
     type: SET_XPATH_TRIGGER,
-    payload: {
-      ...paths,
-      xpath,
-    },
+    payload: xpath,
   };
 };
 
@@ -41,9 +38,6 @@ export const setXpathAction = (xpath = '') => {
   const paths = parseXpath(xpath);
   return {
     type: SET_XPATH_ACTION,
-    payload: {
-      ...paths,
-      xpath,
-    },
+    payload: xpath,
   };
 };

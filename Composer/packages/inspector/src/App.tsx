@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 import get from 'lodash/get';
 import 'antd/dist/antd.css';
@@ -14,6 +14,7 @@ import { SocketController } from './SocketController';
 import { BotConnector } from './BotConnector';
 import { RuntimeTimeline } from './RuntimeTimeline';
 import { ChatLog } from './ChatLog';
+import { computeTimelineFromLogs, computeSnapshotFromLogs } from './reducer/timelineHistory';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -39,7 +40,10 @@ mockShellApi.getLgTemplates = null;
 export const App = () => {
   const { store, dispatch } = useStore();
 
-  const { project, trace, dialogPath, triggerPath, actionPath, historys, logs } = store;
+  const { project, trace, logs } = store;
+  const historys = useMemo(() => computeTimelineFromLogs(logs), [logs]);
+  const snapshot = useMemo(() => computeSnapshotFromLogs(logs), [logs]);
+  const { dialogPath, triggerPath, actionPath, activities } = snapshot;
   const dialogName = get(trace, dialogPath + '._id', 'Main');
 
   return (
@@ -52,7 +56,7 @@ export const App = () => {
         </div>
         <div className="AppContent">
           <div className="AppContent__Left">
-            <RuntimeTimeline />
+            <RuntimeTimeline historys={historys} />
           </div>
           <div className="AppContent__Middle">
             <VisualDesigner
@@ -68,7 +72,7 @@ export const App = () => {
             />
           </div>
           <div className="AppContent__Right">
-            <ChatLog logs={logs} />
+            <ChatLog logs={activities} />
           </div>
         </div>
         <div className="AppFooter">
