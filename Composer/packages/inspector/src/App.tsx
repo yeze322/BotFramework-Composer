@@ -15,6 +15,7 @@ import { BotConnector } from './BotConnector';
 import { RuntimeTimeline } from './RuntimeTimeline';
 import { ChatLog } from './ChatLog';
 import { computeTimelineFromLogs, computeSnapshotFromLogs } from './reducer/timelineHistory';
+import { SnapshotProgress } from './SnapshotProgress';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -61,6 +62,7 @@ export const App = () => {
           </div>
           <div className="AppContent__Middle">
             <h3>Snapshot - Dialog</h3>
+            <SnapshotProgress />
             <VisualDesigner
               dialogId={dialogPath}
               data={get(project, dialogName)}
