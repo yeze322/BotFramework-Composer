@@ -2,27 +2,12 @@
 // Licensed under the MIT License.
 
 import React, { useContext } from 'react';
-import { Button, Slider, Tag } from 'antd';
+import { Button, Slider } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
-import { RuntimeActivity, RuntimeActivityTypes } from './store';
+import { RuntimeActivity } from './store';
 import { changeProgress, resetProgress } from './actions/progressActions';
-import { Colors } from './colors';
-
-const getMarkValue = (activity: RuntimeActivity) => {
-  switch (activity.type) {
-    case RuntimeActivityTypes.Trigger:
-      return <Tag color={Colors.Trigger}>T</Tag>;
-    case RuntimeActivityTypes.Action:
-      return <Tag color={Colors.Action}>A</Tag>;
-    case RuntimeActivityTypes.BotAsks:
-      return <Tag color={Colors.Bot}>Bot</Tag>;
-    case RuntimeActivityTypes.UserInput:
-      return <Tag color={Colors.User}>User</Tag>;
-    default:
-      return activity.value;
-  }
-};
+import { RuntimeActivityRenderer, measureActivityListHeight } from './RuntimeActivityLib';
 
 const generateMarkAssets = (logs: RuntimeActivity[]) => {
   const logsCount = logs.length;
@@ -33,7 +18,7 @@ const generateMarkAssets = (logs: RuntimeActivity[]) => {
   const logIndexByPosition = {};
 
   logs.reduce((position, logItem, logItemIndex) => {
-    marks[position] = getMarkValue(logItem);
+    marks[position] = <RuntimeActivityRenderer activity={logItem} />;
     logIndexByPosition[position] = logItemIndex;
     positionByLogIndex[logItemIndex] = position;
     return position + interval;
@@ -65,6 +50,8 @@ export const SnapshotProgress = () => {
   const onProgressReset = () => {
     dispatch(resetProgress());
   };
+
+  const sliderHeight = measureActivityListHeight(logs);
   return (
     <div
       onMouseDown={stop}
@@ -72,12 +59,22 @@ export const SnapshotProgress = () => {
       onMouseMove={stop}
       onDragStart={stop}
       onDragOver={stop}
-      style={{ padding: 10, display: 'inline' }}
+      style={{ padding: 10, height: 'calc(100% - 50px)', overflowX: 'hidden', overflowY: 'auto' }}
     >
+      <Button onClick={onProgressReset}>Reset</Button>
       {logProgress === undefined ? (
-        <Slider vertical reverse marks={displayedMarks} step={1} value={currentProgress} onChange={onProgressChange} />
+        <Slider
+          style={{ height: sliderHeight }}
+          vertical
+          reverse
+          marks={displayedMarks}
+          step={1}
+          value={currentProgress}
+          onChange={onProgressChange}
+        />
       ) : (
         <Slider
+          style={{ height: sliderHeight }}
           vertical
           reverse
           key={logs.length}
@@ -87,7 +84,6 @@ export const SnapshotProgress = () => {
           onChange={onProgressChange}
         />
       )}
-      <Button onClick={onProgressReset}>Reset</Button>
     </div>
   );
 };
