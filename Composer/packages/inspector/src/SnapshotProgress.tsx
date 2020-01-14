@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Button, Slider, Tag } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
@@ -72,15 +72,21 @@ export const SnapshotProgress = () => {
       onMouseMove={stop}
       onDragStart={stop}
       onDragOver={stop}
-      style={{ padding: 10 }}
+      style={{ padding: 10, display: 'inline' }}
     >
-      <Slider
-        key={logs.length}
-        marks={displayedMarks}
-        step={1}
-        defaultValue={currentProgress}
-        onChange={onProgressChange}
-      />
+      {logProgress === undefined ? (
+        <Slider vertical reverse marks={displayedMarks} step={1} value={currentProgress} onChange={onProgressChange} />
+      ) : (
+        <Slider
+          vertical
+          reverse
+          key={logs.length}
+          marks={displayedMarks}
+          step={1}
+          defaultValue={currentProgress}
+          onChange={onProgressChange}
+        />
+      )}
       <Button onClick={onProgressReset}>Reset</Button>
     </div>
   );
