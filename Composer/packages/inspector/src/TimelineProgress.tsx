@@ -35,7 +35,7 @@ const generateMarkAssets = (logs: RuntimeActivity[]) => {
   };
 };
 
-export const SnapshotProgress = () => {
+export const TimelineProgress = () => {
   const { store, dispatch } = useContext(StoreContext);
   const { logs, logProgress } = store;
   const { displayedMarks, positionByLogIndex, logIndexByPosition } = generateMarkAssets(logs);

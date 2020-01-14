@@ -14,7 +14,7 @@ import { SocketController } from './SocketController';
 import { BotConnector } from './BotConnector';
 import { ChatLog } from './ChatLog';
 import { computeTimelineFromLogs, computeSnapshotFromLogs } from './reducer/timelineHistory';
-import { SnapshotProgress } from './SnapshotProgress';
+import { TimelineProgress } from './TimelineProgress';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -75,7 +75,7 @@ export const App = () => {
           </div>
           <div className="AppContent__Right">
             <h3>Timeline</h3>
-            <SnapshotProgress />
+            <TimelineProgress />
           </div>
         </div>
         <div className="AppFooter">
