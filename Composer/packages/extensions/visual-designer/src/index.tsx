@@ -79,7 +79,7 @@ const VisualDesigner: React.FC<any | VisualDesignerProps> = ({
     <CacheProvider value={emotionCache}>
       <NodeRendererContext.Provider value={nodeContext}>
         <SelfHostContext.Provider value={hosted}>
-          <div data-testid="visualdesigner-container" css={{ width: '100%', height: '100%', overflow: 'scroll' }}>
+          <div data-testid="visualdesigner-container" css={{ width: '100%', height: '100%' }}>
             <ObiEditor
               key={dialogId}
               path={dialogId}

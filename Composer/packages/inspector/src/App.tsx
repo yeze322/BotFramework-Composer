@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import React, { useMemo } from 'react';
 import VisualDesigner from '@bfc/visual-designer';
 import get from 'lodash/get';
@@ -12,9 +14,10 @@ import { StoreContext } from './store/StoreContext';
 import { useStore } from './store/useStore';
 import { SocketController } from './SocketController';
 import { BotConnector } from './BotConnector';
-import { ChatLog } from './ChatLog';
 import { computeTimelineFromLogs, computeSnapshotFromLogs } from './reducer/timelineHistory';
 import { TimelineProgress } from './TimelineProgress';
+import { ProjectOverviewContainer } from './ProjectOverview';
+import composerIcon from './images/composerIcon.svg';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -49,29 +52,33 @@ export const App = () => {
   return (
     <StoreContext.Provider value={{ store, dispatch }}>
       <div className="App">
+        <WindowController />
+        <SocketController />
         <div className="AppHeader">
-          <BotConnector />
-          <WindowController />
-          <SocketController />
+          <img className="AppHeader__icon" src={composerIcon} />
+          <span className="AppHeader__title">Adaptive Dialog Footprint</span>
         </div>
         <div className="AppContent">
           <div className="AppContent__Left">
             <h3>Snapshot - Chatlog</h3>
-            <ChatLog logs={activities} />
+            <BotConnector />
+            <ProjectOverviewContainer />
           </div>
           <div className="AppContent__Middle">
             <h3>Snapshot - Dialog</h3>
-            <VisualDesigner
-              dialogId={dialogPath}
-              data={get(project, dialogName)}
-              focusedEvent={triggerPath}
-              focusedActions={[actionPath]}
-              focusedTab={''}
-              clipboardActions={[]}
-              hosted={false}
-              shellApi={mockShellApi}
-              onChange={() => null}
-            />
+            <div style={{ height: 'calc(100% - 50px)' }}>
+              <VisualDesigner
+                dialogId={dialogPath}
+                data={get(project, dialogName)}
+                focusedEvent={triggerPath}
+                focusedActions={[actionPath]}
+                focusedTab={''}
+                clipboardActions={[]}
+                hosted={false}
+                shellApi={mockShellApi}
+                onChange={() => null}
+              />
+            </div>
           </div>
           <div className="AppContent__Right">
             <h3>Timeline</h3>

@@ -5,7 +5,39 @@
 }
 
 .AppHeader {
-  height: 60px;
+  height: 45px;
+  background-color: black;
+  color: white;
+  position: relative;
+  line-height: 50px;
+  display: flex;
+  align-items: baseline;
+}
+
+.AppHeader__icon {
+  margin-left: 9px;
+}
+
+.AppHeader__title {
+  position: relative;
+  margin-left: 25px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  bottom: 11px;
+}
+
+.AppHeader__title::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: -15px;
+  width: 0px;
+  height: 24px;
+  border: none;
+  border-right: 1px solid #979797;
+  border-image: initial;
+  outline: none;
 }
 
 .AppFooter {
@@ -15,14 +47,14 @@
 
 .AppContent {
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 50px);
   display: flex;
   flex-direction: row;
 }
 
 .AppContent__Left {
   padding: 20px;
-  width: 22%;
+  width: 15%;
   overflow: scroll;
   overflow-x: auto;
   overflow-y: auto;
@@ -30,7 +62,7 @@
 
 .AppContent__Middle {
   padding: 20px;
-  width: 56%;
+  width: 50%;
 }
 
 .AppContent__Middle svg:not(:root) {
