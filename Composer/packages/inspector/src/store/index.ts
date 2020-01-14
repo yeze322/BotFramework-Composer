@@ -37,11 +37,15 @@ export interface Snapshot {
   activities: RuntimeActivity[];
 }
 
+export interface Project {
+  [dialogName: string]: any;
+}
+
 export interface InspectorStore {
   /** runtime dialog stack object */
   trace: any;
   /** dialog collections. */
-  project: { [dialogName: string]: any };
+  project: Project;
   logs: RuntimeActivity[];
   logProgress?: number;
 }
