@@ -8,7 +8,7 @@ import { RuntimeActivity, RuntimeActivityTypes } from './store';
 import { Colors } from './colors';
 
 const ActivityCoreHeight = 25;
-const GroupInterval = 20;
+const GroupInterval = 30;
 const TriggerBottom = 10;
 const OtherLeft = 10;
 
@@ -32,6 +32,17 @@ export const measureActivityListHeight = (activities: RuntimeActivity[]): number
   const triggerCount = activities.filter(x => x.type === RuntimeActivityTypes.Trigger).length;
   const groupCompensation = Math.max(triggerCount - 1, 0) * GroupInterval;
   return coreHeight + groupCompensation;
+};
+
+export const generateActivityListPosition = (activities: RuntimeActivity[]): number[] => {
+  const positionList: number[] = [];
+  activities.reduce((accHeight, act, currIndex) => {
+    positionList.push(accHeight);
+    const nextAct = activities[currIndex + 1];
+    const bias = nextAct?.type === RuntimeActivityTypes.Trigger ? GroupInterval : 0;
+    return accHeight + measureActivityHeight(act) + bias;
+  }, 0);
+  return positionList;
 };
 
 export const RuntimeActivityRenderer: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {

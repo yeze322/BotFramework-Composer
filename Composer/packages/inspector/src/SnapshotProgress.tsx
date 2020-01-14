@@ -7,34 +7,34 @@ import { Button, Slider } from 'antd';
 import { StoreContext } from './store/StoreContext';
 import { RuntimeActivity } from './store';
 import { changeProgress, resetProgress } from './actions/progressActions';
-import { RuntimeActivityRenderer, measureActivityListHeight } from './RuntimeActivityLib';
+import { RuntimeActivityRenderer, measureActivityListHeight, generateActivityListPosition } from './RuntimeActivityLib';
 
 const generateMarkAssets = (logs: RuntimeActivity[]) => {
-  const logsCount = logs.length;
-  const interval = logsCount > 1 ? Math.floor(100 / (logsCount - 1)) : 0;
+  const TotalHeight = measureActivityListHeight(logs);
+  const UnitPerPixel = 100 / TotalHeight;
+
+  const jsxList = logs.map(x => <RuntimeActivityRenderer activity={x} />);
+  const startHeighList = generateActivityListPosition(logs);
+  const markValueList = startHeighList.map(height => height * UnitPerPixel);
 
   const marks = {};
-  const positionByLogIndex = [] as number[];
   const logIndexByPosition = {};
 
-  logs.reduce((position, logItem, logItemIndex) => {
-    marks[position] = <RuntimeActivityRenderer activity={logItem} />;
-    logIndexByPosition[position] = logItemIndex;
-    positionByLogIndex[logItemIndex] = position;
-    return position + interval;
-  }, 0);
+  for (let i = 0; i < logs.length; i++) {
+    const currMarkValue = markValueList[i];
+    const ele = jsxList[i];
+
+    marks[currMarkValue] = ele;
+    logIndexByPosition[currMarkValue] = i;
+  }
 
   return {
     displayedMarks: marks,
-    positionByLogIndex,
+    positionByLogIndex: markValueList,
     logIndexByPosition,
   };
 };
 
-const stop = e => {
-  e.preventDefault();
-  e.stopPropagation();
-};
 export const SnapshotProgress = () => {
   const { store, dispatch } = useContext(StoreContext);
   const { logs, logProgress } = store;
@@ -53,14 +53,7 @@ export const SnapshotProgress = () => {
 
   const sliderHeight = measureActivityListHeight(logs);
   return (
-    <div
-      onMouseDown={stop}
-      onDrag={stop}
-      onMouseMove={stop}
-      onDragStart={stop}
-      onDragOver={stop}
-      style={{ padding: 10, height: 'calc(100% - 50px)', overflowX: 'hidden', overflowY: 'auto' }}
-    >
+    <div style={{ padding: 10, height: 'calc(100% - 50px)', overflowX: 'hidden', overflowY: 'auto' }}>
       <Button onClick={onProgressReset}>Reset</Button>
       {logProgress === undefined ? (
         <Slider
