@@ -12,7 +12,6 @@ import { StoreContext } from './store/StoreContext';
 import { useStore } from './store/useStore';
 import { SocketController } from './SocketController';
 import { BotConnector } from './BotConnector';
-import { RuntimeTimeline } from './RuntimeTimeline';
 import { ChatLog } from './ChatLog';
 import { computeTimelineFromLogs, computeSnapshotFromLogs } from './reducer/timelineHistory';
 import { SnapshotProgress } from './SnapshotProgress';
@@ -57,12 +56,11 @@ export const App = () => {
         </div>
         <div className="AppContent">
           <div className="AppContent__Left">
-            <h3>Timeline</h3>
-            <RuntimeTimeline historys={historys} />
+            <h3>Snapshot - Chatlog</h3>
+            <ChatLog logs={activities} />
           </div>
           <div className="AppContent__Middle">
             <h3>Snapshot - Dialog</h3>
-            <SnapshotProgress />
             <VisualDesigner
               dialogId={dialogPath}
               data={get(project, dialogName)}
@@ -76,8 +74,8 @@ export const App = () => {
             />
           </div>
           <div className="AppContent__Right">
-            <h3>Snapshot - Chatlog</h3>
-            <ChatLog logs={activities} />
+            <h3>Timeline</h3>
+            <SnapshotProgress />
           </div>
         </div>
         <div className="AppFooter">
