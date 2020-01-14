@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React, { useContext } from 'react';
+import React, { useContext, useState, useMemo, FC } from 'react';
 import { Button, Slider } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
@@ -9,13 +9,15 @@ import { RuntimeActivity } from './store';
 import { changeProgress, resetProgress } from './actions/progressActions';
 import { RuntimeActivityRenderer, measureActivityListHeight, generateActivityListPosition } from './RuntimeActivityLib';
 
+const SliderMax = 1000;
+
 const generateMarkAssets = (logs: RuntimeActivity[]) => {
   const TotalHeight = measureActivityListHeight(logs);
-  const UnitPerPixel = 100 / TotalHeight;
+  const UnitPerPixel = SliderMax / TotalHeight;
 
   const jsxList = logs.map(x => <RuntimeActivityRenderer activity={x} />);
   const startHeighList = generateActivityListPosition(logs);
-  const markValueList = startHeighList.map(height => height * UnitPerPixel);
+  const markValueList = startHeighList.map(height => height * UnitPerPixel).map(Math.floor);
 
   const marks = {};
   const logIndexByPosition = {};
@@ -37,46 +39,51 @@ const generateMarkAssets = (logs: RuntimeActivity[]) => {
 
 export const TimelineProgress = () => {
   const { store, dispatch } = useContext(StoreContext);
-  const { logs, logProgress } = store;
-  const { displayedMarks, positionByLogIndex, logIndexByPosition } = generateMarkAssets(logs);
-  const currentProgress = positionByLogIndex[logProgress ? logProgress - 1 : logs.length - 1];
+  const { logs } = store;
+  /** Avoid other parts of store changes leading to rerender */
+  return <TimelineProgressMemo logs={logs} dispatch={dispatch} />;
+};
+
+const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs, dispatch }) => {
+  const [sliderPosition, setSliderPosition] = useState(-1);
+
+  const { displayedMarks, positionByLogIndex, logIndexByPosition } = useMemo(() => generateMarkAssets(logs), [logs]);
+  const sliderHeight = useMemo(() => measureActivityListHeight(logs), [logs]);
 
   const onProgressChange = position => {
     const logIndex = logIndexByPosition[position];
+    setSliderPosition(position);
     if (typeof logIndex === 'number') {
       dispatch(changeProgress(logIndex + 1));
     }
   };
+
   const onProgressReset = () => {
+    setSliderPosition(-1);
     dispatch(resetProgress());
   };
 
-  const sliderHeight = measureActivityListHeight(logs);
+  const lastPosition = positionByLogIndex[logs.length - 1];
+  const computedSliderPosition = sliderPosition === -1 ? lastPosition : sliderPosition;
+
   return (
     <div style={{ padding: 10, height: 'calc(100% - 50px)', overflowX: 'hidden', overflowY: 'auto' }}>
       <Button onClick={onProgressReset}>Reset</Button>
-      {logProgress === undefined ? (
-        <Slider
-          style={{ height: sliderHeight }}
-          vertical
-          reverse
-          marks={displayedMarks}
-          step={1}
-          value={currentProgress}
-          onChange={onProgressChange}
-        />
-      ) : (
-        <Slider
-          style={{ height: sliderHeight }}
-          vertical
-          reverse
-          key={logs.length}
-          marks={displayedMarks}
-          step={1}
-          defaultValue={currentProgress}
-          onChange={onProgressChange}
-        />
-      )}
+      <Slider
+        max={SliderMax}
+        style={{ height: sliderHeight }}
+        vertical
+        reverse
+        marks={displayedMarks}
+        step={1}
+        value={computedSliderPosition}
+        onChange={onProgressChange}
+      />
     </div>
   );
 };
+
+const TimelineProgressMemo = React.memo(TimelineProgressPure, (prevProps, nextProps) => {
+  const propsEqual = prevProps.logs === nextProps.logs;
+  return propsEqual;
+});
