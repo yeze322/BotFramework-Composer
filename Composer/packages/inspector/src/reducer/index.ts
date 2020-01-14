@@ -36,6 +36,7 @@ export const reducer = (store: InspectorStore = initialStore, action): Inspector
         logs: [...store.logs, new RuntimeActivity(RuntimeActivityTypes.UserInput, payload.text)],
       };
     case CHANGE_PROGRESS:
+      if (store.logProgress === payload) return store;
       return {
         ...store,
         logProgress: payload,

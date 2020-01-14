@@ -30,10 +30,15 @@ const generateMarkAssets = (logs: RuntimeActivity[]) => {
     logIndexByPosition[currMarkValue] = i;
   }
 
+  const findNeareastLogIndexByPosition = (position: number): number => {
+    const neareastNext = markValueList.findIndex(x => x > position);
+    return Math.min(logs.length - 1, neareastNext - 1);
+  };
+
   return {
     displayedMarks: marks,
     positionByLogIndex: markValueList,
-    logIndexByPosition,
+    findNeareastLogIndexByPosition,
   };
 };
 
@@ -47,15 +52,16 @@ export const TimelineProgress = () => {
 const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs, dispatch }) => {
   const [sliderPosition, setSliderPosition] = useState(-1);
 
-  const { displayedMarks, positionByLogIndex, logIndexByPosition } = useMemo(() => generateMarkAssets(logs), [logs]);
+  const { displayedMarks, positionByLogIndex, findNeareastLogIndexByPosition } = useMemo(
+    () => generateMarkAssets(logs),
+    [logs]
+  );
   const sliderHeight = useMemo(() => measureActivityListHeight(logs), [logs]);
 
   const onProgressChange = position => {
-    const logIndex = logIndexByPosition[position];
     setSliderPosition(position);
-    if (typeof logIndex === 'number') {
-      dispatch(changeProgress(logIndex + 1));
-    }
+    const logIndex = findNeareastLogIndexByPosition(position);
+    dispatch(changeProgress(logIndex + 1));
   };
 
   const onProgressReset = () => {
