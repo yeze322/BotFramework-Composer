@@ -4,6 +4,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React, { useMemo } from 'react';
+import { Breadcrumb } from 'antd';
 import VisualDesigner from '@bfc/visual-designer';
 import get from 'lodash/get';
 import 'antd/dist/antd.css';
@@ -67,7 +68,11 @@ export const App = () => {
           </div>
           <div className="AppContent__Middle">
             <h3>Snapshot - Dialog</h3>
-            <div style={{ height: 'calc(100% - 50px)' }}>
+            <Breadcrumb>
+              <Breadcrumb.Item>{dialogName}</Breadcrumb.Item>
+              <Breadcrumb.Item>{triggerPath}</Breadcrumb.Item>
+            </Breadcrumb>
+            <div style={{ height: 'calc(100% - 80px)' }}>
               <VisualDesigner
                 dialogId={dialogPath}
                 data={get(project, dialogName)}
