@@ -18,12 +18,7 @@ interface DialogOverview {
 type ProjectOverview = DialogOverview[];
 
 const TriggerUnit: React.FC<{ trigger: TriggerType; index: number }> = ({ trigger, index }) => {
-  return (
-    <Card.Grid style={{ width: '100%' }}>
-      <Tag>{index}</Tag>
-      {trigger}
-    </Card.Grid>
-  );
+  return <Card.Grid style={{ width: '100%' }}>{`[${index}] ${trigger}`}</Card.Grid>;
 };
 
 const DialogOverview: React.FC<{ dialog: DialogOverview }> = ({ dialog }) => {
