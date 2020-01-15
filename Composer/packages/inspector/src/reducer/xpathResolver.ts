@@ -54,11 +54,12 @@ export const parseXpathWithContext = (
     }
     return { dialogPath: currentDialogName, triggerPath: triggerPath, actionPath };
   } catch (e) {
-    console.warn(e.message);
+    console.warn('cannot get dialog name', e.message);
     return { dialogPath, triggerPath, actionPath };
   }
 };
 
 export const getDialogNameFromDialogPath = (trace, dialogPath: string) => {
-  return get(trace, [dialogPath, '_id'], 'Main');
+  const name = get(trace, dialogPath + '._id', 'Main');
+  return name;
 };
