@@ -56,7 +56,7 @@ export const TriggerActivity: React.FC<{ activity: RuntimeActivity }> = ({ activ
     <div style={{ height: eleHeight }}>
       <Tag color={Colors.Dialog}>Dialog</Tag>
       {dialogName}
-      {' -> '}
+      {' / '}
       <Tag color={Colors.Trigger}>Trigger</Tag>
       {triggerPath}
     </div>
