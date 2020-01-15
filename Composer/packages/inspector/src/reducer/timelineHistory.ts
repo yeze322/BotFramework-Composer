@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { RuntimeActivity, RuntimeHistory, RuntimeActivityTypes, Snapshot } from '../store';
-import { parseXpath } from '../actions/setXpath';
+import { parseXpath } from '../reducer/xpathResolver';
 
 export const computeTimelineFromLogs = (logs: RuntimeActivity[]): RuntimeHistory[] => {
   const results = logs.reduce((historys, activity) => {
