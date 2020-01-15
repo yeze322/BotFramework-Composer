@@ -3,14 +3,16 @@
 
 import React, { useContext, useState, useMemo, FC } from 'react';
 import { Button, Slider } from 'antd';
+import { zip, interval, from } from 'rxjs';
 
 import { StoreContext } from './store/StoreContext';
 import { RuntimeActivity } from './store';
 import { changeProgress, resetProgress } from './actions/progressActions';
 import { RuntimeActivityRenderer, measureActivityListHeight, generateActivityListPosition } from './RuntimeActivityLib';
 
-const SliderMax = 1000;
+let replay$: any;
 
+const SliderMax = 1000;
 const generateMarkAssets = (logs: RuntimeActivity[]) => {
   const TotalHeight = measureActivityListHeight(logs);
   const UnitPerPixel = SliderMax / TotalHeight;
@@ -51,6 +53,7 @@ export const TimelineProgress = () => {
 
 const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs, dispatch }) => {
   const [sliderPosition, setSliderPosition] = useState(-1);
+  const [replaying, setReplaying] = useState(false);
 
   const { displayedMarks, positionByLogIndex, findNeareastLogIndexByPosition } = useMemo(
     () => generateMarkAssets(logs),
@@ -58,15 +61,39 @@ const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs,
   );
   const sliderHeight = useMemo(() => measureActivityListHeight(logs), [logs]);
 
-  const onProgressChange = position => {
+  const setProgressBar = position => {
     setSliderPosition(position);
     const logIndex = findNeareastLogIndexByPosition(position);
     dispatch(changeProgress(logIndex + 1));
   };
 
+  const stopReplay = () => {
+    setReplaying(false);
+    replay$?.unsubscribe();
+  };
+
   const onProgressReset = () => {
     setSliderPosition(-1);
     dispatch(resetProgress());
+    stopReplay();
+  };
+
+  const replayProgress = () => {
+    setReplaying(true);
+    replay$ = zip(from(positionByLogIndex), interval(1000), x => x).subscribe(
+      position => {
+        setProgressBar(position);
+      },
+      undefined,
+      () => {
+        stopReplay();
+      }
+    );
+  };
+
+  const onDragProgressBar = position => {
+    setProgressBar(position);
+    stopReplay();
   };
 
   const lastPosition = positionByLogIndex[logs.length - 1];
@@ -74,7 +101,13 @@ const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs,
 
   return (
     <div style={{ padding: 10, height: 'calc(100% - 50px)', overflowX: 'hidden', overflowY: 'auto' }}>
-      <Button onClick={onProgressReset}>Reset</Button>
+      <div>
+        <Button onClick={onProgressReset}>Reset</Button>
+        <Button type={'primary'} style={{ marginLeft: 20 }} onClick={replayProgress} loading={replaying}>
+          Replay
+        </Button>
+        {replaying ? <Button onClick={stopReplay}>Stop</Button> : null}
+      </div>
       <Slider
         max={SliderMax}
         style={{ height: sliderHeight }}
@@ -83,7 +116,7 @@ const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs,
         marks={displayedMarks}
         step={1}
         value={computedSliderPosition}
-        onChange={onProgressChange}
+        onChange={onDragProgressBar}
       />
     </div>
   );
