@@ -58,3 +58,7 @@ export const parseXpathWithContext = (
     return { dialogPath, triggerPath, actionPath };
   }
 };
+
+export const getDialogNameFromDialogPath = (trace, dialogPath: string) => {
+  return get(trace, [dialogPath, '_id'], 'Main');
+};

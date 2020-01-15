@@ -18,6 +18,7 @@ import { computeTimelineFromLogs, computeSnapshotFromLogs } from './reducer/time
 import { TimelineProgress } from './TimelineProgress';
 import { ProjectOverviewContainer } from './ProjectOverview';
 import composerIcon from './images/composerIcon.svg';
+import { getDialogNameFromDialogPath } from './reducer/xpathResolver';
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -47,7 +48,7 @@ export const App = () => {
   const historys = useMemo(() => computeTimelineFromLogs(logs), [logs]);
   const snapshot = useMemo(() => computeSnapshotFromLogs(logs, logProgress), [logs, logProgress]);
   const { dialogPath, triggerPath, actionPath, activities } = snapshot;
-  const dialogName = get(trace, dialogPath + '._id', 'Main');
+  const dialogName = getDialogNameFromDialogPath(trace, dialogPath);
 
   return (
     <StoreContext.Provider value={{ store, dispatch }}>
