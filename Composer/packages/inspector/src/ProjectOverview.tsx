@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 
 import React, { useContext } from 'react';
-import { Tag } from 'antd';
+import { Card, Tag } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
 import { Project } from './store';
+import './cardOverride.css';
 
 type TriggerType = string;
 
@@ -17,29 +18,22 @@ interface DialogOverview {
 type ProjectOverview = DialogOverview[];
 
 const TriggerUnit: React.FC<{ trigger: TriggerType; index: number }> = ({ trigger, index }) => {
-  const displayedText = trigger.replace('Microsoft.On', '').replace('Microsoft.', '');
   return (
-    <Tag
-      title={trigger}
-      style={{ maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis' }}
-    >{`[${index}] ${displayedText}`}</Tag>
+    <Card.Grid style={{ width: '100%' }}>
+      <Tag>{index}</Tag>
+      {trigger}
+    </Card.Grid>
   );
 };
 
 const DialogOverview: React.FC<{ dialog: DialogOverview }> = ({ dialog }) => {
+  const title = <h2>{dialog.name}</h2>;
   return (
-    <div style={{ width: 150, margin: 10, padding: 10, border: '1px solid black' }}>
-      <div>
-        <b>Dialog: </b>
-        {dialog.name}
-      </div>
-      <div>
-        <b>{dialog.triggers.length} Triggers: </b>
-        {dialog.triggers.map(($type, index) => (
-          <TriggerUnit key={`tag:${dialog.name}/triggers[${index}]`} trigger={$type} index={index} />
-        ))}
-      </div>
-    </div>
+    <Card title={title} style={{ width: 300, margin: '20px 0' }}>
+      {dialog.triggers.map(($type, index) => (
+        <TriggerUnit key={`tag:${dialog.name}/triggers[${index}]`} trigger={$type} index={index} />
+      ))}
+    </Card>
   );
 };
 
