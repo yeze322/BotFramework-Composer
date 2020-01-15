@@ -58,6 +58,7 @@
   overflow: scroll;
   overflow-x: auto;
   overflow-y: auto;
+  border-right: 2px solid #eee;
 }
 
 .AppContent__Middle {
