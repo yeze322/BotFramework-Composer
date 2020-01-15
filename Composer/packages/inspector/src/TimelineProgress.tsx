@@ -15,7 +15,7 @@ const generateMarkAssets = (logs: RuntimeActivity[]) => {
   const TotalHeight = measureActivityListHeight(logs);
   const UnitPerPixel = SliderMax / TotalHeight;
 
-  const jsxList = logs.map(x => <RuntimeActivityRenderer activity={x} />);
+  const jsxList = logs.map((x, index) => <RuntimeActivityRenderer key={`activity[${index}]`} activity={x} />);
   const startHeighList = generateActivityListPosition(logs);
   const markValueList = startHeighList.map(height => height * UnitPerPixel).map(Math.floor);
 
