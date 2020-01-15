@@ -53,12 +53,23 @@ export const TriggerActivity: React.FC<{ activity: RuntimeActivity }> = ({ activ
   const { dialogPath, triggerPath } = parseXpath(activity.value);
   const dialogName = getDialogNameFromDialogPath(store.trace, dialogPath);
   return (
-    <div style={{ height: eleHeight }}>
+    <div style={{ height: eleHeight, position: 'relative' }}>
       <Tag color={Colors.Dialog}>Dialog</Tag>
       {dialogName}
       {' / '}
       <Tag color={Colors.Trigger}>Trigger</Tag>
       {triggerPath}
+      <div
+        style={{
+          position: 'absolute',
+          width: 300,
+          height: 3,
+          borderTop: '1px solid #eee',
+          borderBottom: '1px solid #eee',
+          left: 0,
+          top: -5,
+        }}
+      ></div>
     </div>
   );
 };
