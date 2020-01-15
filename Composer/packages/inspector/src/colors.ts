@@ -6,4 +6,5 @@ export const Colors = {
   Bot: 'purple',
   Trigger: '#108ee9',
   Action: '#87d068',
+  Dialog: 'orange',
 };

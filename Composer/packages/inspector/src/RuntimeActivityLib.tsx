@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tag } from 'antd';
 
 import { RuntimeActivity, RuntimeActivityTypes } from './store';
 import { Colors } from './colors';
+import { StoreContext } from './store/StoreContext';
+import { parseXpath, getDialogNameFromDialogPath } from './reducer/xpathResolver';
 
 const ActivityCoreHeight = 25;
 const GroupInterval = 30;
@@ -45,23 +47,41 @@ export const generateActivityListPosition = (activities: RuntimeActivity[]): num
   return positionList;
 };
 
+export const TriggerActivity: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {
+  const eleHeight = measureActivityHeight(activity);
+  const { store } = useContext(StoreContext);
+  const { dialogPath, triggerPath } = parseXpath(activity.value);
+  const dialogName = getDialogNameFromDialogPath(store.trace, dialogPath);
+  return (
+    <div style={{ height: eleHeight }}>
+      <Tag color={Colors.Dialog}>Dialog</Tag>
+      {dialogName}
+      {' -> '}
+      <Tag color={Colors.Trigger}>Trigger</Tag>
+      {triggerPath}
+    </div>
+  );
+};
+
+export const ActionActivity: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {
+  const eleHeight = measureActivityHeight(activity);
+  const { store } = useContext(StoreContext);
+  const { actionPath } = parseXpath(activity.value);
+  return (
+    <div style={{ height: eleHeight, marginLeft: OtherLeft }}>
+      <Tag color={Colors.Action}>Action</Tag>
+      {actionPath}
+    </div>
+  );
+};
+
 export const RuntimeActivityRenderer: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {
   const eleHeight = measureActivityHeight(activity);
   switch (activity.type) {
     case RuntimeActivityTypes.Trigger:
-      return (
-        <div style={{ height: eleHeight }}>
-          <Tag color={Colors.Trigger}>Trigger</Tag>
-          {activity.value}
-        </div>
-      );
+      return <TriggerActivity activity={activity} />;
     case RuntimeActivityTypes.Action:
-      return (
-        <div style={{ height: eleHeight, marginLeft: OtherLeft }}>
-          <Tag color={Colors.Action}>Action</Tag>
-          {activity.value}
-        </div>
-      );
+      return <ActionActivity activity={activity} />;
     case RuntimeActivityTypes.BotAsks:
       return (
         <div style={{ height: eleHeight, marginLeft: OtherLeft }}>
