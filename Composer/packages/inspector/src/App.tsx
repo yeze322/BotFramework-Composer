@@ -4,7 +4,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React, { useMemo } from 'react';
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Tabs } from 'antd';
 import VisualDesigner from '@bfc/visual-designer';
 import get from 'lodash/get';
 import 'antd/dist/antd.css';
@@ -20,6 +20,8 @@ import { TimelineProgress } from './TimelineProgress';
 import { ProjectOverviewContainer } from './ProjectOverview';
 import composerIcon from './images/composerIcon.svg';
 import { getDialogNameFromDialogPath } from './reducer/xpathResolver';
+
+const { TabPane } = Tabs;
 
 const mockShellApi = [
   'addCoachMarkRef',
@@ -87,8 +89,17 @@ export const App = () => {
             </div>
           </div>
           <div className="AppContent__Right">
-            <h3>Timeline</h3>
-            <TimelineProgress />
+            <Tabs defaultActiveKey="1" size="small">
+              <TabPane style={{ height: 'calc(100% - 40px)' }} tab="Timeline" key="1">
+                <TimelineProgress />
+              </TabPane>
+              <TabPane tab="Message" key="2">
+                Content of Tab Pane 2
+              </TabPane>
+              <TabPane tab="Stack" key="3">
+                Content of Tab Pane 3
+              </TabPane>
+            </Tabs>
           </div>
         </div>
         <div className="AppFooter">

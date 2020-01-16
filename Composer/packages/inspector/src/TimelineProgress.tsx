@@ -100,13 +100,17 @@ const TimelineProgressPure: FC<{ logs: RuntimeActivity[]; dispatch }> = ({ logs,
   const computedSliderPosition = sliderPosition === -1 ? lastPosition : sliderPosition;
 
   return (
-    <div style={{ padding: 10, height: 'calc(100% - 50px)', overflowX: 'hidden', overflowY: 'auto' }}>
+    <div
+      style={{ padding: 10, height: 'calc(100% - 50px)', minHeight: '200px', overflowX: 'hidden', overflowY: 'auto' }}
+    >
       <div>
-        <Button onClick={onProgressReset}>Reset</Button>
-        <Button type={'primary'} style={{ marginLeft: 20 }} onClick={replayProgress} loading={replaying}>
-          Replay
-        </Button>
-        {replaying ? <Button onClick={stopReplay}>Stop</Button> : null}
+        <Button.Group>
+          <Button type={'primary'} onClick={replayProgress} loading={replaying}>
+            Replay
+          </Button>
+          {replaying ? <Button onClick={stopReplay}>Stop</Button> : null}
+          <Button onClick={onProgressReset}>Reset</Button>
+        </Button.Group>
       </div>
       <Slider
         max={SliderMax}
