@@ -11,8 +11,8 @@ export const CallStack: React.FC<{ logs: RuntimeActivity[] }> = ({ logs }) => {
   const triggerLogs = logs.filter(x => x.type === RuntimeActivityTypes.Trigger);
   return (
     <List
-      header={<div>Begin</div>}
-      footer={<div>End</div>}
+      header={<div>Dialog Begin</div>}
+      footer={<div>Most Recent</div>}
       bordered
       dataSource={triggerLogs}
       renderItem={item => (
