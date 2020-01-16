@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 
 import React, { useContext } from 'react';
-import { Card, Tag } from 'antd';
+import { Card, Tag, Tree, Icon, Typography } from 'antd';
 
 import { StoreContext } from './store/StoreContext';
 import { Project } from './store';
 import './cardOverride.css';
+
+const TreeNode = Tree.TreeNode;
+const Text = Typography.Text;
 
 type TriggerType = string;
 
@@ -24,12 +27,28 @@ const TriggerUnit: React.FC<{ trigger: TriggerType; index: number }> = ({ trigge
 const DialogOverview: React.FC<{ dialog: DialogOverview }> = ({ dialog }) => {
   const title = <h2>{dialog.name}</h2>;
   return (
-    <Card title={title} style={{ width: 300, margin: '20px 0' }}>
-      {dialog.triggers.map(($type, index) => (
-        <TriggerUnit key={`tag:${dialog.name}/triggers[${index}]`} trigger={$type} index={index} />
-      ))}
-    </Card>
+    <Tree defaultExpandedKeys={['0-0']}>
+      <TreeNode title={dialog.name} key="0-0">
+        {dialog.triggers.map((triggerName, index) => (
+          <TreeNode
+            title={
+              <>
+                <Text disabled>{`triggers[${index}]`}</Text> {triggerName.replace('Microsoft.', '')}
+              </>
+            }
+            key={`${dialog.name}/triggers[${index}]`}
+          />
+        ))}
+      </TreeNode>
+    </Tree>
   );
+  // return (
+  //   <Card title={title} style={{ width: 300, margin: '20px 0' }}>
+  //     {dialog.triggers.map(($type, index) => (
+  //       <TriggerUnit key={`tag:${dialog.name}/triggers[${index}]`} trigger={$type} index={index} />
+  //     ))}
+  //   </Card>
+  // );
 };
 
 const ProjectOverview: React.FC<{ project: ProjectOverview }> = ({ project }) => {
