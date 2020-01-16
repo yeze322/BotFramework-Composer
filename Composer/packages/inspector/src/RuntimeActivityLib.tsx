@@ -59,7 +59,7 @@ export const TriggerActivity: React.FC<{ activity: RuntimeActivity }> = ({ activ
       {' / '}
       <Tag color={Colors.Trigger}>Trigger</Tag>
       {triggerPath}
-      <div
+      {/* <div
         style={{
           position: 'absolute',
           width: 300,
@@ -69,7 +69,7 @@ export const TriggerActivity: React.FC<{ activity: RuntimeActivity }> = ({ activ
           left: 0,
           top: -5,
         }}
-      ></div>
+      ></div> */}
     </div>
   );
 };
