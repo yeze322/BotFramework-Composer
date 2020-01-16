@@ -47,13 +47,13 @@ export const generateActivityListPosition = (activities: RuntimeActivity[]): num
   return positionList;
 };
 
-export const TriggerActivity: React.FC<{ activity: RuntimeActivity }> = ({ activity }) => {
+export const TriggerActivity: React.FC<{ activity: RuntimeActivity; styles? }> = ({ activity, styles }) => {
   const eleHeight = measureActivityHeight(activity);
   const { store } = useContext(StoreContext);
   const { dialogPath, triggerPath } = parseXpath(activity.value);
   const dialogName = getDialogNameFromDialogPath(store.trace, dialogPath);
   return (
-    <div style={{ height: eleHeight, position: 'relative' }}>
+    <div style={{ height: eleHeight, position: 'relative', ...styles }}>
       <Tag color={Colors.Dialog}>Dialog</Tag>
       {dialogName}
       {' / '}

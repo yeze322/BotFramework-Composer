@@ -21,6 +21,7 @@ import { ProjectOverviewContainer } from './ProjectOverview';
 import composerIcon from './images/composerIcon.svg';
 import { getDialogNameFromDialogPath } from './reducer/xpathResolver';
 import { ChatLog } from './ChatLog';
+import { CallStack } from './CallStack';
 
 const { TabPane } = Tabs;
 
@@ -98,7 +99,7 @@ export const App = () => {
                 <ChatLog logs={snapshot.activities} />
               </TabPane>
               <TabPane tab="Stack" key="3">
-                Content of Tab Pane 3
+                <CallStack logs={snapshot.activities} />
               </TabPane>
             </Tabs>
           </div>
