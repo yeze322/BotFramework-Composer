@@ -20,6 +20,7 @@ import { TimelineProgress } from './TimelineProgress';
 import { ProjectOverviewContainer } from './ProjectOverview';
 import composerIcon from './images/composerIcon.svg';
 import { getDialogNameFromDialogPath } from './reducer/xpathResolver';
+import { ChatLog } from './ChatLog';
 
 const { TabPane } = Tabs;
 
@@ -94,7 +95,7 @@ export const App = () => {
                 <TimelineProgress />
               </TabPane>
               <TabPane tab="Message" key="2">
-                Content of Tab Pane 2
+                <ChatLog logs={snapshot.activities} />
               </TabPane>
               <TabPane tab="Stack" key="3">
                 Content of Tab Pane 3
