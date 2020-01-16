@@ -62,7 +62,7 @@ export const App = () => {
         <SocketController />
         <div className="AppHeader">
           <img className="AppHeader__icon" src={composerIcon} />
-          <span className="AppHeader__title">Adaptive Dialog Footprint</span>
+          <span className="AppHeader__title">Adaptive Dialog Tracker</span>
         </div>
         <div className="AppContent">
           <div className="AppContent__Left">
