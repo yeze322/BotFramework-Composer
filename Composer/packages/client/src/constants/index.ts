@@ -14,7 +14,7 @@ export const UNDO_LIMIT = 10;
  * You may not need all of this types. but the type must be one of them.
  * Shortly, a good ActionType name should be:
  * <DO_WHAT_STATUS> or <DO_WHAT>
- *
+ *a
  * <DO>
  * e.g. 'GET' / 'SET' / 'FETCH' / 'UPDATE' / 'CREATE' etc.
  *
