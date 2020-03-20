@@ -71,7 +71,7 @@ export const ObiEditor: FC<ObiEditorProps> = ({
           onFocusSteps([...newFocusedIds], e.tab);
         };
         break;
-      case NodeEventTypes.FocusEvent:
+      case NodeEventTypes.FocusTrigger:
         handler = onFocusEvent;
         break;
       case NodeEventTypes.OpenDialog:
@@ -113,7 +113,7 @@ export const ObiEditor: FC<ObiEditorProps> = ({
           };
         }
         break;
-      case NodeEventTypes.InsertEvent:
+      case NodeEventTypes.InsertTrigger:
         handler = e => {
           const dialog = insert(data, e.id, e.position, e.$type);
           onChange(dialog);

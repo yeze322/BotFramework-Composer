@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 
 export enum NodeEventTypes {
-  Expand = 'event.view.expand',
+  ExpandTrigger = 'event.view.expand-trigger',
+  FocusTrigger = 'event.view.focus-trigger',
   Focus = 'event.view.focus',
-  FocusEvent = 'event.view.focus-event',
   OpenDialog = 'event.nav.opendialog',
   Delete = 'event.data.delete',
   InsertBefore = 'event.data.insert-before',
   InsertAfter = 'event.data.insert-after',
   Insert = 'event.data.insert',
-  InsertEvent = 'event.data.insert-event',
+  InsertTrigger = 'event.data.insert-trigger',
   CopySelection = 'event.data.copy-selection',
   CutSelection = 'event.data.cut-selection',
   DeleteSelection = 'event.data.delete-selection',

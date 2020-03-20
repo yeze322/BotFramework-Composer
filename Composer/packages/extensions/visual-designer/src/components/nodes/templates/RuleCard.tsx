@@ -30,7 +30,7 @@ const getDirectJumpDialog = data => {
 
 export const RuleCard: React.FC<CardProps> = ({ id, data, label, onEvent }): JSX.Element => {
   const openNode = () => {
-    return onEvent(NodeEventTypes.Expand, id);
+    return onEvent(NodeEventTypes.ExpandTrigger, id);
   };
 
   const openChildDialog = () => {

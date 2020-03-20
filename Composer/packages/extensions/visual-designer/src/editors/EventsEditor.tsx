@@ -21,7 +21,7 @@ export const EventsEditor: FC<EditorProps> = ({ id, data, onEvent }): JSX.Elemen
       title={title}
       onClickContent={e => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.FocusEvent, '');
+        onEvent(NodeEventTypes.FocusTrigger, '');
       }}
       collapsedItems={<CollapsedRuleGroup count={ruleCount} />}
       addMenu={<EventMenu onClick={onClick} data-testid="EventsEditorAdd" />}
