@@ -45,7 +45,7 @@ export class BeginDialog extends React.Component<NodeProps, object> {
         corner={<NodeMenu id={id} onEvent={onEvent} />}
         label={this.renderCallDialogLink()}
         onClick={() => {
-          onEvent(NodeEventTypes.Focus, { id });
+          onEvent(NodeEventTypes.FocusAction, { id });
         }}
       />
     );

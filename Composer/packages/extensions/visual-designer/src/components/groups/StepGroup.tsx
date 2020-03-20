@@ -75,7 +75,7 @@ export const StepGroup: FunctionComponent<NodeProps> = ({ id, data, onEvent, onR
         css={{ zIndex: 100 }}
       >
         <EdgeMenu
-          onClick={$type => onEvent(NodeEventTypes.Insert, { id, $type, position: 0 })}
+          onClick={$type => onEvent(NodeEventTypes.InsertAction, { id, $type, position: 0 })}
           data-testid="StepGroupAdd"
           id={`${id}[0]`}
         />
@@ -91,7 +91,7 @@ export const StepGroup: FunctionComponent<NodeProps> = ({ id, data, onEvent, onR
               css={{ zIndex: 100 }}
             >
               <EdgeMenu
-                onClick={$type => onEvent(NodeEventTypes.Insert, { id, $type, position: idx + 1 })}
+                onClick={$type => onEvent(NodeEventTypes.InsertAction, { id, $type, position: idx + 1 })}
                 data-testid="StepGroupAdd"
                 id={`${id}[${idx + 1}]`}
               />

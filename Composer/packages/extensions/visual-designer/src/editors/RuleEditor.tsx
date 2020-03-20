@@ -57,7 +57,7 @@ export const RuleEditor = ({ id, data, onEvent, addCoachMarkRef }): JSX.Element 
       }}
       onClick={e => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.Focus, { id: '' });
+        onEvent(NodeEventTypes.FocusAction, { id: '' });
       }}
     >
       <StepEditor

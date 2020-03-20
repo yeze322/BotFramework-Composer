@@ -61,7 +61,7 @@ export const ObiEditor: FC<ObiEditorProps> = ({
   const dispatchEvent = (eventName: NodeEventTypes, eventData: any): any => {
     let handler;
     switch (eventName) {
-      case NodeEventTypes.Focus:
+      case NodeEventTypes.FocusAction:
         handler = (e: { id: string; tab?: string }) => {
           const newFocusedIds = e.id ? [e.id] : [];
           setSelectionContext({
@@ -77,13 +77,13 @@ export const ObiEditor: FC<ObiEditorProps> = ({
       case NodeEventTypes.OpenDialog:
         handler = ({ caller, callee }) => onOpen(callee, caller);
         break;
-      case NodeEventTypes.Delete:
+      case NodeEventTypes.DeleteAction:
         handler = e => {
           onChange(deleteNode(data, e.id, node => deleteAction(node, deleteLgTemplates)));
           onFocusSteps([]);
         };
         break;
-      case NodeEventTypes.Insert:
+      case NodeEventTypes.InsertAction:
         if (eventData.$type === 'PASTE') {
           handler = e => {
             // TODO: clean this along with node deletion.
@@ -310,7 +310,7 @@ export const ObiEditor: FC<ObiEditorProps> = ({
             ref={el => (divRef = el)}
             onClick={e => {
               e.stopPropagation();
-              dispatchEvent(NodeEventTypes.Focus, { id: '' });
+              dispatchEvent(NodeEventTypes.FocusAction, { id: '' });
             }}
           >
             <AdaptiveDialogEditor

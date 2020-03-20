@@ -35,7 +35,7 @@ export const TextInput: FC<NodeProps> = ({ id, data, onEvent }): JSX.Element => 
           icon={ElementIcon.MessageBot}
           label={templateText || '<initPrompt>'}
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>
@@ -46,7 +46,7 @@ export const TextInput: FC<NodeProps> = ({ id, data, onEvent }): JSX.Element => 
           icon={ElementIcon.User}
           label={data.property || '<property>'}
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>
@@ -57,7 +57,7 @@ export const TextInput: FC<NodeProps> = ({ id, data, onEvent }): JSX.Element => 
           icon={ElementIcon.MessageBot}
           label={data.unrecognizedPrompt || '<unrecognizedPrompt>'}
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>
@@ -68,7 +68,7 @@ export const TextInput: FC<NodeProps> = ({ id, data, onEvent }): JSX.Element => 
           icon={ElementIcon.MessageBot}
           label={data.invalidPrompt || '<invalidPrompt>'}
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>

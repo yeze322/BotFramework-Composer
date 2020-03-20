@@ -94,7 +94,7 @@ export const Foreach: FunctionComponent<NodeProps> = ({ id, data, onEvent, onRes
         .filter(x => !!x)
         .map((x, index) => (
           <OffsetContainer key={`${id}/loopicon-${index}/offset`} offset={x.offset}>
-            <LoopIndicator onClick={() => onEvent(NodeEventTypes.Focus, { id })} />
+            <LoopIndicator onClick={() => onEvent(NodeEventTypes.FocusAction, { id })} />
           </OffsetContainer>
         ))}
       {edges ? edges.map(x => <Edge key={x.id} {...x} />) : null}

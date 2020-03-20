@@ -78,7 +78,7 @@ export const IfCondition: FunctionComponent<NodeProps> = ({ id, data, onEvent, o
       <OffsetContainer offset={choice.offset}>
         <Diamond
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>

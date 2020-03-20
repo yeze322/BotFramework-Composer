@@ -26,7 +26,7 @@ export const BotAsks: FC<NodeProps> = ({ id, data, onEvent }): JSX.Element => {
       corner={<NodeMenu id={id} onEvent={onEvent} />}
       label={templateText || '<prompt>'}
       onClick={() => {
-        onEvent(NodeEventTypes.Focus, { id, tab: PromptTab.BOT_ASKS });
+        onEvent(NodeEventTypes.FocusAction, { id, tab: PromptTab.BOT_ASKS });
       }}
     />
   );

@@ -77,7 +77,7 @@ export const SwitchCondition: FunctionComponent<NodeProps> = ({ id, data, onEven
         <Diamond
           data-testid="SwitchConditionDiamond"
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>

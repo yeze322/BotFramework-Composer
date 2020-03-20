@@ -28,7 +28,7 @@ export const UserInput: FC<NodeProps> = ({ id, data, onEvent, onResize }): JSX.E
       header={getUserAnswersTitle(data._type)}
       label={data.property || '<property>'}
       onClick={() => {
-        onEvent(NodeEventTypes.Focus, { id, tab: PromptTab.USER_INPUT });
+        onEvent(NodeEventTypes.FocusAction, { id, tab: PromptTab.USER_INPUT });
       }}
     />
   );

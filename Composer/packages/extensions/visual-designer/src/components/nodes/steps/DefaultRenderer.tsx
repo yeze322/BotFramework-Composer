@@ -171,7 +171,7 @@ export class DefaultRenderer extends React.Component<NodeProps, {}> {
         icon={icon}
         label={label}
         onClick={() => {
-          onEvent(NodeEventTypes.Focus, { id });
+          onEvent(NodeEventTypes.FocusAction, { id });
         }}
       />
     );

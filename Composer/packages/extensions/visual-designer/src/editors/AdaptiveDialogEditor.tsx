@@ -39,7 +39,7 @@ export const AdaptiveDialogEditor: FC<EditorProps> = ({ id, data, onEvent, addCo
       const selectedRulePath = eventData;
       return onEvent(NodeEventTypes.FocusTrigger, selectedRulePath);
     }
-    if (eventName === NodeEventTypes.Insert) {
+    if (eventName === NodeEventTypes.InsertAction) {
       return onEvent(NodeEventTypes.InsertTrigger, eventData);
     }
     return onEvent(eventName, eventData);
@@ -71,7 +71,7 @@ export const AdaptiveDialogEditor: FC<EditorProps> = ({ id, data, onEvent, addCo
       }}
       onClick={e => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.Focus, { id: '' });
+        onEvent(NodeEventTypes.FocusAction, { id: '' });
       }}
     >
       {ruleGroup && (

@@ -27,7 +27,7 @@ export const NodeMenu = ({ id, onEvent }): JSX.Element => {
       iconProps: {
         iconName: 'Cancel',
       },
-      onClick: () => onEvent(NodeEventTypes.Delete, { id }),
+      onClick: () => onEvent(NodeEventTypes.DeleteAction, { id }),
     },
   ];
   const { selectedIds } = useContext(SelectionContext);
