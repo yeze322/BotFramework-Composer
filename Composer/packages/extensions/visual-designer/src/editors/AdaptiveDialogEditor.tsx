@@ -35,12 +35,12 @@ export const AdaptiveDialogEditor: FC<EditorProps> = ({ id, data, onEvent, addCo
   const { focusedEvent } = useContext(NodeRendererContext);
 
   const interceptRuleEvent = (eventName: NodeEventTypes, eventData: any) => {
-    if (eventName === NodeEventTypes.Expand) {
+    if (eventName === NodeEventTypes.ExpandTrigger) {
       const selectedRulePath = eventData;
-      return onEvent(NodeEventTypes.FocusEvent, selectedRulePath);
+      return onEvent(NodeEventTypes.FocusTrigger, selectedRulePath);
     }
     if (eventName === NodeEventTypes.Insert) {
-      return onEvent(NodeEventTypes.InsertEvent, eventData);
+      return onEvent(NodeEventTypes.InsertTrigger, eventData);
     }
     return onEvent(eventName, eventData);
   };

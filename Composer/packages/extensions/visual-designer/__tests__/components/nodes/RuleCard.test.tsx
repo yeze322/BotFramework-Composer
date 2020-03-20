@@ -45,7 +45,7 @@ describe('<RuleCard />', () => {
         const card = await findByTestId('IconCard');
 
         fireEvent.click(card);
-        expect(clickResults.onEvent).toEqual([[NodeEventTypes.Expand, id]]);
+        expect(clickResults.onEvent).toEqual([[NodeEventTypes.ExpandTrigger, id]]);
       });
     });
     describe('data has actions', () => {
@@ -82,7 +82,7 @@ describe('<RuleCard />', () => {
         fireEvent.click(openIcon);
 
         expect(clickResults.onEvent).toEqual([
-          [NodeEventTypes.Expand, id],
+          [NodeEventTypes.ExpandTrigger, id],
           [NodeEventTypes.OpenDialog, { caller: id, callee: 'CalleeDialog' }],
         ]);
       });
@@ -111,7 +111,7 @@ describe('<RuleCard />', () => {
         expect(card).toBeTruthy();
 
         fireEvent.click(card);
-        expect(clickResults.onEvent).toEqual([[NodeEventTypes.Expand, id]]);
+        expect(clickResults.onEvent).toEqual([[NodeEventTypes.ExpandTrigger, id]]);
       });
 
       it('should trigger focus node function when id != focusedId', async () => {
@@ -119,7 +119,7 @@ describe('<RuleCard />', () => {
         const card = await findByTestId('IconCard');
 
         fireEvent.click(card);
-        expect(clickResults.onEvent).toEqual([[NodeEventTypes.Expand, id]]);
+        expect(clickResults.onEvent).toEqual([[NodeEventTypes.ExpandTrigger, id]]);
       });
     });
 
@@ -153,7 +153,7 @@ describe('<RuleCard />', () => {
         const card = await findByTestId('IconCard');
 
         fireEvent.click(card);
-        expect(clickResults.onEvent).toEqual([[NodeEventTypes.Expand, id]]);
+        expect(clickResults.onEvent).toEqual([[NodeEventTypes.ExpandTrigger, id]]);
       });
     });
   });
