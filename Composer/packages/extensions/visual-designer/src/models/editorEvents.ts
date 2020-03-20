@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+import { SDKTypes } from '@bfc/shared';
+
 import { NodeEventTypes } from '../constants/NodeEventTypes';
 
 class BaseEvent {
@@ -10,83 +12,117 @@ class BaseEvent {
   }
 }
 
-export class ExpandTriggerEvent extends BaseEvent {
-  constructor() {
+export class ExpandTrigger extends BaseEvent {
+  triggerId: string;
+  constructor(triggerId = '') {
     super(NodeEventTypes.ExpandTrigger);
+    this.triggerId = triggerId;
   }
 }
 
-export class FocusTriggerEvent extends BaseEvent {
-  constructor() {
+export class FocusTrigger extends BaseEvent {
+  triggerId: string;
+  constructor(triggerId = '') {
     super(NodeEventTypes.FocusTrigger);
+    this.triggerId = triggerId;
   }
 }
-export class FocusEvent extends BaseEvent {
-  constructor() {
-    super(NodeEventTypes.Focus);
+
+export class FocusAction extends BaseEvent {
+  actionId: string;
+  tabId?: string;
+  constructor(actionId: string, tabId?: string) {
+    super(NodeEventTypes.FocusAction);
+    this.actionId = actionId;
+    this.tabId = tabId;
   }
 }
-export class OpenDialogEvent extends BaseEvent {
-  constructor() {
+
+export class OpenDialog extends BaseEvent {
+  callerActionId: string;
+  calleeDialogName: string;
+  constructor(callerActionId: string, calleeDialogName: string) {
     super(NodeEventTypes.OpenDialog);
+    this.callerActionId = callerActionId;
+    this.calleeDialogName = calleeDialogName;
   }
 }
-export class DeleteEvent extends BaseEvent {
+
+export class DeleteAction extends BaseEvent {
+  actionId: string;
+  constructor(actionId: string) {
+    super(NodeEventTypes.DeleteAction);
+    this.actionId = actionId;
+  }
+}
+
+export class InsertAction extends BaseEvent {
+  actionType: SDKTypes;
+  targetArrayPath: string;
+  targetPosition: number;
+  constructor(actionType: SDKTypes, targetArrayPath: string, targetPosition: number) {
+    super(NodeEventTypes.InsertAction);
+    this.actionType = actionType;
+    this.targetArrayPath = targetArrayPath;
+    this.targetPosition = targetPosition;
+  }
+}
+
+export class InsertActionBefore extends BaseEvent {
   constructor() {
-    super(NodeEventTypes.Delete);
+    super(NodeEventTypes.InsertActionBefore);
   }
 }
-export class InsertBeforeEvent extends BaseEvent {
+
+export class InsertActionAfter extends BaseEvent {
   constructor() {
-    super(NodeEventTypes.InsertBefore);
+    super(NodeEventTypes.InsertActionAfter);
   }
 }
-export class InsertAfterEvent extends BaseEvent {
-  constructor() {
-    super(NodeEventTypes.InsertAfter);
-  }
-}
-export class InsertEvent extends BaseEvent {
-  constructor() {
-    super(NodeEventTypes.Insert);
-  }
-}
-export class InsertTriggerEvent extends BaseEvent {
+
+export class InsertTrigger extends BaseEvent {
   constructor() {
     super(NodeEventTypes.InsertTrigger);
   }
 }
-export class CopySelectionEvent extends BaseEvent {
+
+export class CopySelection extends BaseEvent {
   constructor() {
     super(NodeEventTypes.CopySelection);
   }
 }
-export class CutSelectionEvent extends BaseEvent {
+
+export class CutSelection extends BaseEvent {
   constructor() {
     super(NodeEventTypes.CutSelection);
   }
 }
-export class DeleteSelectionEvent extends BaseEvent {
+
+export class DeleteSelection extends BaseEvent {
   constructor() {
     super(NodeEventTypes.DeleteSelection);
   }
 }
-export class AppendSelectionEvent extends BaseEvent {
+
+export class AppendSelection extends BaseEvent {
   constructor() {
     super(NodeEventTypes.AppendSelection);
   }
 }
-export class InsertSelectionEvent extends BaseEvent {
+
+export class InsertSelection extends BaseEvent {
   constructor() {
     super(NodeEventTypes.InsertSelection);
   }
 }
-export class UndoEvent extends BaseEvent {
+
+export class Undo extends BaseEvent {
   constructor() {
     super(NodeEventTypes.Undo);
   }
 }
-export class RedoEvent extends BaseEvent {
+
+export class Redo extends BaseEvent {
   constructor() {
     super(NodeEventTypes.Redo);
   }
