@@ -85,7 +85,7 @@ export const IfConditionWidget: FunctionComponent<IfConditionWidgetProps> = ({
       <OffsetContainer offset={choiceNode.offset}>
         <Diamond
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>

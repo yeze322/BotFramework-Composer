@@ -94,7 +94,7 @@ export const ForeachWidget: FunctionComponent<ForeachWidgetProps> = ({ id, data,
         .filter(x => !!x)
         .map((x, index) => (
           <OffsetContainer key={`${id}/loopicon-${index}/offset`} offset={x.offset}>
-            <LoopIndicator onClick={() => onEvent(NodeEventTypes.Focus, { id })} />
+            <LoopIndicator onClick={() => onEvent(NodeEventTypes.FocusAction, { id })} />
           </OffsetContainer>
         ))}
       <SVGContainer>{Array.isArray(edges) ? edges.map(x => renderEdge(x)) : null}</SVGContainer>

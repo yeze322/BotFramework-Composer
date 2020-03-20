@@ -37,7 +37,7 @@ describe('<NodeMenu />', () => {
     const [deleteItem] = await getMenuItems('Delete');
 
     fireEvent.click(deleteItem);
-    expect(clickResults.onDelete).toEqual([[NodeEventTypes.Delete, { id: 'nodeMenu' }]]);
+    expect(clickResults.onDelete).toEqual([[NodeEventTypes.DeleteAction, { id: 'nodeMenu' }]]);
   });
 
   it('renders menu with available actions', async () => {

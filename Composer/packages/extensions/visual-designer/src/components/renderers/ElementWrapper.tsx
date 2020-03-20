@@ -65,7 +65,7 @@ export const ElementWrapper: FC<ElementWrapperProps> = ({ id, tab, onEvent, chil
       {...declareElementAttributes(selectableId, id)}
       onClick={e => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.Focus, { id, tab });
+        onEvent(NodeEventTypes.FocusAction, { id, tab });
       }}
     >
       {children}

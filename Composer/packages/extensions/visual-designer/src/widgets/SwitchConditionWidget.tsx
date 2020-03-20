@@ -97,7 +97,7 @@ export const SwitchConditionWidget: FunctionComponent<SwitchConditionWidgetProps
         <Diamond
           data-testid="SwitchConditionDiamond"
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(NodeEventTypes.FocusAction, { id });
           }}
         />
       </OffsetContainer>

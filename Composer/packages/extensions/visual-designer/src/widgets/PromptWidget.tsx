@@ -88,7 +88,7 @@ export const PromptWidget: FC<PromptWdigetProps> = ({
       </OffsetContainer>
       <OffsetContainer offset={brickNode.offset}>
         <ElementWrapper id={brickNode.id} tab={PromptTab.OTHER} onEvent={onEvent}>
-          <IconBrick onClick={() => onEvent(NodeEventTypes.Focus, { id, tab: PromptTab.OTHER })} />
+          <IconBrick onClick={() => onEvent(NodeEventTypes.FocusAction, { id, tab: PromptTab.OTHER })} />
         </ElementWrapper>
       </OffsetContainer>
       <SVGContainer>{Array.isArray(edges) ? edges.map(x => renderEdge(x)) : null}</SVGContainer>
