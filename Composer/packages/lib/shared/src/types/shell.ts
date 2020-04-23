@@ -50,6 +50,8 @@ export interface ShellData {
 }
 
 export interface ShellApi {
+  getDialog: (dialogId: string) => any;
+  saveDialog: (dialogId: string, newDialogData: any) => any;
   saveData: <T = any>(newData: T, updatePath?: string) => void;
   navTo: (path: string, rest?: any) => void;
   onFocusSteps: (stepIds: string[], focusedTab?: string) => void;
@@ -60,7 +62,10 @@ export interface ShellApi {
   updateLgTemplate: (id: string, templateName: string, templateStr: string) => Promise<void>;
   removeLgTemplate: (id: string, templateName: string) => Promise<void>;
   removeLgTemplates: (id: string, templateNames: string[]) => Promise<void>;
-  updateLuIntent: (id: string, intentName: string, intent: LuIntentSection | null) => void;
+  getLuIntent: (id: string, intentName: string) => LuIntentSection | undefined;
+  getLuIntents: (id: string) => LuIntentSection[];
+  addLuIntent: (id: string, intentName: string, intent: LuIntentSection | undefined) => Promise<void>;
+  updateLuIntent: (id: string, intentName: string, intent: LuIntentSection | undefined) => Promise<void>;
   updateRegExIntent: (id: string, intentName: string, pattern: string) => void;
   removeLuIntent: (id: string, intentName: string) => void;
   createDialog: (actions: any) => Promise<string | null>;
