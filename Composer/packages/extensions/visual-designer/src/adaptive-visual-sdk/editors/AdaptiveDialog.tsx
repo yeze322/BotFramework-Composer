@@ -54,8 +54,8 @@ export const AdaptiveDialog: FC<AdaptiveDialogProps> = ({
   return (
     <SchemaContext.Provider
       value={{
-        widgets: { ...widgets, ...builtinWidgets },
-        schemaProvider: new WidgetSchemaProvider(schema, builtinSchema),
+        widgets: { ...builtinWidgets, ...widgets },
+        schemaProvider: new WidgetSchemaProvider(builtinSchema, schema),
       }}
     >
       <RendererContext.Provider
