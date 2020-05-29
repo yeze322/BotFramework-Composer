@@ -4,16 +4,16 @@
 import { AdaptiveFieldNames } from '../constants/AdaptiveFieldNames';
 import { AdaptiveKinds } from '../constants/AdaptiveKinds';
 import { IndexedNode } from '../models/IndexedNode';
-import { normalizeObiStep } from '../utils/adaptive/stepBuilder';
+import { normalizeAdaptiveAction } from '../utils/adaptive/actionBuilder';
 
-export function transformObiRules(input, parentPath = ''): { stepGroup: IndexedNode } | null {
+export function transformAdaptiveTrigger(input, parentPath = ''): { stepGroup: IndexedNode } | null {
   if (!input) return null;
 
   const prefix = parentPath ? parentPath + '.' : '';
   const steps = input[AdaptiveFieldNames.Actions] || [];
   const stepGroup = new IndexedNode(`${prefix}${AdaptiveFieldNames.Actions}`, {
     $kind: AdaptiveKinds.StepGroup,
-    children: steps.map((x) => normalizeObiStep(x)),
+    children: steps.map((x) => normalizeAdaptiveAction(x)),
   });
   return {
     stepGroup,

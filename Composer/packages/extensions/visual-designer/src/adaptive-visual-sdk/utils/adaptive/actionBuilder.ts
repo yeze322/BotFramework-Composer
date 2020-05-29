@@ -3,14 +3,14 @@
 
 import { AdaptiveKinds } from '../../constants/AdaptiveKinds';
 
-export function normalizeObiStep(data) {
-  let step = data;
-  // Grammar sugar provide by OBI runtime.
+export function normalizeAdaptiveAction(data) {
+  let action = data;
+  // Grammar sugar provide by Adaptive runtime.
   if (typeof data === 'string') {
-    step = {
+    action = {
       $kind: AdaptiveKinds.BeginDialog,
-      dialog: step,
+      dialog: action,
     };
   }
-  return step;
+  return action;
 }

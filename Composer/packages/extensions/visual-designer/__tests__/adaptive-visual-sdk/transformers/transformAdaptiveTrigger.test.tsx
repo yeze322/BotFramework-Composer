@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { transformObiRules } from '../../../src/adaptive-visual-sdk/transformers/transformObiRules';
+import { transformAdaptiveTrigger } from '../../../src/adaptive-visual-sdk/transformers/transformAdaptiveTrigger';
 
 test('should return safely when input null value', () => {
-  const result = transformObiRules(null);
+  const result = transformAdaptiveTrigger(null);
   expect(result).toBeNull();
 });
 
@@ -13,7 +13,7 @@ test('should parse single rule correctly with empty parentPath', () => {
     $kind: 'Microsoft.IntentRule',
     actions: [{ $kind: 'any' }],
   };
-  const result = transformObiRules(json, '');
+  const result = transformAdaptiveTrigger(json, '');
   if (!result) throw new Error('transformObiRules got a wrong result');
 
   expect(result.stepGroup).toBeTruthy();
@@ -26,7 +26,7 @@ test('should parse single rule correctly with real parentPath', () => {
     $kind: 'Microsoft.IntentRule',
     actions: [{ $kind: 'any' }],
   };
-  const result = transformObiRules(json, 'events[0]');
+  const result = transformAdaptiveTrigger(json, 'events[0]');
   if (!result) throw new Error('transformObiRules got a wrong result');
 
   expect(result.stepGroup).toBeTruthy();

@@ -16,7 +16,7 @@ import { ObiColors } from '../constants/ElementColors';
 import { RendererContext } from '../contexts/RendererContext';
 import { ActionGroup } from '../widgets';
 import { NodeEventTypes, EditorEventHandler } from '../constants/NodeEventTypes';
-import { transformObiRules } from '../transformers/transformObiRules';
+import { transformAdaptiveTrigger } from '../transformers/transformAdaptiveTrigger';
 import { GraphNode } from '../models/GraphNode';
 import { TriggerSummary } from '../widgets/TriggerSummary';
 
@@ -24,7 +24,7 @@ const HeadSize = new Boundary(TriggerSize.width, TriggerSize.height + ElementInt
 const TailSize = new Boundary(TerminatorSize.width, TerminatorSize.height + ElementInterval.y / 2 + 5);
 
 const calculateNodeMap = (triggerId, triggerData): { [id: string]: GraphNode } => {
-  const result = transformObiRules(triggerData, triggerId);
+  const result = transformAdaptiveTrigger(triggerData, triggerId);
   if (!result) return {};
 
   const { stepGroup } = result;
