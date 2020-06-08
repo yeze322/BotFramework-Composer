@@ -24,12 +24,8 @@ import { KeyboardZone } from './components/KeyboardZone';
 import { mapKeyboardCommandToEditorEvent } from './utils/mapKeyboardCommandToEditorEvent.ts';
 import { useSelectionEffect } from './hooks/useSelectionEffect';
 import { useEditorEventApi } from './hooks/useEditorEventApi';
-import {
-  VisualEditorNodeMenu,
-  VisualEditorEdgeMenu,
-  VisualEditorNodeWrapper,
-  VisualEditorElementWrapper,
-} from './renderers';
+import { buildRenderers } from './buildFlowEditorRenderers';
+import { mapFlowEventToEditorEvent } from './utils/mapFlowEventToEditorEvent';
 
 formatMessage.setup({
   missingTranslation: 'ignore',
@@ -116,6 +112,7 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ schema }): JSX.Element 
 
   const { selection, ...selectionContext } = useSelectionEffect({ data, nodeContext }, shellApi);
   const { handleEditorEvent } = useEditorEventApi({ path: dialogId, data, nodeContext, selectionContext }, shellApi);
+  const renderers = useMemo(() => buildRenderers({ onEditorEvent: handleEditorEvent }), [handleEditorEvent]);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -149,17 +146,15 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ schema }): JSX.Element 
                       activeTrigger={focusedEvent}
                       dialogData={data}
                       dialogId={dialogId}
-                      renderers={{
-                        EdgeMenu: VisualEditorEdgeMenu,
-                        NodeMenu: VisualEditorNodeMenu,
-                        NodeWrapper: VisualEditorNodeWrapper,
-                        ElementWrapper: VisualEditorElementWrapper,
-                      }}
+                      renderers={renderers}
                       schema={{ ...schemaFromPlugins, ...customFlowSchema }}
                       widgets={widgetsFromPlugins}
-                      onEvent={(eventName, eventData) => {
+                      onEvent={(flowEvent) => {
                         divRef.current?.focus({ preventScroll: true });
-                        handleEditorEvent(eventName, eventData);
+                        const editorEvent = mapFlowEventToEditorEvent(flowEvent);
+                        if (editorEvent) {
+                          handleEditorEvent(editorEvent.eventType, editorEvent.eventData);
+                        }
                       }}
                     />
                   </div>

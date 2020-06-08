@@ -9,21 +9,28 @@ import {
   NodeWrapperComponent,
   ElementWrapperComponent,
 } from '../adaptive-flow-renderer/types/PluggableComponents.types';
+import { RendererContextData } from '../adaptive-flow-renderer/contexts/RendererContext';
 
 import { EditorEventHandler, EditorEventTypes } from './events/EditorEventTypes';
 import { NodeMenu, EdgeMenu, ActionNodeWrapper, ElementWrapper } from './renderers';
 
-type FlowRendererGenerator<T> = (onEditorEvent: EditorEventHandler) => T;
+interface EditorRendererContext {
+  onEditorEvent: EditorEventHandler;
+}
 
-export const buildFlowEditorNodeMenu: FlowRendererGenerator<NodeMenuComponent> = (
-  onEditorEvent: EditorEventHandler
-) => ({ nodeId, colors = { color: 'black' } }) => {
+type FlowRendererGenerator<T> = (context: EditorRendererContext) => T;
+
+const buildFlowEditorNodeMenu: FlowRendererGenerator<NodeMenuComponent> = ({ onEditorEvent }) => ({
+  nodeId,
+  colors = { color: 'black' },
+}) => {
   return <NodeMenu colors={colors} id={nodeId} onEditorEvent={onEditorEvent} />;
 };
 
-export const buildFlowEditorEdgeMenu: FlowRendererGenerator<EdgeMenuComponent> = (
-  onEditorEvent: EditorEventHandler
-) => ({ arrayId, arrayPosition }) => {
+const buildFlowEditorEdgeMenu: FlowRendererGenerator<EdgeMenuComponent> = ({ onEditorEvent }) => ({
+  arrayId,
+  arrayPosition,
+}) => {
   return (
     <EdgeMenu
       id={`${arrayId}[${arrayPosition}]`}
@@ -32,9 +39,12 @@ export const buildFlowEditorEdgeMenu: FlowRendererGenerator<EdgeMenuComponent> =
   );
 };
 
-export const buildFlowEditorNodeWrapper: FlowRendererGenerator<NodeWrapperComponent> = (
-  onEditorEvent: EditorEventHandler
-) => ({ nodeId, nodeData, nodeTab, children }) => {
+const buildFlowEditorNodeWrapper: FlowRendererGenerator<NodeWrapperComponent> = ({ onEditorEvent }) => ({
+  nodeId,
+  nodeData,
+  nodeTab,
+  children,
+}) => {
   return (
     <ActionNodeWrapper data={nodeData} id={nodeId} tab={nodeTab as any} onEditorEvent={onEditorEvent}>
       {children}
@@ -42,4 +52,11 @@ export const buildFlowEditorNodeWrapper: FlowRendererGenerator<NodeWrapperCompon
   );
 };
 
-export const buildFlowEditorElementWrapper: FlowRendererGenerator<ElementWrapperComponent> = () => ElementWrapper;
+const buildFlowEditorElementWrapper: FlowRendererGenerator<ElementWrapperComponent> = () => ElementWrapper;
+
+export const buildRenderers: FlowRendererGenerator<RendererContextData> = (context) => ({
+  NodeMenu: buildFlowEditorNodeMenu(context),
+  EdgeMenu: buildFlowEditorEdgeMenu(context),
+  NodeWrapper: buildFlowEditorNodeWrapper(context),
+  ElementWrapper: buildFlowEditorElementWrapper(context),
+});
