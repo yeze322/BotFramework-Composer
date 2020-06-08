@@ -16,7 +16,7 @@ import { drawSVGEdge } from '../utils/visual/EdgeUtil';
 import { ObiColors } from '../constants/ElementColors';
 import { RendererContext } from '../contexts/RendererContext';
 import { ActionGroup } from '../widgets';
-import { NodeEventTypes, EditorEventHandler } from '../constants/NodeEventTypes';
+import { FlowEventHandler, NodeClicked } from '../constants/NodeEventTypes';
 import { transformObiRules } from '../transformers/transformObiRules';
 import { GraphNode } from '../models/GraphNode';
 import { TriggerSummary } from '../widgets/TriggerSummary';
@@ -38,7 +38,7 @@ const calculateNodeMap = (triggerId, triggerData): { [id: string]: GraphNode } =
 export interface AdaptiveTriggerProps {
   triggerId: string;
   triggerData: any;
-  onEvent: EditorEventHandler;
+  onEvent: FlowEventHandler;
 }
 
 export const AdaptiveTrigger: React.FC<AdaptiveTriggerProps> = ({ triggerId, triggerData, onEvent }): JSX.Element => {
@@ -104,7 +104,7 @@ export const AdaptiveTrigger: React.FC<AdaptiveTriggerProps> = ({ triggerId, tri
       data-testid="RuleEditor"
       onClick={(e) => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.Focus, { id: '' });
+        onEvent(new NodeClicked(id));
       }}
     >
       <div

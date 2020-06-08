@@ -4,6 +4,8 @@
 import { FC, ComponentClass } from 'react';
 import { BaseSchema, SDKKinds } from '@bfc/shared';
 
+import { FlowEventHandler } from '../constants/NodeEventTypes';
+
 // TODO: There is another duplication of these types under @bfc/extension/src/types/flowSchema.ts for sharing with plugins.
 //       Consider reverting the package dependency tree, let @bfc/extension depends on @bfc/adaptive-flow-renderers.
 
@@ -29,7 +31,7 @@ export interface FlowWidget {
 
 export type WidgetComponent<T extends WidgetContainerProps> = FC<T> | ComponentClass<T, any>;
 
-export type WidgetEventHandler = (eventName: string, eventData?: any) => void;
+export type WidgetEventHandler = FlowEventHandler;
 
 export interface WidgetContainerProps {
   id: string;

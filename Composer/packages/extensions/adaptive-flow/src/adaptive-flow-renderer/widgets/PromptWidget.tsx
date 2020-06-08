@@ -11,7 +11,7 @@ import { baseInputLayouter } from '../layouters/baseInputLayouter';
 import { transformBaseInput } from '../transformers/transformBaseInput';
 import { GraphNode } from '../models/GraphNode';
 import { OffsetContainer } from '../components/OffsetContainer';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../constants/NodeEventTypes';
 import { IconBrick } from '../components/IconBrick';
 import { SVGContainer } from '../components/SVGContainer';
 import { GraphLayout } from '../models/GraphLayout';
@@ -92,7 +92,7 @@ export const PromptWidget: FC<PromptWdigetProps> = ({
       </OffsetContainer>
       <OffsetContainer offset={brickNode.offset}>
         <NodeWrapper nodeData={data} nodeId={brickNode.id} nodeTab={PromptTab.OTHER} onEvent={onEvent}>
-          <IconBrick onClick={() => onEvent(NodeEventTypes.Focus, { id, tab: PromptTab.OTHER })} />
+          <IconBrick onClick={() => onEvent(new NodeClicked(id, PromptTab.OTHER))} />
         </NodeWrapper>
       </OffsetContainer>
     </div>

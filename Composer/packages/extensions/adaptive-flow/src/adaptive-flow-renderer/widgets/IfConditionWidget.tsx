@@ -8,7 +8,7 @@ import { FunctionComponent, useMemo, useContext } from 'react';
 import { WidgetContainerProps } from '../types/flowRenderer.types';
 import { transformIfCondtion } from '../transformers/transformIfCondition';
 import { ifElseLayouter } from '../layouters/ifelseLayouter';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../constants/NodeEventTypes';
 import { GraphNode } from '../models/GraphNode';
 import { OffsetContainer } from '../components/OffsetContainer';
 import { Diamond } from '../components/Diamond';
@@ -90,7 +90,7 @@ export const IfConditionWidget: FunctionComponent<IfConditionWidgetProps> = ({
       <OffsetContainer offset={choiceNode.offset}>
         <Diamond
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(new NodeClicked(id));
           }}
         />
       </OffsetContainer>

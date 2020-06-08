@@ -6,7 +6,7 @@ import { jsx } from '@emotion/core';
 import { FunctionComponent, useMemo, useContext } from 'react';
 
 import { WidgetContainerProps } from '../types/flowRenderer.types';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../constants/NodeEventTypes';
 import { transformSwitchCondition } from '../transformers/transformSwitchCondition';
 import { switchCaseLayouter } from '../layouters/switchCaseLayouter';
 import { GraphNode } from '../models/GraphNode';
@@ -102,7 +102,7 @@ export const SwitchConditionWidget: FunctionComponent<SwitchConditionWidgetProps
         <Diamond
           data-testid="SwitchConditionDiamond"
           onClick={() => {
-            onEvent(NodeEventTypes.Focus, { id });
+            onEvent(new NodeClicked(id));
           }}
         />
       </OffsetContainer>

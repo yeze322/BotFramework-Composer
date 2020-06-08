@@ -9,7 +9,7 @@ import { WidgetContainerProps } from '../types/flowRenderer.types';
 import { transformForeach } from '../transformers/transformForeach';
 import { foreachLayouter } from '../layouters/foreachLayouter';
 import { GraphNode } from '../models/GraphNode';
-import { NodeEventTypes } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../constants/NodeEventTypes';
 import { OffsetContainer } from '../components/OffsetContainer';
 import { LoopIndicator } from '../components/LoopIndicator';
 import { ElementMeasurer } from '../components/ElementMeasurer';
@@ -99,7 +99,7 @@ export const ForeachWidget: FunctionComponent<ForeachWidgetProps> = ({ id, data,
         .filter((x) => !!x)
         .map((x, index) => (
           <OffsetContainer key={`${id}/loopicon-${index}/offset`} offset={x.offset}>
-            <LoopIndicator onClick={() => onEvent(NodeEventTypes.Focus, { id })} />
+            <LoopIndicator onClick={() => onEvent(new NodeClicked(id))} />
           </OffsetContainer>
         ))}
     </div>

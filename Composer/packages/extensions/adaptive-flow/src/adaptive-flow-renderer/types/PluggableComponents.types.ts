@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { EditorEventHandler } from '../constants/NodeEventTypes';
+import { FlowEventHandler } from '../constants/NodeEventTypes';
 import { ElementColor } from '../constants/ElementColors';
 
 interface EventBasedElement {
-  onEvent: EditorEventHandler;
+  onEvent: FlowEventHandler;
 }
 
 interface StyledElement {
@@ -24,7 +24,6 @@ export type EdgeMenuComponent = React.FC<EdgeMenuProps>;
 export interface NodeMenuProps extends EventBasedElement, StyledElement {
   nodeId: string;
   nodeData: any;
-  onEvent: EditorEventHandler;
 }
 
 export type NodeMenuComponent = React.FC<NodeMenuProps>;
@@ -33,7 +32,6 @@ export type NodeMenuComponent = React.FC<NodeMenuProps>;
 export interface NodeWrapperProps extends EventBasedElement, StyledElement {
   nodeId: string;
   nodeData: any;
-  onEvent: EditorEventHandler;
 
   /** Additional child id for multipart nodes such as 'BotAsks/UserInputs' in TextInput
    * to fit complicated view features like double-selection.
