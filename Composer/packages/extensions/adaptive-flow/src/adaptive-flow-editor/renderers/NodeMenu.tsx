@@ -12,7 +12,6 @@ import { AttrNames } from '../constants/ElementAttributes';
 import { SelectionContext } from '../contexts/SelectionContext';
 import { ElementColor } from '../../adaptive-flow-renderer/constants/ElementColors';
 import { IconMenu } from '../components/IconMenu';
-import { FlowEventHandler } from '../../adaptive-flow-renderer/events/FlowEvent.types';
 
 const declareElementAttributes = (id: string) => {
   return {

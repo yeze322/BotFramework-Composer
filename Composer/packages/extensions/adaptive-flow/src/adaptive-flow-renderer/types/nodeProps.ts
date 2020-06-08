@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 
 import { Boundary } from '../models/Boundary';
+import { FlowEventHandler } from '../events/FlowEvent.types';
 
 export interface NodeProps {
   id: string;
   tab?: string;
   data: any;
   focused?: boolean;
-  onEvent: (action, id, ...rest) => object | void;
+  onEvent: FlowEventHandler;
   onResize: (boundary: Boundary, id?) => object | void;
 
   isRoot?: boolean;
