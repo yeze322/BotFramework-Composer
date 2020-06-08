@@ -8,9 +8,9 @@ import { LinkBtn } from '@bfc/ui-shared';
 import { useContext } from 'react';
 
 import { WidgetContainerProps, WidgetComponent } from '../types/flowRenderer.types';
-import { EditorEventTypes } from '../../adaptive-flow-editor/events/EditorEventTypes';
 import { RendererContext } from '../contexts/RendererContext';
 import { ElementWrapperTag } from '../types/PluggableComponents.types';
+import { DialogLinkClicked } from '../events/LinkClicked';
 
 export interface DialogRefCardProps extends WidgetContainerProps {
   dialog: string | object;
@@ -25,7 +25,7 @@ export const DialogRef: WidgetComponent<DialogRefCardProps> = ({ id, onEvent, di
       <LinkBtn
         onClick={(e) => {
           e.stopPropagation();
-          onEvent(EditorEventTypes.OpenDialog, { caller: id, callee: calleeDialog });
+          onEvent(new DialogLinkClicked(id, calleeDialog));
         }}
       >
         {calleeDialog}
