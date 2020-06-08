@@ -4,7 +4,7 @@
 import { FC, ComponentClass } from 'react';
 import { BaseSchema, SDKKinds } from '@bfc/shared';
 
-import { FlowEventHandler } from '../constants/NodeEventTypes';
+import { FlowEventHandler } from '../events/FlowEvent.types';
 
 // TODO: There is another duplication of these types under @bfc/extension/src/types/flowSchema.ts for sharing with plugins.
 //       Consider reverting the package dependency tree, let @bfc/extension depends on @bfc/adaptive-flow-renderers.

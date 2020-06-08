@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { FlowEventHandler } from '../constants/NodeEventTypes';
+import { FlowEventHandler } from '../events/FlowEvent.types';
 import { ElementColor } from '../constants/ElementColors';
 
 interface EventBasedElement {

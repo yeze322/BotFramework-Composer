@@ -6,7 +6,7 @@ import { jsx } from '@emotion/core';
 import { FunctionComponent, useMemo, useContext } from 'react';
 
 import { WidgetContainerProps } from '../types/flowRenderer.types';
-import { NodeClicked } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../events/NodeClicked';
 import { transformSwitchCondition } from '../transformers/transformSwitchCondition';
 import { switchCaseLayouter } from '../layouters/switchCaseLayouter';
 import { GraphNode } from '../models/GraphNode';

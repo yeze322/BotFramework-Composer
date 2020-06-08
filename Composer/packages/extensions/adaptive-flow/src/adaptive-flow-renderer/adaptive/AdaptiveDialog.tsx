@@ -13,7 +13,7 @@ import builtinSchema from '../configs/builtinSchema';
 import builtinWidgets from '../configs/builtinWidgets';
 import { SchemaContext } from '../contexts/SchemaContext';
 import { WidgetSchemaProvider } from '../utils/visual/WidgetSchemaProvider';
-import { FlowEventHandler } from '../constants/NodeEventTypes';
+import { FlowEventHandler } from '../events/FlowEvent.types';
 
 import { AdaptiveTrigger } from './AdaptiveTrigger';
 

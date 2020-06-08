@@ -9,7 +9,7 @@ import { WidgetContainerProps } from '../types/flowRenderer.types';
 import { transformForeach } from '../transformers/transformForeach';
 import { foreachLayouter } from '../layouters/foreachLayouter';
 import { GraphNode } from '../models/GraphNode';
-import { NodeClicked } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../events/NodeClicked';
 import { OffsetContainer } from '../components/OffsetContainer';
 import { LoopIndicator } from '../components/LoopIndicator';
 import { ElementMeasurer } from '../components/ElementMeasurer';

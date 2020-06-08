@@ -8,7 +8,7 @@ import { FunctionComponent, useMemo, useContext } from 'react';
 import { WidgetContainerProps } from '../types/flowRenderer.types';
 import { transformIfCondtion } from '../transformers/transformIfCondition';
 import { ifElseLayouter } from '../layouters/ifelseLayouter';
-import { NodeClicked } from '../constants/NodeEventTypes';
+import { NodeClicked } from '../events/NodeClicked';
 import { GraphNode } from '../models/GraphNode';
 import { OffsetContainer } from '../components/OffsetContainer';
 import { Diamond } from '../components/Diamond';
