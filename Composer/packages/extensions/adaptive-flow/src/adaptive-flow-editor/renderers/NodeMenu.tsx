@@ -12,6 +12,7 @@ import { AttrNames } from '../constants/ElementAttributes';
 import { SelectionContext } from '../contexts/SelectionContext';
 import { ElementColor } from '../../adaptive-flow-renderer/constants/ElementColors';
 import { IconMenu } from '../components/IconMenu';
+import { FlowEventHandler } from '../../adaptive-flow-renderer/events/FlowEvent.types';
 
 const declareElementAttributes = (id: string) => {
   return {
@@ -22,10 +23,10 @@ const declareElementAttributes = (id: string) => {
 
 interface NodeMenuProps {
   id: string;
-  onEvent: EditorEventHandler;
   colors: ElementColor;
+  onEditorEvent: EditorEventHandler;
 }
-export const NodeMenu: React.FC<NodeMenuProps> = ({ colors = { color: 'black' }, id, onEvent }) => {
+export const NodeMenu: React.FC<NodeMenuProps> = ({ colors = { color: 'black' }, id, onEditorEvent }) => {
   const menuItems = [
     {
       key: 'delete',
@@ -33,7 +34,7 @@ export const NodeMenu: React.FC<NodeMenuProps> = ({ colors = { color: 'black' },
       iconProps: {
         iconName: 'Delete',
       },
-      onClick: () => onEvent(EditorEventTypes.Delete, { id }),
+      onClick: () => onEditorEvent(EditorEventTypes.Delete, { id }),
     },
   ];
   const { selectedIds } = useContext(SelectionContext);

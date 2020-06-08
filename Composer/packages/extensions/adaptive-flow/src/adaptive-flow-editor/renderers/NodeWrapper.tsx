@@ -28,10 +28,10 @@ export interface NodeWrapperProps {
   id: string;
   tab?: PromptTab;
   data: any;
-  onEvent: (eventName: EditorEventTypes, eventData: any) => any;
+  onEditorEvent: (eventName: EditorEventTypes, eventData: any) => any;
 }
 
-export const ActionNodeWrapper: FC<NodeWrapperProps> = ({ id, tab, data, onEvent, children }): JSX.Element => {
+export const ActionNodeWrapper: FC<NodeWrapperProps> = ({ id, tab, data, onEditorEvent, children }): JSX.Element => {
   const selectableId = tab ? `${id}${tab}` : id;
   const { focusedId, focusedEvent, focusedTab } = useContext(NodeRendererContext);
   const { selectedIds, getNodeIndex } = useContext(SelectionContext);
@@ -75,7 +75,7 @@ export const ActionNodeWrapper: FC<NodeWrapperProps> = ({ id, tab, data, onEvent
       aria-label={generateSDKTitle(data, '', tab)}
       onClick={(e) => {
         e.stopPropagation();
-        onEvent(EditorEventTypes.Focus, { id, tab });
+        onEditorEvent(EditorEventTypes.Focus, { id, tab });
       }}
     >
       {children}
