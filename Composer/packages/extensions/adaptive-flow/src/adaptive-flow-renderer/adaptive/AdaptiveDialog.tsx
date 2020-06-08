@@ -8,12 +8,12 @@ import get from 'lodash/get';
 import { FlowEditorWidgetMap as NodeWidgetMap } from '@bfc/extension';
 
 import { FlowSchema } from '../types/flowRenderer.types';
-import { EditorEventHandler } from '../constants/NodeEventTypes';
 import { RendererContext, DefaultRenderers, RendererContextData } from '../contexts/RendererContext';
 import builtinSchema from '../configs/builtinSchema';
 import builtinWidgets from '../configs/builtinWidgets';
 import { SchemaContext } from '../contexts/SchemaContext';
 import { WidgetSchemaProvider } from '../utils/visual/WidgetSchemaProvider';
+import { FlowEventHandler } from '../constants/NodeEventTypes';
 
 import { AdaptiveTrigger } from './AdaptiveTrigger';
 
@@ -28,7 +28,7 @@ export interface AdaptiveDialogProps {
   activeTrigger: string;
 
   /** Editor event handler */
-  onEvent: EditorEventHandler;
+  onEvent: FlowEventHandler;
 
   /** UI schema to define how to render a sdk $kind */
   schema: FlowSchema;

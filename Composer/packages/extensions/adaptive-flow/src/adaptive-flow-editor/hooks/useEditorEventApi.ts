@@ -7,7 +7,7 @@ import { useDialogEditApi, useDialogApi, useActionApi } from '@bfc/extension';
 
 // TODO: leak of visual-sdk domain (designerCache)
 import { designerCache } from '../../adaptive-flow-renderer/utils/visual/DesignerCache';
-import { NodeEventTypes } from '../../adaptive-flow-renderer/constants/NodeEventTypes';
+import { EditorEventTypes } from '../events/EditorEventTypes';
 import { ScreenReaderMessage } from '../constants/ScreenReaderMessage';
 import { scrollNodeIntoView } from '../utils/scrollNodeIntoView';
 import { MenuEventTypes, MenuTypes } from '../constants/MenuTypes';
@@ -69,10 +69,10 @@ export const useEditorEventApi = (
     actionPaths.forEach((x) => trackActionChange(x));
   };
 
-  const handleEditorEvent = (eventName: NodeEventTypes, eventData: any = {}): any => {
+  const handleEditorEvent = (eventName: EditorEventTypes, eventData: any = {}): any => {
     let handler;
     switch (eventName) {
-      case NodeEventTypes.Focus:
+      case EditorEventTypes.Focus:
         handler = (e: { id: string; tab?: string }) => {
           const newFocusedIds = e.id ? [e.id] : [];
           setSelectedIds([...newFocusedIds]);
@@ -80,13 +80,13 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionFocused);
         };
         break;
-      case NodeEventTypes.FocusEvent:
+      case EditorEventTypes.FocusEvent:
         handler = (eventData) => {
           onFocusEvent(eventData);
           announce(ScreenReaderMessage.EventFocused);
         };
         break;
-      case NodeEventTypes.MoveCursor:
+      case EditorEventTypes.MoveCursor:
         handler = (eventData) => {
           const { command } = eventData;
           const currentSelectedId = selectedIds[0] || focusedId || '';
@@ -104,13 +104,13 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionFocused);
         };
         break;
-      case NodeEventTypes.OpenDialog:
+      case EditorEventTypes.OpenDialog:
         handler = ({ caller, callee }) => {
           onOpen(callee, caller);
           announce(ScreenReaderMessage.DialogOpened);
         };
         break;
-      case NodeEventTypes.Delete:
+      case EditorEventTypes.Delete:
         trackActionChange(eventData.id);
         handler = (e) => {
           onChange(deleteSelectedAction(path, data, e.id));
@@ -118,7 +118,7 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionDeleted);
         };
         break;
-      case NodeEventTypes.Insert:
+      case EditorEventTypes.Insert:
         trackActionChange(eventData.id);
         if (eventData.$kind === MenuEventTypes.Paste) {
           handler = (e) => {
@@ -139,14 +139,14 @@ export const useEditorEventApi = (
           };
         }
         break;
-      case NodeEventTypes.CopySelection:
+      case EditorEventTypes.CopySelection:
         handler = () => {
           const actionIds = getClipboardTargetsFromContext();
           copySelectedActions(path, data, actionIds).then((copiedNodes) => onClipboardChange(copiedNodes));
           announce(ScreenReaderMessage.ActionsCopied);
         };
         break;
-      case NodeEventTypes.CutSelection:
+      case EditorEventTypes.CutSelection:
         handler = () => {
           const actionIds = getClipboardTargetsFromContext();
           trackActionListChange(actionIds);
@@ -158,12 +158,12 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionsCut);
         };
         break;
-      case NodeEventTypes.PasteSelection:
+      case EditorEventTypes.PasteSelection:
         handler = () => {
           const currentSelectedId = selectedIds[0];
           if (currentSelectedId.endsWith('+')) {
             const { arrayPath, arrayIndex } = DialogUtils.parseNodePath(currentSelectedId.slice(0, -1)) || {};
-            handleEditorEvent(NodeEventTypes.Insert, {
+            handleEditorEvent(EditorEventTypes.Insert, {
               id: arrayPath,
               position: arrayIndex,
               $kind: MenuEventTypes.Paste,
@@ -171,7 +171,7 @@ export const useEditorEventApi = (
           }
         };
         break;
-      case NodeEventTypes.MoveSelection:
+      case EditorEventTypes.MoveSelection:
         handler = async () => {
           const actionIds = getClipboardTargetsFromContext();
           if (!Array.isArray(actionIds) || !actionIds.length) return;
@@ -216,7 +216,7 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionsMoved);
         };
         break;
-      case NodeEventTypes.DeleteSelection:
+      case EditorEventTypes.DeleteSelection:
         handler = () => {
           const actionIds = getClipboardTargetsFromContext();
           trackActionListChange(actionIds);
@@ -225,7 +225,7 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionsDeleted);
         };
         break;
-      case NodeEventTypes.AppendSelection:
+      case EditorEventTypes.AppendSelection:
         handler = (e) => {
           trackActionListChange(e.target);
           // forbid paste to root level.
@@ -234,13 +234,13 @@ export const useEditorEventApi = (
           announce(ScreenReaderMessage.ActionsCreated);
         };
         break;
-      case NodeEventTypes.Undo:
+      case EditorEventTypes.Undo:
         handler = () => {
           undo?.();
           announce(ScreenReaderMessage.ActionUndo);
         };
         break;
-      case NodeEventTypes.Redo:
+      case EditorEventTypes.Redo:
         handler = () => {
           redo?.();
           announce(ScreenReaderMessage.ActionUndo);
@@ -254,10 +254,10 @@ export const useEditorEventApi = (
   };
 
   // HACK: use global handler before we solve iframe state sync problem
-  (window as any).copySelection = () => handleEditorEvent(NodeEventTypes.CopySelection);
-  (window as any).cutSelection = () => handleEditorEvent(NodeEventTypes.CutSelection);
-  (window as any).moveSelection = () => handleEditorEvent(NodeEventTypes.MoveSelection);
-  (window as any).deleteSelection = () => handleEditorEvent(NodeEventTypes.DeleteSelection);
+  (window as any).copySelection = () => handleEditorEvent(EditorEventTypes.CopySelection);
+  (window as any).cutSelection = () => handleEditorEvent(EditorEventTypes.CutSelection);
+  (window as any).moveSelection = () => handleEditorEvent(EditorEventTypes.MoveSelection);
+  (window as any).deleteSelection = () => handleEditorEvent(EditorEventTypes.DeleteSelection);
 
   return {
     handleEditorEvent,

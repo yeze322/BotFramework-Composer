@@ -2,35 +2,35 @@
 // Licensed under the MIT License.
 
 import { KeyboardPrimaryTypes, KeyboardCommandTypes } from '../constants/KeyboardCommandTypes';
-import { NodeEventTypes } from '../../adaptive-flow-renderer/constants/NodeEventTypes';
+import { EditorEventTypes } from '../events/EditorEventTypes';
 
 export const mapKeyboardCommandToEditorEvent = ({
   area,
   command,
-}): { type: NodeEventTypes; payload?: any } | undefined => {
+}): { type: EditorEventTypes; payload?: any } | undefined => {
   switch (area) {
     case KeyboardPrimaryTypes.Node:
       switch (command) {
         case KeyboardCommandTypes.Node.Delete:
-          return { type: NodeEventTypes.DeleteSelection };
+          return { type: EditorEventTypes.DeleteSelection };
         case KeyboardCommandTypes.Node.Copy:
-          return { type: NodeEventTypes.CopySelection };
+          return { type: EditorEventTypes.CopySelection };
         case KeyboardCommandTypes.Node.Cut:
-          return { type: NodeEventTypes.CutSelection };
+          return { type: EditorEventTypes.CutSelection };
         case KeyboardCommandTypes.Node.Paste: {
-          return { type: NodeEventTypes.PasteSelection };
+          return { type: EditorEventTypes.PasteSelection };
         }
       }
       break;
     case KeyboardPrimaryTypes.Cursor: {
-      return { type: NodeEventTypes.MoveCursor, payload: { command } };
+      return { type: EditorEventTypes.MoveCursor, payload: { command } };
     }
     case KeyboardPrimaryTypes.Operation: {
       switch (command) {
         case KeyboardCommandTypes.Operation.Undo:
-          return { type: NodeEventTypes.Undo, payload: {} };
+          return { type: EditorEventTypes.Undo, payload: {} };
         case KeyboardCommandTypes.Operation.Redo:
-          return { type: NodeEventTypes.Redo, payload: {} };
+          return { type: EditorEventTypes.Redo, payload: {} };
       }
       break;
     }

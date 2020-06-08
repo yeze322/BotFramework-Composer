@@ -5,7 +5,7 @@ import React from 'react';
 import { render, fireEvent, findAllByText } from '@bfc/test-utils';
 
 import { NodeMenu } from '../../../src/adaptive-flow-editor/renderers/NodeMenu';
-import { NodeEventTypes } from '../../../src/adaptive-flow-renderer/constants/NodeEventTypes';
+import { EditorEventTypes } from '../../../src/adaptive-flow-editor/events/EditorEventTypes';
 
 describe('<NodeMenu />', () => {
   let id, onEvent, renderResult, clickResults;
@@ -37,7 +37,7 @@ describe('<NodeMenu />', () => {
     const [deleteItem] = await getMenuItems('Delete');
 
     fireEvent.click(deleteItem);
-    expect(clickResults.onDelete).toEqual([[NodeEventTypes.Delete, { id: 'nodeMenu' }]]);
+    expect(clickResults.onDelete).toEqual([[EditorEventTypes.Delete, { id: 'nodeMenu' }]]);
   });
 
   it('renders menu with available actions', async () => {

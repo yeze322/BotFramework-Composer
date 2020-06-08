@@ -12,9 +12,9 @@ import { useShellApi, JSONSchema7 } from '@bfc/extension';
 import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
 
 import { FlowSchema, FlowWidget } from '../adaptive-flow-renderer/types/flowRenderer.types';
-import { NodeEventTypes } from '../adaptive-flow-renderer/constants/NodeEventTypes';
 import { AdaptiveDialog } from '../adaptive-flow-renderer/adaptive/AdaptiveDialog';
 
+import { EditorEventTypes } from './events/EditorEventTypes';
 import { NodeRendererContext, NodeRendererContextValue } from './contexts/NodeRendererContext';
 import { SelfHostContext } from './contexts/SelfHostContext';
 import { mergePluginConfig } from './utils/mergePluginConfig';
@@ -142,7 +142,7 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ schema }): JSX.Element 
                     data-testid="flow-editor-container"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleEditorEvent(NodeEventTypes.Focus, { id: '' });
+                      handleEditorEvent(EditorEventTypes.Focus, { id: '' });
                     }}
                   >
                     <AdaptiveDialog

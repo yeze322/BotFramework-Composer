@@ -10,7 +10,7 @@ import { useShellApi } from '@bfc/extension';
 import { AttrNames } from '../constants/ElementAttributes';
 import { NodeRendererContext } from '../contexts/NodeRendererContext';
 import { SelectionContext } from '../contexts/SelectionContext';
-import { NodeEventTypes } from '../../adaptive-flow-renderer/constants/NodeEventTypes';
+import { EditorEventTypes } from '../events/EditorEventTypes';
 
 const nodeBorderHoveredStyle = css`
   box-shadow: 0px 0px 0px 1px #323130;
@@ -28,7 +28,7 @@ export interface NodeWrapperProps {
   id: string;
   tab?: PromptTab;
   data: any;
-  onEvent: (eventName: NodeEventTypes, eventData: any) => any;
+  onEvent: (eventName: EditorEventTypes, eventData: any) => any;
 }
 
 export const ActionNodeWrapper: FC<NodeWrapperProps> = ({ id, tab, data, onEvent, children }): JSX.Element => {
@@ -75,7 +75,7 @@ export const ActionNodeWrapper: FC<NodeWrapperProps> = ({ id, tab, data, onEvent
       aria-label={generateSDKTitle(data, '', tab)}
       onClick={(e) => {
         e.stopPropagation();
-        onEvent(NodeEventTypes.Focus, { id, tab });
+        onEvent(EditorEventTypes.Focus, { id, tab });
       }}
     >
       {children}

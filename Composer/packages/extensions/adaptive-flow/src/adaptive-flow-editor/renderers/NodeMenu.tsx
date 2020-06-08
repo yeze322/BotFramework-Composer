@@ -6,7 +6,7 @@ import { jsx } from '@emotion/core';
 import { useContext } from 'react';
 import formatMessage from 'format-message';
 
-import { NodeEventTypes, EditorEventHandler } from '../../adaptive-flow-renderer/constants/NodeEventTypes';
+import { EditorEventTypes, EditorEventHandler } from '../events/EditorEventTypes';
 import { MenuTypes } from '../constants/MenuTypes';
 import { AttrNames } from '../constants/ElementAttributes';
 import { SelectionContext } from '../contexts/SelectionContext';
@@ -33,7 +33,7 @@ export const NodeMenu: React.FC<NodeMenuProps> = ({ colors = { color: 'black' },
       iconProps: {
         iconName: 'Delete',
       },
-      onClick: () => onEvent(NodeEventTypes.Delete, { id }),
+      onClick: () => onEvent(EditorEventTypes.Delete, { id }),
     },
   ];
   const { selectedIds } = useContext(SelectionContext);

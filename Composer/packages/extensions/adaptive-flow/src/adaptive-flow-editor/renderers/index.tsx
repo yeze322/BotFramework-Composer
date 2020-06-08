@@ -9,7 +9,7 @@ import {
   NodeWrapperComponent,
   ElementWrapperComponent,
 } from '../../adaptive-flow-renderer/types/PluggableComponents.types';
-import { NodeEventTypes } from '../../adaptive-flow-renderer/constants/NodeEventTypes';
+import { EditorEventTypes } from '../events/EditorEventTypes';
 
 import { NodeMenu } from './NodeMenu';
 import { EdgeMenu } from './EdgeMenu';
@@ -24,7 +24,7 @@ export const VisualEditorEdgeMenu: EdgeMenuComponent = ({ arrayId, arrayPosition
   return (
     <EdgeMenu
       id={`${arrayId}[${arrayPosition}]`}
-      onClick={($kind) => onEvent(NodeEventTypes.Insert, { id: arrayId, position: arrayPosition, $kind })}
+      onClick={($kind) => onEvent(EditorEventTypes.Insert, { id: arrayId, position: arrayPosition, $kind })}
     />
   );
 };
