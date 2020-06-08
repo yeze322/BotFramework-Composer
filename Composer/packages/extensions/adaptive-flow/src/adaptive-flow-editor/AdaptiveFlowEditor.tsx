@@ -24,8 +24,8 @@ import { KeyboardZone } from './components/KeyboardZone';
 import { mapKeyboardCommandToEditorEvent } from './utils/mapKeyboardCommandToEditorEvent.ts';
 import { useSelectionEffect } from './hooks/useSelectionEffect';
 import { useEditorEventApi } from './hooks/useEditorEventApi';
-import { buildRenderers } from './buildFlowEditorRenderers';
 import { mapFlowEventToEditorEvent } from './utils/mapFlowEventToEditorEvent';
+import { FlowEditorNodeMenu, FlowEditorEdgeMenu, FlowEditorNodeWrapper, FlowEditorElementWrapper } from './renderers';
 
 formatMessage.setup({
   missingTranslation: 'ignore',
@@ -112,7 +112,6 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ schema }): JSX.Element 
 
   const { selection, ...selectionContext } = useSelectionEffect({ data, nodeContext }, shellApi);
   const { handleEditorEvent } = useEditorEventApi({ path: dialogId, data, nodeContext, selectionContext }, shellApi);
-  const renderers = useMemo(() => buildRenderers({ onEditorEvent: handleEditorEvent }), [handleEditorEvent]);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -146,7 +145,12 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ schema }): JSX.Element 
                       activeTrigger={focusedEvent}
                       dialogData={data}
                       dialogId={dialogId}
-                      renderers={renderers}
+                      renderers={{
+                        NodeMenu: FlowEditorNodeMenu,
+                        EdgeMenu: FlowEditorEdgeMenu,
+                        NodeWrapper: FlowEditorNodeWrapper,
+                        ElementWrapper: FlowEditorElementWrapper,
+                      }}
                       schema={{ ...schemaFromPlugins, ...customFlowSchema }}
                       widgets={widgetsFromPlugins}
                       onEvent={(flowEvent) => {

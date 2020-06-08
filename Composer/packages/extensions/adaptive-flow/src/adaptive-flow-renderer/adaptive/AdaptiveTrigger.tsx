@@ -105,7 +105,7 @@ export const AdaptiveTrigger: React.FC<AdaptiveTriggerProps> = ({ triggerId, tri
       data-testid="RuleEditor"
       onClick={(e) => {
         e.stopPropagation();
-        onEvent(new NodeClicked(id));
+        onEvent(new NodeClicked(''));
       }}
     >
       <div

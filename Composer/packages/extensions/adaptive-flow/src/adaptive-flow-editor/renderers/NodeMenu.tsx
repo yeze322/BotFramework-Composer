@@ -6,12 +6,17 @@ import { jsx } from '@emotion/core';
 import { useContext } from 'react';
 import formatMessage from 'format-message';
 
-import { EditorEventTypes, EditorEventHandler } from '../events/EditorEventTypes';
 import { MenuTypes } from '../constants/MenuTypes';
 import { AttrNames } from '../constants/ElementAttributes';
 import { SelectionContext } from '../contexts/SelectionContext';
 import { ElementColor } from '../../adaptive-flow-renderer/constants/ElementColors';
 import { IconMenu } from '../components/IconMenu';
+import { FlowEventHandler } from '../../adaptive-flow-renderer/events/FlowEvent.types';
+import { NodeMenuClicked } from '../../adaptive-flow-renderer/events';
+
+export enum NodeMenuKeys {
+  DELETE = 'delete',
+}
 
 const declareElementAttributes = (id: string) => {
   return {
@@ -23,17 +28,17 @@ const declareElementAttributes = (id: string) => {
 interface NodeMenuProps {
   id: string;
   colors: ElementColor;
-  onEditorEvent: EditorEventHandler;
+  onEvent: FlowEventHandler;
 }
-export const NodeMenu: React.FC<NodeMenuProps> = ({ colors = { color: 'black' }, id, onEditorEvent }) => {
+export const NodeMenu: React.FC<NodeMenuProps> = ({ colors = { color: 'black' }, id, onEvent }) => {
   const menuItems = [
     {
-      key: 'delete',
+      key: NodeMenuKeys.DELETE,
       name: 'Delete',
       iconProps: {
         iconName: 'Delete',
       },
-      onClick: () => onEditorEvent(EditorEventTypes.Delete, { id }),
+      onClick: () => onEvent(new NodeMenuClicked(id, NodeMenuKeys.DELETE)),
     },
   ];
   const { selectedIds } = useContext(SelectionContext);

@@ -6,6 +6,8 @@ export enum FlowEventTypes {
   NodeDoubleClicked = 'node.double-clicked',
   NodeRightClicked = 'node.right-clicked',
   DialogLinkClicked = 'link.clicked',
+  NodeMenuClicked = 'menu.node.clicked',
+  EdgeMenuClicked = 'menu.edge.clicked',
 }
 
 export interface FlowEvent {

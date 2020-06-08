@@ -19,7 +19,7 @@ describe('<NodeMenu />', () => {
       onDelete: [],
     };
 
-    renderResult = render(<NodeMenu colors={{}} id={id} onEditorEvent={onEvent} />);
+    renderResult = render(<NodeMenu colors={{}} id={id} onEvent={onEvent} />);
   });
 
   async function getMenuItems(itemName?: string): Promise<HTMLElement[]> {
