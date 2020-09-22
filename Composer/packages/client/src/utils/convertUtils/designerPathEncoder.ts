@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Convert `triggers[0].actions[0]` to `triggers['12345'].actions['67890']`
+ * Inputs `triggers[0].actions[0]`, outputs `triggers['12345'].actions['67890']`
  * @param data Current active Adaptive dialog json
  * @param path Current focus path in index format
  */
@@ -11,7 +11,7 @@ export const encodePathToDesignerPath = (data, path: string): string => {
 };
 
 /**
- * Convert `triggers['12345'].actions['67890']` to `triggers[0].actions[0]`
+ * Inputs `triggers['12345'].actions['67890']`, outputs `triggers[0].actions[0]`
  * @param data Current active Adaptive dialog json
  * @param path Current focus path in designer format
  */
