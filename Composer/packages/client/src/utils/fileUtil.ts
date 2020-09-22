@@ -26,7 +26,6 @@ export function upperCaseName(filename?: string): string | any {
 }
 
 export function resolveToBasePath(base: string, relPath: string) {
-  // contribution point
   const leaf = relPath.startsWith('/') ? relPath : `/${relPath}`;
   return base === '/' ? leaf : `${base}${leaf}`;
 }
