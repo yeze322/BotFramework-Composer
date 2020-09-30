@@ -10,7 +10,7 @@
     "bundles": [
       {
         "id": "publish",
-        "path": "dist/publish.js"
+        "path": "dist/publish-bundle.js"
       }
     ],
     "contributes": {

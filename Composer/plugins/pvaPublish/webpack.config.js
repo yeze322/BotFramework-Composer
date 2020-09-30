@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/ui/index.tsx',
   mode: 'production',
   output: {
-    filename: 'publish.js',
+    filename: 'publish-bundle.js',
     path: resolve(__dirname, 'dist'),
   },
   externals: {

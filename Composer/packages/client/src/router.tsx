@@ -17,7 +17,6 @@ import { openAlertModal } from './components/Modal/AlertDialog';
 import { dialogStyle } from './components/Modal/dialogStyle';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { PluginPageContainer } from './pages/plugin/pluginPageContainer';
-import { ImportPage } from './pages/import/Import';
 
 const DesignPage = React.lazy(() => import('./pages/design/DesignPage'));
 const LUPage = React.lazy(() => import('./pages/language-understanding/LUPage'));
@@ -62,7 +61,6 @@ const Routes = (props) => {
           <BotCreationFlowRouter path="projects/*" />
           <BotCreationFlowRouter path="home" />
           <PluginPageContainer path="plugin/:pluginId/:bundleId" />
-          <ImportPage path="import/:source/:payload" />
           <NotFound default />
         </Router>
       </Suspense>

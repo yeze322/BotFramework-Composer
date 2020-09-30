@@ -85,6 +85,10 @@ export class DefaultSettingManager extends FileSettingManager {
     if (!result.downsampling) {
       result.downsampling = this.createDefaultSettings().downsampling;
     }
+    // add luis if missing
+    if (!result.luis) {
+      result.luis = this.createDefaultSettings().luis;
+    }
     //add luis endpoint for old bot
     if (!result.luis.endpoint && result.luis.endpoint !== '') {
       result.luis.endpoint = this.createDefaultSettings().luis.endpoint;
