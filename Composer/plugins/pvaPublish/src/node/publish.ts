@@ -21,14 +21,14 @@ const authCredentials = {
   scopes: ['a522f059-bb65-47c0-8934-7db6e5286414/.default'], // int / ppe
 };
 
-// TODO: persistent history?
+// in-memory history that allows us to get the status of the most recent job
 const publishHistory: PublishHistory = {};
 
 export const publish = async (
   config: PublishConfig,
   project: IBotProject,
   metadata: any,
-  user: UserIdentity,
+  _user: UserIdentity,
   { getAccessToken, loginAndGetIdToken }
 ): Promise<PublishResponse> => {
   const {
@@ -100,8 +100,7 @@ export const publish = async (
     const job: PVAPublishJob = await res.json();
 
     // transform the PVA job to a publish response
-    const status = 202; // accepted
-    const result = xformJobToResult(job, status);
+    const result = xformJobToResult(job);
     console.log(job);
 
     // add to publish history
@@ -110,7 +109,7 @@ export const publish = async (
     publishHistory[botProjectId][profileName].unshift(result);
 
     return {
-      status,
+      status: result.status,
       result,
     };
   } catch (e) {
@@ -170,14 +169,7 @@ export const getStatus = async (
     console.log(job);
 
     // transform the PVA job to a publish response
-    let status = 202;
-    if (job.state === 'Done') {
-      status = 200;
-    }
-    if (job.state === 'Failed' || job.state === 'PreconditionFailed') {
-      status = 500;
-    }
-    const result = xformJobToResult(job, status);
+    const result = xformJobToResult(job);
 
     // update publish history
     const botProjectId = project.id;
@@ -186,7 +178,7 @@ export const getStatus = async (
     publishHistory[botProjectId][profileName].unshift(result);
 
     return {
-      status,
+      status: result.status,
       result,
     };
   } catch (e) {
@@ -201,29 +193,68 @@ export const getStatus = async (
 
 export const history = async (
   config: PublishConfig,
-  project: IBotProject,
-  user?: UserIdentity
+  _project: IBotProject,
+  _user: UserIdentity,
+  { getAccessToken, loginAndGetIdToken }
 ): Promise<PublishResult[]> => {
   const {
-    // these are provided by Composer
-    profileName, // the name of the publishing profile "My PVA Prod Slot"
+    // these are specific to the PVA publish profile shape
+    botId,
+    envId,
+    tenantId,
   } = config;
-  const botProjectId = project.id;
 
-  ensurePublishProfileHistory(botProjectId, profileName);
-  return publishHistory[botProjectId][profileName];
+  try {
+    // authenticate with PVA
+    const idToken = await loginAndGetIdToken(authCredentials);
+    const accessToken = await getAccessToken({ ...authCredentials, idToken });
+
+    // get the publish history for the bot
+    const url = `${BASE_URL}/environments/${envId}/bots/${botId}/composer/publishoperations`;
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'X-CCI-TenantId': tenantId,
+        'X-CCI-Routing-TenantId': tenantId,
+      },
+    });
+    const jobs: PVAPublishJob[] = await res.json();
+
+    // TODO (toanzian): only show n-most recent jobs?
+    return jobs.map((job) => xformJobToResult(job));
+  } catch (e) {
+    return [];
+  }
 };
 
-const xformJobToResult = (job: PVAPublishJob, status: number): PublishResult => {
+const xformJobToResult = (job: PVAPublishJob): PublishResult => {
   const result: PublishResult = {
     comment: job.comment,
     id: job.operationId, // what is this used for in Composer?
     log: job.diagnostics.map((diag) => `---log message---\n${diag.code}\n${diag.message}\n---\n`).join('\n'),
     message: getUserFriendlyMessage(job.state),
     time: new Date(job.lastUpdateTimeUtc),
-    status,
+    status: getStatusFromJobState(job.state),
   };
   return result;
+};
+
+const getStatusFromJobState = (state: PublishState): number => {
+  switch (state) {
+    case 'Done':
+      return 200;
+
+    case 'Failed':
+    case 'PreconditionFailed':
+      return 500;
+
+    case 'Validating':
+    case 'LoadingContent':
+    case 'UpdatingSnapshot':
+    default:
+      return 202;
+  }
 };
 
 const ensurePublishProfileHistory = (botProjectId: string, profileName: string) => {
