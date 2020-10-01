@@ -25,26 +25,27 @@ async function startImport(req: StartImportRequest, res: Response, next) {
 
   const contentProvider = contentProviderFactory.getProvider(source, metadata);
   if (contentProvider) {
-    // download the bot content zip
-    const pathToBotContentsZip = await contentProvider.downloadBotContent();
-
-    // extract zip into new "template" directory
-    const baseDir = join(__dirname, '/temp');
-    ensureDirSync(baseDir);
-    const templateDir = join(baseDir, 'extractedTemplate');
-
     try {
+      // download the bot content zip
+      const pathToBotContentsZip = await contentProvider.downloadBotContent();
+
+      // extract zip into new "template" directory
+      const baseDir = join(__dirname, '/temp');
+      ensureDirSync(baseDir);
+      const templateDir = join(baseDir, 'extractedTemplate');
       log('Extracting bot zip...');
       await extractZip(pathToBotContentsZip, { dir: templateDir });
       log('Done extracting.');
       await contentProvider.cleanUp();
-    } catch (e) {
-      log('Error extracting zip: ', e);
-    }
 
-    setTimeout(() => {
-      res.json({ templateDir });
-    }, 2000);
+      setTimeout(() => {
+        res.json({ templateDir });
+      }, 2000);
+    } catch (e) {
+      const msg = 'Error importing bot content: ' + e;
+      log(msg);
+      res.status(500).send(msg);
+    }
   } else {
     res.status(500).send('No content provider found for source: ' + source);
   }
