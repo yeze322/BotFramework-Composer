@@ -85,7 +85,7 @@ export class DefaultSettingManager extends FileSettingManager {
     if (!result.downsampling) {
       result.downsampling = this.createDefaultSettings().downsampling;
     }
-    // add luis if missing
+    // add luis if missing (bandaid until settings.skill shape is fixed -- then we will just spread the default settings onto the loaded settings)
     if (!result.luis) {
       result.luis = this.createDefaultSettings().luis;
     }
