@@ -27,19 +27,19 @@ async function startImport(req: StartImportRequest, res: Response, next) {
   if (contentProvider) {
     try {
       // download the bot content zip
-      const pathToBotContentsZip = await contentProvider.downloadBotContent();
+      const { eTag, zipPath } = await contentProvider.downloadBotContent();
 
       // extract zip into new "template" directory
       const baseDir = join(__dirname, '/temp');
       ensureDirSync(baseDir);
       const templateDir = join(baseDir, 'extractedTemplate');
       log('Extracting bot zip...');
-      await extractZip(pathToBotContentsZip, { dir: templateDir });
+      await extractZip(zipPath, { dir: templateDir });
       log('Done extracting.');
       await contentProvider.cleanUp();
 
       setTimeout(() => {
-        res.json({ templateDir });
+        res.json({ eTag, templateDir });
       }, 2000);
     } catch (e) {
       const msg = 'Error importing bot content: ' + e;

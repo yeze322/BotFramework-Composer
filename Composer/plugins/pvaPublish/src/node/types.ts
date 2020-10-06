@@ -1,6 +1,7 @@
 export type PVAPublishJob = {
   comment: string;
   diagnostics: DiagnosticInfo[];
+  importedContentEtag?: string;
   lastUpdateTimeUtc: string;
   operationId: string;
   startTimeUtc: string;
@@ -8,7 +9,6 @@ export type PVAPublishJob = {
 };
 
 type DiagnosticInfo = {
-  componentName?: string;
   code: string;
   range?: number;
   severity: string;
@@ -42,6 +42,7 @@ export type PublishState =
 export interface PublishResult {
   comment?: string;
   endpointURL?: string;
+  eTag?: string;
   id?: string;
   log?: string;
   message: string;

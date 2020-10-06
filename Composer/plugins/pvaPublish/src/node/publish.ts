@@ -95,6 +95,7 @@ export const publish = async (
         'X-CCI-Routing-TenantId': tenantId,
         'Content-Type': 'application/zip',
         'Content-Length': length.toString(),
+        'If-Match': project.eTag,
       },
     });
     const job: PVAPublishJob = await res.json();
@@ -163,6 +164,7 @@ export const getStatus = async (
         Authorization: `Bearer ${accessToken}`,
         'X-CCI-TenantId': tenantId,
         'X-CCI-Routing-TenantId': tenantId,
+        'If-None-Match': project.eTag,
       },
     });
     const job: PVAPublishJob = await res.json();
@@ -174,7 +176,8 @@ export const getStatus = async (
     // update publish history
     const botProjectId = project.id;
     ensurePublishProfileHistory(botProjectId, profileName);
-    publishHistory[botProjectId][profileName].shift();
+    const oldRecord = publishHistory[botProjectId][profileName].shift();
+    result.comment = oldRecord.comment; // persist comment from initial publish
     publishHistory[botProjectId][profileName].unshift(result);
 
     return {
@@ -231,8 +234,9 @@ export const history = async (
 const xformJobToResult = (job: PVAPublishJob): PublishResult => {
   const result: PublishResult = {
     comment: job.comment,
+    eTag: job.importedContentEtag,
     id: job.operationId, // what is this used for in Composer?
-    log: job.diagnostics.map((diag) => `---log message---\n${diag.code}\n${diag.message}\n---\n`).join('\n'),
+    log: job.diagnostics.map((diag) => `---\n${JSON.stringify(diag, null, 2)}\n---\n`).join('\n'),
     message: getUserFriendlyMessage(job.state),
     time: new Date(job.lastUpdateTimeUtc),
     status: getStatusFromJobState(job.state),

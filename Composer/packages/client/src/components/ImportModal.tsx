@@ -3,6 +3,8 @@ import { jsx } from '@emotion/core';
 import React, { useEffect } from 'react';
 import { navigate, RouteComponentProps } from '@reach/router';
 import { Dialog, DialogType } from 'office-ui-fabric-react/lib/Dialog';
+import formatMessage from 'format-message';
+
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const ImportModal: React.FC<RouteComponentProps> = (props) => {
@@ -27,12 +29,14 @@ export const ImportModal: React.FC<RouteComponentProps> = (props) => {
           const data = await res.json();
 
           // navigate to creation flow with template selected
-          const { templateDir } = data;
+          const { eTag, templateDir } = data;
           const { description, name } = JSON.parse(payload) as { description: string; name: string };
           navigate(
             `/projects/create/${encodeURIComponent(source)}?imported=true&templateDir=${encodeURIComponent(
               templateDir
-            )}&name=${encodeURIComponent(name)}&description=${encodeURIComponent(description)}`
+            )}&name=${encodeURIComponent(name)}&description=${encodeURIComponent(
+              description
+            )}&eTag=${encodeURIComponent(eTag)}`
           );
         } catch (e) {
           // something went wrong, abort and navigate to the home page
@@ -46,7 +50,7 @@ export const ImportModal: React.FC<RouteComponentProps> = (props) => {
 
   return (
     <Dialog hidden={false} dialogContentProps={{ type: DialogType.normal }}>
-      <LoadingSpinner message={'Importing bot content...'} />
+      <LoadingSpinner message={formatMessage('Importing bot content...')} />
     </Dialog>
   );
 };

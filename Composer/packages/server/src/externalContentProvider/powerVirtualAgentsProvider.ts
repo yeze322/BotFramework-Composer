@@ -4,7 +4,7 @@ import fetch, { RequestInit } from 'node-fetch';
 import { join } from 'path';
 import { useElectronContext } from '../utility/electronContext';
 
-import { ContentProviderMetadata, ExternalContentProvider } from './externalContentProvider';
+import { BotContentInfo, ContentProviderMetadata, ExternalContentProvider } from './externalContentProvider';
 
 type PowerVirtualAgentsMetadata = ContentProviderMetadata & {
   botId?: string;
@@ -27,10 +27,9 @@ export class PowerVirtualAgentsProvider extends ExternalContentProvider {
 
   constructor(metadata: PowerVirtualAgentsMetadata) {
     super(metadata);
-    console.log('Got metadata: ', this.metadata);
   }
 
-  public async downloadBotContent(): Promise<string> {
+  public async downloadBotContent(): Promise<BotContentInfo> {
     try {
       // fetch zip
       const url = this.getContentUrl();
@@ -40,6 +39,7 @@ export class PowerVirtualAgentsProvider extends ExternalContentProvider {
       };
       const result = await fetch(url, options);
 
+      const eTag = result.headers.get('etag') || '';
       const contentType = result.headers.get('content-type');
       if (!contentType || contentType !== 'application/zip') {
         throw 'Invalid content type header! Must be application/zip';
@@ -51,7 +51,7 @@ export class PowerVirtualAgentsProvider extends ExternalContentProvider {
         const zipPath = join(this.tempBotAssetsDir, 'bot-assets.zip');
         const writeStream = createWriteStream(zipPath);
         result.body.pipe(writeStream);
-        return zipPath;
+        return { eTag, zipPath };
       } else {
         throw 'Response containing zip does not have a body';
       }

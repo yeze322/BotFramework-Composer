@@ -16,10 +16,11 @@ import StorageService from '../services/storage';
 import settings from '../settings';
 
 import { Path } from './../utility/path';
+import { remove } from 'fs-extra';
 
 async function createProject(req: Request, res: Response) {
   let { templateId } = req.body;
-  const { name, description, storageId, location, schemaUrl, locale, templateDir } = req.body;
+  const { name, description, storageId, location, schemaUrl, locale, templateDir, eTag } = req.body;
   const user = await ExtensionContext.getUserFromRequest(req);
   if (templateId === '') {
     templateId = 'EmptyBot';
@@ -49,7 +50,10 @@ async function createProject(req: Request, res: Response) {
     try {
       await BotProjectService.cleanProject(locationRef);
       const newProjRef = await AssetService.manager.copyProjectTemplateDirTo(templateDir, locationRef, user, locale);
+      // clean up the temporary template directory -- fire and forget
+      remove(templateDir);
       const id = await BotProjectService.openProject(newProjRef, user);
+      BotProjectService.setETagForProject(eTag, id);
       const currentProject = await BotProjectService.getProjectById(id, user);
 
       if (currentProject !== undefined) {
