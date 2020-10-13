@@ -22,20 +22,17 @@ import Home from '../../pages/home/Home';
 import ImportQnAFromUrlModal from '../../pages/knowledge-base/ImportQnAFromUrlModal';
 import { QnABotTemplateId } from '../../constants';
 import { useProjectIdCache } from '../../utils/hooks';
+import { ImportModal } from '../ImportModal';
 
 import { CreateOptions } from './CreateOptions';
 import { OpenProject } from './OpenProject';
 import DefineConversation from './DefineConversation';
-import { ImportModal } from '../ImportModal';
 
 type CreationFlowProps = RouteComponentProps<{}>;
 
 const CreationFlow: React.FC<CreationFlowProps> = () => {
   const {
     fetchTemplates,
-    openProject,
-    createProject,
-    saveProjectAs,
     fetchStorages,
     fetchFolderItemsByPath,
     setCreationFlowStatus,
@@ -43,9 +40,13 @@ const CreationFlow: React.FC<CreationFlowProps> = () => {
     updateCurrentPathForStorage,
     updateFolder,
     saveTemplateId,
-    fetchProjectById,
     fetchRecentProjects,
+    openProject,
+    createNewBot,
+    saveProjectAs,
+    fetchProjectById,
   } = useRecoilValue(dispatcherState);
+
   const creationFlowStatus = useRecoilValue(creationFlowStatusState);
   const projectId = useRecoilValue(currentProjectIdState);
   const templateProjects = useRecoilValue(templateProjectsState);
@@ -103,17 +104,16 @@ const CreationFlow: React.FC<CreationFlowProps> = () => {
   };
 
   const handleCreateNew = async (formData, templateId: string, qnaKbUrls?: string[]) => {
-    createProject(
-      templateId || '',
-      formData.name,
-      formData.description,
-      formData.location,
-      formData.schemaUrl,
+    const newBotData = {
+      templateId: templateId || '',
+      name: formData.name,
+      description: formData.description,
+      location: formData.location,
+      schemaUrl: formData.schemaUrl,
       appLocale,
       qnaKbUrls,
-      formData.templateDir,
-      formData.eTag
-    );
+    };
+    createNewBot(newBotData);
   };
 
   const handleSaveAs = (formData) => {
