@@ -47,16 +47,19 @@ if (app.isPackaged) {
 log(`${process.env.NODE_ENV} environment detected.`);
 
 function processArgsForWindows(args: string[]): string {
-  const envId = '40c6f77b-8fc6-4bbd-9bdc-2d4a941ef0b8';
-  const botId = '8e2f2bff-7534-45b2-9343-2aa12e12af98';
+  //const envId = '40c6f77b-8fc6-4bbd-9bdc-2d4a941ef0b8'; // toanzian-test1
+  //const botId = '8e2f2bff-7534-45b2-9343-2aa12e12af98'; // toanzian-test1
+  const envId = 'Default-91bee3d9-0c15-4f17-8624-c92bb8b36ead';
+  const botId = '79dcdf32-a856-4d63-8633-6d02ff2f93d1';
+  const tenantId = '91bee3d9-0c15-4f17-8624-c92bb8b36ead';
   const payload = {
     botId,
     description: 'A bot that reports the current weather.',
     envId,
-    name: 'toanzian-test-bot1',
-    tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47',
+    name: 'toanzian-monday-bot',
+    tenantId, //: '72f988bf-86f1-41af-91ab-2d7cd011db47', // toanzian-test1
   };
-  args.push(`bfcomposer://import?source=pva&payload=${encodeURIComponent(JSON.stringify(payload))}`);
+  args.push(`bfcomposer123://import?source=pva&payload=${encodeURIComponent(JSON.stringify(payload))}`);
   const deepLinkUrl = args.find((arg) => arg.startsWith(composerProtocol));
   if (deepLinkUrl) {
     return parseDeepLinkUrl(deepLinkUrl);
