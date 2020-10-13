@@ -14,12 +14,15 @@ import { FormDialogController } from '../controllers/formDialog';
 import * as ExtensionsController from '../controllers/extensions';
 
 import { UtilitiesController } from './../controllers/utilities';
+import { ImportController } from '../controllers/import';
+import { AuthController } from '../controllers/auth';
 
 const router: Router = express.Router({});
 
 router.post('/projects', ProjectController.createProject);
 router.get('/projects', ProjectController.getAllProjects);
 router.get('/projects/recent', ProjectController.getRecentProjects);
+router.get('/projects/generateProjectId', ProjectController.generateProjectId);
 
 router.get('/projects/:projectId', ProjectController.getProjectById);
 router.put('/projects/open', ProjectController.openProject);
@@ -27,7 +30,7 @@ router.delete('/projects/:projectId', ProjectController.removeProject);
 router.put('/projects/:projectId/files/:name', ProjectController.updateFile);
 router.delete('/projects/:projectId/files/:name', ProjectController.removeFile);
 router.post('/projects/:projectId/files', ProjectController.createFile);
-router.get('/projects/:projectId/skill/retrieve-skill-manifest', ProjectController.getSkill);
+router.get('/projects/:projectId/skill/retrieveSkillManifest', ProjectController.getSkill);
 router.post('/projects/:projectId/build', ProjectController.build);
 router.post('/projects/:projectId/qnaSettings/set', ProjectController.setQnASettings);
 router.post('/projects/:projectId/project/saveAs', ProjectController.saveProjectAs);
@@ -57,6 +60,7 @@ router.post('/publish/:projectId/publish/:target', PublishController.publish);
 router.get('/publish/:projectId/history/:target', PublishController.history);
 router.post('/publish/:projectId/rollback/:target', PublishController.rollback);
 router.post('/publish/:projectId/stopPublish/:target', PublishController.stopBot);
+router.post('/publish/:projectId/pull/:target', PublishController.pull);
 
 router.get('/publish/:method', PublishController.publish);
 
@@ -77,9 +81,14 @@ router.post('/extensions', ExtensionsController.addExtension);
 router.delete('/extensions', ExtensionsController.removeExtension);
 router.patch('/extensions/toggle', ExtensionsController.toggleExtension);
 router.get('/extensions/search', ExtensionsController.searchExtensions);
-router.get('/extensions/:id/view/:view', ExtensionsController.getBundleForView);
+router.get('/extensions/:id/:bundleId', ExtensionsController.getBundleForView);
 // proxy route for extensions (allows extension client code to make fetch calls using the Composer server as a proxy -- avoids browser blocking request due to CORS)
 router.post('/extensions/proxy/:url', ExtensionsController.performExtensionFetch);
+
+// importing
+router.post('/import/:source', ImportController.startImport);
+
+router.get('/auth/getAccessToken', AuthController.getAccessToken);
 
 const errorHandler = (handler: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
   Promise.resolve(handler(req, res, next)).catch(next);

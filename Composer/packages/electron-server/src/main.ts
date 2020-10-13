@@ -47,6 +47,19 @@ if (app.isPackaged) {
 log(`${process.env.NODE_ENV} environment detected.`);
 
 function processArgsForWindows(args: string[]): string {
+  //const envId = '40c6f77b-8fc6-4bbd-9bdc-2d4a941ef0b8'; // toanzian-test1
+  //const botId = '8e2f2bff-7534-45b2-9343-2aa12e12af98'; // toanzian-test1
+  const envId = 'Default-91bee3d9-0c15-4f17-8624-c92bb8b36ead';
+  const botId = '79dcdf32-a856-4d63-8633-6d02ff2f93d1';
+  const tenantId = '91bee3d9-0c15-4f17-8624-c92bb8b36ead';
+  const payload = {
+    botId,
+    description: 'A bot that reports the current weather.',
+    envId,
+    name: 'toanzian-monday-bot',
+    tenantId, //: '72f988bf-86f1-41af-91ab-2d7cd011db47', // toanzian-test1
+  };
+  args.push(`bfcomposer123://import?source=pva&payload=${encodeURIComponent(JSON.stringify(payload))}`);
   const deepLinkUrl = args.find((arg) => arg.startsWith(composerProtocol));
   if (deepLinkUrl) {
     return parseDeepLinkUrl(deepLinkUrl);
@@ -63,7 +76,9 @@ async function createAppDataDir() {
   const azurePublishPath: string = join(composerAppDataPath, 'publishBots');
   process.env.COMPOSER_APP_DATA = join(composerAppDataPath, 'data.json'); // path to the actual data file
   process.env.COMPOSER_EXTENSION_DATA = join(composerAppDataPath, 'extensions.json');
-  process.env.COMPOSER_REMOTE_EXTENSIONS_DIR = join(composerAppDataPath, '.composer');
+  process.env.COMPOSER_REMOTE_EXTENSIONS_DIR = join(composerAppDataPath, 'extensions');
+  process.env.COMPOSER_REMOTE_TEMPLATE_DIR = join(composerAppDataPath, 'remoteTemplates');
+  process.env.COMPOSER_TEMP_DIR = join(composerAppDataPath, 'temp');
 
   log('creating composer app data path at: ', composerAppDataPath);
 
@@ -152,7 +167,7 @@ async function loadServer() {
 
   log('Starting server...');
   const { start } = await import('@bfc/server');
-  serverPort = await start();
+  serverPort = await start({ getAccessToken, loginAndGetIdToken });
   log(`Server started at port: ${serverPort}`);
 }
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import set from 'lodash/set';
-import { SensitiveProperties } from '@bfc/shared';
+import { DialogSetting, SensitiveProperties } from '@bfc/shared';
 import { UserIdentity } from '@bfc/extension';
 
 import { Path } from '../../utility/path';
@@ -16,7 +16,7 @@ export class DefaultSettingManager extends FileSettingManager {
     super(basePath, user);
   }
 
-  protected createDefaultSettings = (): any => {
+  protected createDefaultSettings = (): DialogSetting => {
     return {
       feature: {
         UseShowTypingMiddleware: false,
@@ -48,6 +48,15 @@ export class DefaultSettingManager extends FileSettingManager {
         defaultLanguage: 'en-us',
         environment: 'composer',
       },
+      luFeatures: {
+        enablePattern: true,
+        enableMLEntities: true,
+        enableListEntities: true,
+        enableCompositeEntities: true,
+        enablePrebuiltEntities: true,
+        enableRegexEntities: true,
+        enablePhraseLists: true,
+      },
       publishTargets: [],
       qna: {
         subscriptionKey: '',
@@ -69,17 +78,23 @@ export class DefaultSettingManager extends FileSettingManager {
         maxImbalanceRatio: 10,
         maxUtteranceAllowed: 15000,
       },
+      skillConfiguration: {
+        isSkill: false,
+        allowedCallers: ['*'],
+      },
+      skill: {},
       defaultLanguage: 'en-us',
       languages: ['en-us'],
     };
   };
 
   public async get(obfuscate = false): Promise<any> {
-    const result = await super.get(obfuscate);
-    //add downsampling property for old bot
-    if (!result.downsampling) {
-      result.downsampling = this.createDefaultSettings().downsampling;
-    }
+    const currentSettings = await super.get(obfuscate);
+    // ensure all the default settings are stubbed out
+    const result = {
+      ...this.createDefaultSettings(),
+      ...currentSettings,
+    };
     //add luis endpoint for old bot
     if (!result.luis.endpoint && result.luis.endpoint !== '') {
       result.luis.endpoint = this.createDefaultSettings().luis.endpoint;
