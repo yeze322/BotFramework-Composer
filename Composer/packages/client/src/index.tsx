@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+import './wdyr';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CacheProvider } from '@emotion/core';
