@@ -190,4 +190,6 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ onFocus, onBlur, schema
   );
 };
 
+(VisualDesigner as any).whyDidYouRender = true;
+
 export default VisualDesigner;
