@@ -190,8 +190,4 @@ const VisualDesigner: React.FC<VisualDesignerProps> = ({ onFocus, onBlur, schema
   );
 };
 
-(VisualDesigner as any).whyDidYouRender = {
-  customName: 'AdaptiveFlowEditor',
-};
-
 export default VisualDesigner;
