@@ -34,7 +34,6 @@ import { clearBreadcrumb, getFocusPath } from '../../utils/navigation';
 import { navigateTo } from '../../utils/navigation';
 import { useShell } from '../../shell';
 import plugins, { mergePluginConfigs } from '../../plugins';
-import { useElectronFeatures } from '../../hooks/useElectronFeatures';
 import {
   visualEditorSelectionState,
   userSettingsState,
@@ -43,7 +42,6 @@ import {
   displaySkillManifestState,
   validateDialogsSelectorFamily,
   breadcrumbState,
-  focusPathState,
   showCreateDialogModalState,
   showAddSkillDialogModalState,
   localeState,
@@ -52,7 +50,7 @@ import {
 } from '../../recoilModel';
 import { CreateQnAModal } from '../../components/QnA';
 import { triggerNotSupported } from '../../utils/dialogValidator';
-import { undoFunctionState, undoVersionState } from '../../recoilModel/undo/history';
+import { undoFunctionState } from '../../recoilModel/undo/history';
 import { decodeDesignerPathToArrayPath } from '../../utils/convertUtils/designerPathEncoder';
 import { useTriggerApi } from '../../shell/triggerApi';
 
@@ -66,8 +64,6 @@ import {
   pageRoot,
   visualPanel,
 } from './styles';
-import { VisualEditor } from './VisualEditor';
-import { PropertyEditor } from './PropertyEditor';
 
 const CreateSkillModal = React.lazy(() => import('../../components/CreateSkillModal'));
 const CreateDialogModal = React.lazy(() => import('./createDialogModal'));
@@ -118,12 +114,10 @@ const DesignPage: React.FC<RouteComponentProps<{ dialogId: string; projectId: st
   const dialogs = useRecoilValue(validateDialogsSelectorFamily(projectId));
   const displaySkillManifest = useRecoilValue(displaySkillManifestState(projectId));
   const breadcrumb = useRecoilValue(breadcrumbState(projectId));
-  const focusPath = useRecoilValue(focusPathState(projectId));
   const showCreateDialogModal = useRecoilValue(showCreateDialogModalState(projectId));
   const showAddSkillDialogModal = useRecoilValue(showAddSkillDialogModalState(projectId));
   const locale = useRecoilValue(localeState(projectId));
   const undoFunction = useRecoilValue(undoFunctionState(projectId));
-  const undoVersion = useRecoilValue(undoVersionState(projectId));
   const rootProjectId = useRecoilValue(rootBotProjectIdSelector) ?? projectId;
 
   const { undo, redo, canRedo, canUndo, commitChanges, clearUndo } = undoFunction;
@@ -160,8 +154,6 @@ const DesignPage: React.FC<RouteComponentProps<{ dialogId: string; projectId: st
   const [exportSkillModalVisible, setExportSkillModalVisible] = useState(false);
   const [warningIsVisible, setWarningIsVisible] = useState(true);
   const shell = useShell('DesignPage', projectId);
-  const shellForFlowEditor = useShell('FlowEditor', projectId);
-  const shellForPropertyEditor = useShell('PropertyEditor', projectId);
   const triggerApi = useTriggerApi(projectId);
   const { createTrigger, createQnATrigger } = shell.api;
 
@@ -280,8 +272,6 @@ const DesignPage: React.FC<RouteComponentProps<{ dialogId: string; projectId: st
     const showEnableBtn = selectedActions.some((x) => get(x, 'disabled') === true);
     return { actionSelected, showDisableBtn, showEnableBtn };
   }, [visualEditorSelection]);
-
-  const { onFocusFlowEditor, onBlurFlowEditor } = useElectronFeatures(actionSelected, canUndo(), canRedo());
 
   const EditorAPI = getEditorAPI();
   const toolbarItems: IToolbarItem[] = [
@@ -625,19 +615,8 @@ const DesignPage: React.FC<RouteComponentProps<{ dialogId: string; projectId: st
                           onOk={() => navigateTo(`/bot/${projectId}/knowledge-base/all`)}
                         />
                       )
-                    ) : (
-                      <EditorExtension plugins={pluginConfig} projectId={projectId} shell={shellForFlowEditor}>
-                        <VisualEditor
-                          openNewTriggerModal={openNewTriggerModal}
-                          onBlur={onBlurFlowEditor}
-                          onFocus={onFocusFlowEditor}
-                        />
-                      </EditorExtension>
-                    )}
+                    ) : null}
                   </div>
-                  <EditorExtension plugins={pluginConfig} projectId={projectId} shell={shellForPropertyEditor}>
-                    <PropertyEditor key={focusPath + undoVersion} />
-                  </EditorExtension>
                 </LeftRightSplit>
               </div>
             </Conversation>
