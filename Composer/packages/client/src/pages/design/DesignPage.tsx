@@ -257,9 +257,9 @@ const DesignPage: React.FC<RouteComponentProps<{ dialogId: string; projectId: st
     setTriggerModalVisibility(false);
   };
 
-  const openNewTriggerModal = () => {
+  const openNewTriggerModal = useCallback(() => {
     setTriggerModalVisibility(true);
-  };
+  }, []);
 
   const onTriggerCreationSubmit = async (dialogId: string, formData: TriggerFormData) => {
     createTrigger(dialogId, formData);
@@ -639,8 +639,8 @@ const DesignPage: React.FC<RouteComponentProps<{ dialogId: string; projectId: st
                       <EditorExtension plugins={pluginConfig} projectId={projectId} shell={shellForFlowEditor}>
                         <VisualEditor
                           openNewTriggerModal={openNewTriggerModal}
-                          onBlur={() => onBlurFlowEditor()}
-                          onFocus={() => onFocusFlowEditor()}
+                          onBlur={onBlurFlowEditor}
+                          onFocus={onFocusFlowEditor}
                         />
                       </EditorExtension>
                     )}

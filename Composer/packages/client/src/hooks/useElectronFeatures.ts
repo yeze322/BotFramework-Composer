@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import { getEditorAPI } from '@bfc/shared';
 
 export const useElectronFeatures = (actionSelected: boolean, canUndo: boolean, canRedo: boolean) => {
   const flowEditorFocused = useRef(false);
 
-  const sendStatus = () => {
+  const sendStatus = useCallback(() => {
     if (!window.__IS_ELECTRON__) return;
     if (!window.ipcRenderer || typeof window.ipcRenderer.send !== 'function') return;
     window.ipcRenderer.send('composer-state-change', {
@@ -17,17 +17,17 @@ export const useElectronFeatures = (actionSelected: boolean, canUndo: boolean, c
       canUndo,
       canRedo,
     });
-  };
+  }, []);
 
-  const onFocusFlowEditor = () => {
+  const onFocusFlowEditor = useCallback(() => {
     flowEditorFocused.current = true;
     sendStatus();
-  };
+  }, []);
 
-  const onBlurFlowEditor = () => {
+  const onBlurFlowEditor = useCallback(() => {
     flowEditorFocused.current = false;
     sendStatus();
-  };
+  }, []);
 
   // Sync selection state to Electron main process
   useEffect(() => {
