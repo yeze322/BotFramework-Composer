@@ -20,7 +20,7 @@ import { menuOrderMap } from './defaultMenuOrder';
 type ActionMenuItemClickHandler = (item?: IContextualMenuItem) => any;
 type ActionKindFilter = ($kind: SDKKinds) => boolean;
 
-type MenuTree = { [key: string]: SDKKinds | MenuTree };
+type MenuTree = { [key: string]: string | MenuTree };
 
 const createBaseActionMenu = (
   menuSchema: MenuUISchema,
@@ -35,23 +35,31 @@ const createBaseActionMenu = (
     optionList.map((opt) => {
       // use $kind as fallback label
       const label = opt.label || $kind;
+      const icon = (opt as any).icon;
       const submenu = opt.submenu;
 
+      const payload = JSON.stringify({ $kind, icon });
       if (submenu === false) {
-        result[label] = $kind;
+        result[label] = payload;
       } else if (Array.isArray(submenu)) {
-        set(result, [...submenu, label], $kind);
+        set(result, [...submenu, label], payload);
       }
     });
     return result;
   }, {});
 
-  const buildMenuItemFromMenuTree = (labelName: string, labelData: SDKKinds | MenuTree): IContextualMenuItem => {
+  const buildMenuItemFromMenuTree = (labelName: string, labelData: string | MenuTree): IContextualMenuItem => {
     if (typeof labelData === 'string') {
-      const $kind = labelData;
+      const payload = JSON.parse(labelData);
+      const { $kind, icon } = payload;
       return {
         key: $kind,
         name: labelName || $kind,
+        iconProps: icon
+          ? {
+              iconName: icon,
+            }
+          : undefined,
         onClick: (e, itemData) => onClick(itemData),
       };
     } else {

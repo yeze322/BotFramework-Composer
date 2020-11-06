@@ -7,6 +7,7 @@ export interface MenuOptions {
   label?: string;
   group?: string;
   submenu?: string[] | false;
+  icon?: string;
 }
 
 // A $kind may be referenced by have multiple menu items. In this case, its typed with MenuOptions[].
