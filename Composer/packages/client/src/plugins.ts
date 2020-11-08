@@ -7,6 +7,7 @@ import isArray from 'lodash/isArray';
 import type { MergeWithCustomizer } from 'lodash';
 import type { PluginConfig } from '@bfc/extension-client';
 import composer from '@bfc/ui-plugin-composer';
+import demoSchema from '@bfc/ui-schema-demo';
 import prompts from '@bfc/ui-plugin-prompts';
 import schemaEditor from '@bfc/ui-plugin-dialog-schema-editor';
 import selectDialog from '@bfc/ui-plugin-select-dialog';
@@ -38,6 +39,7 @@ export function mergePluginConfigs(...plugins: PluginConfig[]): Required<PluginC
 
 export default mergePluginConfigs(
   composer,
+  demoSchema,
   prompts,
   selectDialog,
   selectSkillDialog,

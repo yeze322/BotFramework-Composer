@@ -29,8 +29,8 @@ export const DefaultFormSchema: FormUISchema = {
     helpLink: 'https://aka.ms/bfc-ask-for-user-input',
   },
   [SDKKinds.BeginDialog]: {
-    label: () => formatMessage('Begin a new dialog'),
-    subtitle: () => formatMessage('Begin Dialog'),
+    label: () => formatMessage('Begin a new dialog222'),
+    subtitle: () => formatMessage('Begin Dialog222'),
     helpLink: 'https://aka.ms/bfc-understanding-dialogs',
     order: ['dialog', 'options', 'resultProperty', 'includeActivity', '*'],
   },
