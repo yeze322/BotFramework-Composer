@@ -18,6 +18,7 @@ import { DefaultRecognizerSchema } from './defaultRecognizerSchema';
 import { DefaultTriggerSchema } from './defaultTriggerSchema';
 import { DefaultFormSchema } from './DefaultFormSchema';
 import { VerySmallAction } from './widgets/VerySmallAction';
+import { RegexRecognizerEditor } from './widgets/RegexRecognizerEditor';
 
 const synthesizeUISchema = (
   formSchema: FormUISchema,
@@ -46,6 +47,9 @@ const config: PluginConfig = {
   widgets: {
     flow: {
       VerySmallAction,
+    },
+    recognizer: {
+      RegexRecognizerEditor,
     },
   },
 };

@@ -6,6 +6,8 @@ import { SDKKinds } from '@bfc/shared';
 import formatMessage from 'format-message';
 import { RegexIntentField, CustomRecognizerField } from '@bfc/adaptive-form';
 
+import { RegexRecognizerEditor } from './widgets/RegexRecognizerEditor';
+
 const FallbackRecognizerJsonEditor: RecognizerOptions = {
   displayName: () => formatMessage('Custom recognizer'),
   seedNewRecognizer: () => ({}),
@@ -15,6 +17,7 @@ const FallbackRecognizerJsonEditor: RecognizerOptions = {
 export const DefaultRecognizerSchema: RecognizerUISchema = {
   [SDKKinds.RegexRecognizer]: {
     displayName: () => formatMessage('Regular expression recognizer'),
+    recognizerEditor: RegexRecognizerEditor,
     intentEditor: RegexIntentField,
     renameIntent: (intentName, newIntentName, shellData, shellApi) => {
       const { currentDialog } = shellData;
