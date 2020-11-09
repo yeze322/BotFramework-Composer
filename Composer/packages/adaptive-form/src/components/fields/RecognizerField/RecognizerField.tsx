@@ -19,10 +19,11 @@ export const RecognizerField: React.FC<FieldProps<MicrosoftIRecognizer>> = (prop
   const { shellApi, ...shellData } = useShellApi();
 
   useMigrationEffect(value, onChange);
-  const { recognizers: recognizerConfigs, currentRecognizer } = useRecognizerConfig();
+  const { recognizers: recognizerConfigs, currentRecognizer, widgets } = useRecognizerConfig();
   const dropdownOptions = useMemo(() => getDropdownOptions(recognizerConfigs), [recognizerConfigs]);
 
-  const RecognizerEditor = currentRecognizer?.recognizerEditor;
+  let RecognizerEditor = currentRecognizer?.recognizerEditor;
+  if (typeof RecognizerEditor === 'string') RecognizerEditor = widgets[RecognizerEditor];
   const widget = RecognizerEditor ? <RecognizerEditor {...props} /> : null;
 
   const submit = (_, option?: IDropdownOption): void => {

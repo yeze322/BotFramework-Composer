@@ -52,6 +52,8 @@ export interface RecognizerSchemaConfig {
   currentRecognizer?: RecognizerSchema;
   /** Default recognizer's definition, used when creating new dialog. */
   defaultRecognizer?: RecognizerSchema;
+  /** Custom recognizer widgets */
+  widgets?: any;
 }
 
 export function useRecognizerConfig(): RecognizerSchemaConfig {
@@ -87,5 +89,6 @@ export function useRecognizerConfig(): RecognizerSchemaConfig {
     recognizers,
     currentRecognizer,
     defaultRecognizer,
+    widgets: plugins.widgets?.recognizer ?? {},
   };
 }
