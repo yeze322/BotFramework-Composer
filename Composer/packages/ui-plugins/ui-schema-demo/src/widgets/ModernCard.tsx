@@ -8,14 +8,15 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/Edit';
+import PlayArrowIcon from '@material-ui/icons/DeleteOutline';
+import SkipNextIcon from '@material-ui/icons/FileCopy';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      font: '15px',
     },
     details: {
       display: 'flex',
@@ -23,9 +24,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flex: '1 0 auto',
+      font: '15px',
     },
     cover: {
-      width: 151,
+      width: 100,
     },
     controls: {
       display: 'flex',
@@ -33,14 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: theme.spacing(1),
       paddingBottom: theme.spacing(1),
     },
-    playIcon: {
-      height: 38,
-      width: 38,
-    },
+    playIcon: {},
   })
 );
 
-export function ModernCard() {
+export function ModernCard({ header, body, id, onEvent }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -48,18 +47,18 @@ export function ModernCard() {
     <Card className={classes.root}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            Live From Space
+          <Typography component="div" variant="subtitle1">
+            {header}
           </Typography>
           <Typography color="textSecondary" variant="subtitle1">
-            Mac Miller
+            {body}
           </Typography>
         </CardContent>
         <div className={classes.controls}>
           <IconButton aria-label="previous">
             {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
           </IconButton>
-          <IconButton aria-label="play/pause">
+          <IconButton aria-label="play/pause" onClick={() => onEvent('event.data.delete', { id })}>
             <PlayArrowIcon className={classes.playIcon} />
           </IconButton>
           <IconButton aria-label="next">
@@ -67,11 +66,20 @@ export function ModernCard() {
           </IconButton>
         </div>
       </div>
-      <CardMedia
-        className={classes.cover}
-        image="/static/images/cards/live-from-space.jpg"
-        title="Live from space album cover"
-      />
+      <div
+        style={{
+          backgroundColor: '#eee',
+          backgroundImage:
+            'url("https://bot-framework.azureedge.net/static/180272-01e36566b1/intercom-webui/v1.6.2/assets/landing-page/images/Composer_Icon.png")',
+          backgroundSize: 'contain',
+        }}
+      >
+        <CardMedia
+          className={classes.cover}
+          image="https://bot-framework.azureedge.net/static/180272-01e36566b1/intercom-webui/v1.6.2/assets/landing-page/images/Composer_Icon.png"
+          title="Live from space album cover"
+        />
+      </div>
     </Card>
   );
 }
