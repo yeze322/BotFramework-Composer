@@ -20,6 +20,7 @@ import { DefaultFormSchema } from './DefaultFormSchema';
 import { VerySmallAction } from './widgets/VerySmallAction';
 import { RegexRecognizerEditor } from './widgets/RegexRecognizerEditor';
 import { ModernCard } from './widgets/ModernCard';
+import { RecognizerJSONEditor } from './widgets/RecognizerJSONEditor';
 
 const synthesizeUISchema = (
   formSchema: FormUISchema,
@@ -52,6 +53,7 @@ const config: PluginConfig = {
     },
     recognizer: {
       RegexRecognizerEditor,
+      RecognizerJSONEditor,
     },
   },
 };
