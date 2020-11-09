@@ -26,7 +26,7 @@ import { CalendarInlineExample } from './widgets/CalendarInlineExample';
 const hasError = (errors: TriggerFormDataErrors) => Object.values(errors).some((msg) => !!msg);
 
 const builtinWidgets = {
-  MeetingPlaceholder: () => (
+  CalendarWidget: () => (
     <div>
       <CalendarInlineExample />
     </div>
