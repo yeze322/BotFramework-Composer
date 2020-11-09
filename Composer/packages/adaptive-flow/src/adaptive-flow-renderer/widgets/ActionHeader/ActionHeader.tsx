@@ -38,7 +38,6 @@ export const ActionHeader: WidgetComponent<ActionHeaderProps> = ({
   adaptiveSchema,
   onEvent,
   title = '',
-  disableSDKTitle,
   icon,
   menu,
   colors = DefaultColors,
@@ -49,7 +48,7 @@ export const ActionHeader: WidgetComponent<ActionHeaderProps> = ({
   const textCSS = disabled ? DisabledHeaderTextCSS : HeaderTextCSS(colors.color);
   const iconColor = disabled ? DisabledIconColor : colors.icon;
 
-  const headerContent = disableSDKTitle ? title : generateActionTitle(data, adaptiveSchema.title, title);
+  const headerContent = title || generateActionTitle(data, adaptiveSchema.title, title);
 
   const { NodeMenu } = useContext(RendererContext);
   const menuNode =
