@@ -9,6 +9,8 @@ import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dia
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { SDKKinds, RegexRecognizer } from '@bfc/shared';
 import { useRecoilValue } from 'recoil';
+import { useTriggerConfig } from '@bfc/extension-client';
+import get from 'lodash/get';
 
 import { TriggerFormData, TriggerFormDataErrors } from '../../utils/dialogUtil';
 import { userSettingsState } from '../../recoilModel/atoms';
@@ -19,8 +21,18 @@ import { dialogContentStyles, modalStyles, dialogWindowStyles } from './styles';
 import { validateForm } from './validators';
 import { resolveTriggerWidget } from './resolveTriggerWidget';
 import { TriggerDropdownGroup } from './TriggerDropdownGroup';
+import { CalendarInlineExample } from './widgets/CalendarInlineExample';
 
 const hasError = (errors: TriggerFormDataErrors) => Object.values(errors).some((msg) => !!msg);
+
+const builtinWidgets = {
+  MeetingPlaceholder: () => (
+    <div>
+      <CalendarInlineExample />
+    </div>
+  ),
+  HelloExample: () => <h2 style={{ border: '1px solid #aaa', padding: 20 }}>This is a trigger widget.</h2>,
+};
 
 export const initialFormData: TriggerFormData = {
   errors: {},
@@ -44,6 +56,7 @@ export const TriggerCreationModal: React.FC<TriggerCreationModalProps> = (props)
   const dialogs = useRecoilValue(validateDialogsSelectorFamily(projectId));
 
   const userSettings = useRecoilValue(userSettingsState);
+  const triggerSchema = useTriggerConfig();
   const dialogFile = dialogs.find((dialog) => dialog.id === dialogId);
   const recognizer$kind = resolveRecognizer$kind(dialogFile);
   const isRegEx = isRegExRecognizerType(dialogFile);
@@ -67,15 +80,11 @@ export const TriggerCreationModal: React.FC<TriggerCreationModalProps> = (props)
   const errors = validateForm(selectedType, formData, isRegEx, regexIntents as any);
   const disable = hasError(errors);
 
-  const triggerWidget = resolveTriggerWidget(
-    selectedType,
-    dialogFile,
-    formData,
-    setFormData,
-    userSettings,
-    projectId,
-    dialogId
-  );
+  const supposedWidgetName = get(triggerSchema, [selectedType, 'widget']);
+  const supposedWidget: any = get(builtinWidgets, supposedWidgetName);
+  const triggerWidget = supposedWidget
+    ? supposedWidget()
+    : resolveTriggerWidget(selectedType, dialogFile, formData, setFormData, userSettings, projectId, dialogId);
 
   return (
     <Dialog
