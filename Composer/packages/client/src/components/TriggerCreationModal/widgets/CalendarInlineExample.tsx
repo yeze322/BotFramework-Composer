@@ -57,10 +57,6 @@ const divStyle: React.CSSProperties = {
   height: 'auto',
   border: '1px solid #ccc',
 };
-const buttonStyle: React.CSSProperties = {
-  margin: '17px 10px 0 0',
-};
-let dateRangeString: string | null = null;
 
 export const CalendarInlineExample: React.FunctionComponent<ICalendarInlineExampleProps> = (
   props: ICalendarInlineExampleProps
