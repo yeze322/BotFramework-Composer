@@ -61,7 +61,7 @@ const divStyle: React.CSSProperties = {
 export const CalendarInlineExample: React.FunctionComponent<ICalendarInlineExampleProps> = (
   props: ICalendarInlineExampleProps
 ) => {
-  const [selectedDateRange, setSelectedDateRange] = React.useState<Date[]>();
+  const [, setSelectedDateRange] = React.useState<Date[]>();
   const [selectedDate, setSelectedDate] = React.useState<Date>();
 
   const onSelectDate = (date: Date, dateRangeArray?: Date[]): void => {
@@ -73,12 +73,6 @@ export const CalendarInlineExample: React.FunctionComponent<ICalendarInlineExamp
   const onDismiss = () => {
     return selectedDate;
   };
-
-  if (selectedDateRange) {
-    const rangeStart = selectedDateRange[0];
-    const rangeEnd = selectedDateRange[selectedDateRange.length - 1];
-    dateRangeString = rangeStart.toLocaleDateString() + '-' + rangeEnd.toLocaleDateString();
-  }
 
   return (
     <div style={divStyle}>
