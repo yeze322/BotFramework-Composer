@@ -58,9 +58,11 @@ Webchat extension is consists of 3 small extensions:
   ```
 
 ## UI Integration
-Generally, Composer will expose 2 parts for webchat extension to contriute.
+Generally, Composer will grant 2 areas on the page for webchat extension to contribute.
 1. Webchat area on the right pane
 2. Debug window on the bottom pane
+
+![image](webchat-ext.JPG)
 
 Note that
 - Composer holds a part of the webchat logic including
@@ -76,10 +78,10 @@ Note that
   - user id / user name / conversation id
   - how to restart conversation / save transcript
 
-  (webchat extension holds these them instead)
+  Webchat extension holds these items instead.
 
 In brief,
 - Composer decides **where** and **when** to show the webchat area;
   ![image](webchat-composer-part.png)
 - Webchat ext decies **how** and **what** to show in the webchat window.
-  ![image](webchat-ext.JPG)
+  ![image](webchat-chat-part.png)
