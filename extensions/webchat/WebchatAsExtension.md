@@ -81,7 +81,7 @@ Note that
   Webchat extension holds these items instead.
 
 In brief,
-- Composer decides **where** and **when** to show the webchat area;
+- Composer decides **where** and **when** to show the webchat area.
   ![image](webchat-composer-part.png)
-- Webchat ext decies **how** and **what** to show in the webchat window.
+- Webchat ext decides **how** and **what** to show in the webchat window.
   ![image](webchat-chat-part.png)
