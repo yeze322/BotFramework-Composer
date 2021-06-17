@@ -22,6 +22,7 @@ Extensions currently have access to the following functional areas:
 - [Runtime Templates](#runtime-templates) - extensions can provide a runtime template used when "ejecting" from Composer
 - [Bot Project Templates](#bot-project-templates) - extensions can add items to the template list shown in the "new bot" flow
 - [Boilerplate Content](#boilerplate-content) - extensions can provide content copied into all bot projects (such as a readme file or helper scripts)
+- [Client UI Component](#client-ui-component) - extensions can provide customized UI elements inserted into specific page area.
 
 Combining these endpoints, it is possible to achieve scenarios such as:
 
@@ -31,6 +32,7 @@ Combining these endpoints, it is possible to achieve scenarios such as:
 - Require login via Github, and use Github credentials to store content in a Git repo automatically
 - Use AAD roles to gate access to content
 - Publish content to external services such as remote runtimes, content repositories, testing systems, etc.
+
 
 ## How to build an extension
 
@@ -491,6 +493,12 @@ await composer.addBotTemplate({
 ### Boilerplate Content
 
 In addition, boilerplate material will also be added to every new bot project. Extensions can bundle additional content that will be copied into every project, regardless of which template is used.
+
+### Client UI Component
+Write custom React code and insert that Component to specifc page area.
+Allowed customization:
+- Live chat window to inspect the status of a bot runtime / interact with a bot runtime
+- Debug pane to show 'Erros & warnings' / 'Emulator logs'
 
 #### `composer.addBaseTemplate(template)`
 
